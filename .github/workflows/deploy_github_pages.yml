@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - dev  # Trigger the action only on pushes to the dev branch
+  pull_request:
+    branches:
+      - dev  # Trigger the workflow when a PR is made to the dev branch
 
 jobs:
   build:
@@ -18,7 +21,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.7.0'  # You can specify your Flutter version here
+          flutter-version: '3.7.2'  # You can specify your Flutter version here
 
       # Install dependencies
       - name: Install dependencies

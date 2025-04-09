@@ -29,7 +29,7 @@ jobs:
 
       # Build the Flutter web app
       - name: Build Flutter Web App
-        run: flutter build web --release  # Builds the web app for release
+        run: flutter build web --release --base-ref="/AikidoHelper/" # Builds the web app for release
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages

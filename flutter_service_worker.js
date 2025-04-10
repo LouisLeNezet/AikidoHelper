@@ -28,14 +28,14 @@ const RESOURCES = {"canvaskit/skwasm.js": "f2ad9363618c5f62e813740099a80e63",
 "assets/AssetManifest.json": "60a212354e9996fd4cc0648893cb20a0",
 "version.json": "c83ba0d53303978d5b54a6f14369f2b4",
 "flutter.js": "76f08d47ff9f5715220992f993002504",
-"main.dart.js": "894764311573f97ad0b34c7085fe94f4",
+"main.dart.js": "8917988b4f6a5b45be2312128c91436d",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "manifest.json": "eba0275dafa30e8dade3089805326cdb",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"flutter_bootstrap.js": "0e492ec16ed0c152b474baf2d0debfb5"};
+"flutter_bootstrap.js": "ff48b41f8df042f2ef1e832f7f0ce767"};
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = ["main.dart.js",

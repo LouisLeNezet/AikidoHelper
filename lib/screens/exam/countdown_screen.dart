@@ -1,21 +1,48 @@
 import 'package:flutter/material.dart';
-import '../../widgets/countdown_timer.dart'; // Import the CountdownTimer widget
+import '../../widgets/countdown_timer.dart';
 import '../../routes.dart';
 
 class CountdownScreen extends StatelessWidget {
-  const CountdownScreen({super.key});
+  final String selectedGrade;
+
+  const CountdownScreen({
+    super.key,
+    required this.selectedGrade,
+  }); // Update constructor
 
   @override
   Widget build(BuildContext context) {
+    final grade = selectedGrade.isNotEmpty ? selectedGrade : '5';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Countdown'),
       ),
-      body: CountdownTimer(
-        duration: 5, // Set the countdown duration here (in seconds)
-        onFinish: () {
-          Navigator.pushReplacementNamed(context, AppRoutes.evaluation); // Navigate to the next screen when finished
-        },
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'The exam will start in:',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 32),
+          CountdownTimer(
+            duration: 5,
+            onFinish: () {
+              Navigator.pushNamed(
+                context,
+                AppRoutes.evaluation,
+                arguments: {
+                  'grade': grade,
+                  'index': 0,
+                },
+              );
+            },
+          ),
+          const SizedBox(height: 32),
+          Center(
+            child: Text('Selected grade: $selectedGrade'),
+          ),
+        ],
       ),
     );
   }

@@ -5,9 +5,8 @@ import 'screens/start_menu/start_menu_screen.dart';
 import 'screens/main_menu/main_menu_screen.dart';
 
 // Exam Flow
-import 'screens/exam/grade_selection_screen.dart';
-import 'screens/exam/countdown_screen.dart';
 import 'screens/exam/exam_menu_screen.dart';
+import 'screens/exam/countdown_screen.dart';
 import 'screens/exam/evaluation_screen.dart';
 import 'screens/exam/exam_summary_screen.dart';
 
@@ -32,9 +31,8 @@ class AppRoutes {
   static const mainMenu = '/main-menu';
 
   // Exam
-  static const gradeSelection = '/exam/grade-selection';
-  static const countdown = '/exam/countdown';
   static const examMenu = '/exam/menu';
+  static const countdown = '/exam/countdown';
   static const evaluation = '/exam/evaluation';
   static const examSummary = '/exam/summary';
 
@@ -60,10 +58,22 @@ final Map<String, WidgetBuilder> appRoutes = {
   AppRoutes.mainMenu: (context) => const MainMenuScreen(),
 
   // Exam
-  AppRoutes.gradeSelection: (context) => const GradeSelectionScreen(),
-  AppRoutes.countdown: (context) => const CountdownScreen(),
   AppRoutes.examMenu: (context) => const ExamMenuScreen(),
-  AppRoutes.evaluation: (context) => const EvaluationScreen(),
+  AppRoutes.countdown: (context) {
+    final selectedGrade = ModalRoute.of(context)?.settings.arguments as String? ?? '5';
+    return CountdownScreen(
+      selectedGrade: selectedGrade,
+    );
+  },
+  AppRoutes.evaluation: (context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    final selectedGrade = args['grade'] as String? ?? '5';
+    final index = args['index'] as int? ?? 0;
+    return EvaluationScreen(
+      grade: selectedGrade,
+      index: index,
+    );
+  },
   AppRoutes.examSummary: (context) => const ExamSummaryScreen(),
 
   // Train

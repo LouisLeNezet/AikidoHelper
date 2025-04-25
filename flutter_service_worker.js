@@ -33,7 +33,7 @@ const RESOURCES = {"assets/AssetManifest.json": "d2ddb928128bac3b0773d3305b9b72e
 "canvaskit/skwasm_st.js.symbols": "c7e7aac7cd8b612defd62b43e3050bdd",
 "index.html": "d73453dd7cde9439163ea9795db939ba",
 "/": "d73453dd7cde9439163ea9795db939ba",
-"flutter_bootstrap.js": "85f45d5d55cc835e4f60f6d474099731",
+"flutter_bootstrap.js": "d36d907aa5f7e439c31256b469ad3c16",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",

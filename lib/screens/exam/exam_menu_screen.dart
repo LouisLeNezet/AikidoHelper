@@ -12,8 +12,8 @@ class ExamMenuScreen extends StatefulWidget {
 
 class _ExamMenuScreenState extends State<ExamMenuScreen> {
 
-  String selectedGrade = '5';  // Default grade
-  final List<String> gradesList = ['5', '4', '3', '2', '1', '1 Dan', '2 Dan'];
+  String selectedGrade = '5 Kyu';  // Default grade
+  final List<String> gradesList = ['5 Kyu', '4 Kyu', '3 Kyu', '2 Kyu', '1 Kyu', '1 Dan', '2 Dan'];
 
   @override
   Widget build(BuildContext context) {

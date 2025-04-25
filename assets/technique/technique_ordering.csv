@@ -1,0 +1,47 @@
+Name	Type	Order
+Katate dori	Attack	1
+Ai hanmi katate dori	Attack	2
+Ryote dori	Attack	3
+Katate ryote dori	Attack	4
+Kata dori	Attack	5
+Kata dori men uchi	Attack	6
+Mae ryo kata dori	Attack	7
+Ryo kata dori	Attack	8
+Muna dori	Attack	9
+Shomen uchi	Attack	10
+Yokomen uchi	Attack	11
+Chuudan tsuki	Attack	12
+Jodan tsuki	Attack	13
+Ushiro ryote dori	Attack	14
+Ushiro ryo kata dori	Attack	15
+Ushiro ryo hiji dori	Attack	16
+Ushiro eri dori	Attack	17
+Ushiro katate dori kubi shime	Attack	18
+Divers	Attack	19
+Suwari waza	Position	1
+Hanmi handachi waza	Position	2
+Tachi waza	Position	3
+Ikkyo	Technique	1
+Nikyo	Technique	2
+Sankyo	Technique	3
+Yonkyo	Technique	4
+Gokyo	Technique	5
+Irimi nage	Technique	6
+Sokumen irimi nage	Technique	7
+Hiji kime osae	Technique	8
+Shiho nage	Technique	9
+Ude kime nage	Technique	10
+Kote gaeshi	Technique	11
+Juji garami	Technique	12
+Soto kaiten nage	Technique	13
+Uchi kaiten nage	Technique	14
+Kaiten nage	Technique	15
+Kaiten nage nikyo	Technique	16
+Tenchi nage	Technique	17
+Kokyu ho	Technique	18
+Kokyu nage	Technique	19
+Sumi otoshi	Technique	20
+Aiki otoshi	Technique	21
+Koshi nage	Technique	22
+Omote	Form	1
+Ura	Form	2

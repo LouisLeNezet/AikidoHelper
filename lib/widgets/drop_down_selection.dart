@@ -27,10 +27,11 @@ class ValueSelectionWidget extends StatelessWidget {
           items: valuesList.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Center(child: Text(value)),
             );
           }).toList(),
           hint: const Text("Select Value"),
+          alignment: Alignment.center, // Center the selected value
         ),
       ],
     );

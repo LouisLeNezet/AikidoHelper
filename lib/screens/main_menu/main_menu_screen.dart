@@ -33,10 +33,10 @@ class MainMenuScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             
-            // Train Button
+            // Learn Button
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.trainMenu);
+                Navigator.pushNamed(context, AppRoutes.learnMenu);
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),
@@ -45,7 +45,7 @@ class MainMenuScreen extends StatelessWidget {
                 backgroundColor: AppColors.buttonColor,
               ),
               child: const Text(
-                'Train',
+                'Learn',
                 style: TextStyle(fontSize: 18),
               ),
             ),

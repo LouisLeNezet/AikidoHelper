@@ -10,11 +10,11 @@ import 'screens/exam/countdown_screen.dart';
 import 'screens/exam/evaluation_screen.dart';
 import 'screens/exam/exam_summary_screen.dart';
 
-// Train Section
-import 'screens/train/train_menu_screen.dart';
-import 'screens/train/technique_filter_screen.dart';
-import 'screens/train/technique_list_screen.dart';
-import 'screens/train/vocabulary_screen.dart';
+// Learn Section
+import 'screens/learn/learn_menu_screen.dart';
+import 'screens/learn/technique_filter_screen.dart';
+import 'screens/learn/technique_list_screen.dart';
+import 'screens/learn/vocabulary_screen.dart';
 
 // Progression Section
 import 'screens/progression/progression_list_screen.dart';
@@ -36,11 +36,11 @@ class AppRoutes {
   static const evaluation = '/exam/evaluation';
   static const examSummary = '/exam/summary';
 
-  // Train
-  static const trainMenu = '/train/menu';
-  static const techniqueFilter = '/train/technique-filter';
-  static const techniqueList = '/train/technique-list';
-  static const vocabulary = '/train/vocabulary';
+  // learn
+  static const learnMenu = '/learn/menu';
+  static const techniqueFilter = '/learn/technique-filter';
+  static const techniqueList = '/learn/technique-list';
+  static const vocabulary = '/learn/vocabulary';
 
   // Progression
   static const progressionList = '/progression/list';
@@ -76,8 +76,8 @@ final Map<String, WidgetBuilder> appRoutes = {
   },
   AppRoutes.examSummary: (context) => const ExamSummaryScreen(),
 
-  // Train
-  AppRoutes.trainMenu: (context) => const TrainMenuScreen(),
+  // Learn
+  AppRoutes.learnMenu: (context) => const LearnMenuScreen(),
   AppRoutes.techniqueFilter: (context) => const TechniqueFilterScreen(),
   AppRoutes.techniqueList: (context) => const TechniqueListScreen(),
   AppRoutes.vocabulary: (context) => const VocabularyScreen(),

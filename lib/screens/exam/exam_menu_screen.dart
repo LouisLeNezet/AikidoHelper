@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 import '../../routes.dart';
 import '../../widgets/drop_down_selection.dart';
+import '../../widgets/text_input.dart';
+import '../../functions/exam_json.dart';
 
 class ExamMenuScreen extends StatefulWidget {
   const ExamMenuScreen({super.key});
@@ -12,8 +14,24 @@ class ExamMenuScreen extends StatefulWidget {
 
 class _ExamMenuScreenState extends State<ExamMenuScreen> {
   String selectedGrade = '5 Kyu';
+  String examName = '';
+  String examNameDefault = '';
 
   final List<String> gradesList = ['5 Kyu', '4 Kyu', '3 Kyu', '2 Kyu', '1 Kyu', '1 Dan', '2 Dan'];
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Set default exam name to current date and time
+    examNameDefault = _getCurrentDateTime();
+  }
+
+  // Method to get current date and time in desired format
+  String _getCurrentDateTime() {
+    final now = DateTime.now();
+    return "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +45,28 @@ class _ExamMenuScreenState extends State<ExamMenuScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Welcome Text
             const Text(
               "Let's Start Your Exam",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: AppColors.textColor,
               ),
             ),
 
-            const SizedBox(height: 50),
+            const SizedBox(height: 20),
+
+            // Get exam name from user
+            TextInput(
+              onChanged: (value) {
+                examName = value;
+              },
+              hintText: "Enter Exam Name",
+              title: "Exam Name",
+              initialValue: examNameDefault,
+            ),
+
+            const SizedBox(height: 20),
 
             ValueSelectionWidget(
               selectedValue: selectedGrade,
@@ -52,11 +82,17 @@ class _ExamMenuScreenState extends State<ExamMenuScreen> {
 
             // Start Button
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                final examFile = await createExamJsonFile(
+                  grade: selectedGrade,
+                  examName: examName.isNotEmpty ? examName : examNameDefault,
+                ).timeout(const Duration(seconds: 5));
                 Navigator.pushNamed(
                   context,
                   AppRoutes.countdown,
-                  arguments: selectedGrade,  // Pass selected value to the countdown screen
+                  arguments: {
+                    'examFile': examFile,
+                  }
                 );
               },
               style: ElevatedButton.styleFrom(

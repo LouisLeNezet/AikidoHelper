@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 // Start & Main Menu
 import 'screens/start_menu/start_menu_screen.dart';
@@ -60,17 +61,24 @@ final Map<String, WidgetBuilder> appRoutes = {
   // Exam
   AppRoutes.examMenu: (context) => const ExamMenuScreen(),
   AppRoutes.countdown: (context) {
-    final selectedGrade = ModalRoute.of(context)?.settings.arguments as String? ?? '5';
+    final args = ModalRoute.of(context)?.settings.arguments as Map?;
+    if (args == null) {
+      return const Center(child: Text("Error: No arguments passed!"));
+    }
+    final examFile = args['examFile'] as File?;
+    if (examFile == null || !examFile.existsSync()) {
+      return const Center(child: Text("Error: Invalid exam file!"));
+    }
     return CountdownScreen(
-      selectedGrade: selectedGrade,
+      examFile: examFile,
     );
   },
   AppRoutes.evaluation: (context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
-    final selectedGrade = args['grade'] as String? ?? '5';
+    final examFile = args['examFile'] as File? ?? File('');
     final index = args['index'] as int? ?? 0;
     return EvaluationScreen(
-      grade: selectedGrade,
+      examFile: examFile,
       index: index,
     );
   },

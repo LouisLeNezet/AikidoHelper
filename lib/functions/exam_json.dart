@@ -1,27 +1,26 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-import '../../functions/get_technique.dart'; // Make sure you import correctly
+import './get_technique.dart';
+import './utils.dart';
 
 Future<File> createExamJsonFile({
   required String grade,
   required String examName,
+  Future<String> Function()? getAppVersionFn,
+  Future<List<List<String>>> Function({required String path, required String grade})? getOrderedTechniquesFn,
 }) async {
   try {
-    // Load pubspec.yaml to get the version
-    final pubspec = await rootBundle.loadString('pubspec.yaml');
-    final versionLine = pubspec.split('\n').firstWhere((line) => line.startsWith('version:'));
-    final appVersion = versionLine.split(':').last.trim();
+    final appVersion = await (getAppVersionFn?.call() ?? getAppVersion());
 
     final now = DateTime.now();
     final String date = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
     final String hour = "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
 
-    // Use your getAllTechniques function
-    final List<List<String>> techniques = await getAllTechniques(
-      path: 'assets/technique/technique.csv',
-      grade: grade,
+    // Use your getOrderedTechniques function
+    final techniques = await (
+      getOrderedTechniquesFn?.call(path: 'assets/technique/technique.csv', grade: grade) ?? 
+      getOrderedTechniques(path: 'assets/technique/technique.csv', grade: grade)
     );
 
     final List<Map<String, dynamic>> evaluationList = [];
@@ -81,7 +80,7 @@ Future<Map<String, dynamic>> getTechniqueByIndex({
     final List<dynamic> evaluationList = data['evaluation'];
 
     final technique = evaluationList.firstWhere(
-      (item) => item['order'] == index,
+      (item) => item['index'] == index,
       orElse: () => throw Exception('No technique found for index $index.'),
     );
 

@@ -2,6 +2,48 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
+Future<List<List<String>>> getAllTechniques({
+  required String path,
+  required String grade,
+}) async {
+  try {
+    // Load the CSV data
+    final csvData = await rootBundle.loadString(path);
+    final lines = LineSplitter.split(csvData).toList();
+
+    if (lines.isEmpty) {
+      throw Exception("The CSV file is empty.");
+    }
+
+    final rows = lines.map((line) => line.split('\t')).toList();
+
+    // Predefined grade order
+    const gradeOrder = ['5 Kyu', '4 Kyu', '3 Kyu', '2 Kyu', '1 Kyu', '1 Dan', '2 Dan'];
+
+    final gradeIndex = gradeOrder.indexOf(grade);
+    if (gradeIndex == -1) {
+      throw Exception("Invalid grade: $grade");
+    }
+
+    // Skip header row and filter rows
+    final filtered = rows.skip(1).where((row) {
+      if (row.length < 5) return false;
+      final rowGrade = row.last;
+      final rowGradeIndex = gradeOrder.indexOf(rowGrade);
+      return rowGradeIndex != -1 && rowGradeIndex <= gradeIndex;
+    }).toList();
+
+    if (filtered.isEmpty) {
+      throw Exception("No matching techniques for grade $grade");
+    }
+
+    return filtered;
+
+  } catch (e, stack) {
+    throw Exception("Failed to load technique: $e\n$stack");
+  }
+}
+
 Future<List<dynamic>?> getTechniqueNameFromCSV({
   required String path,
   required String grade,
@@ -15,38 +57,10 @@ Future<List<dynamic>?> getTechniqueNameFromCSV({
     final techniqueOrder = orders['Technique']!;
     final formOrder = orders['Form']!;
 
-    // Load the CSV data
-    final csvData = await rootBundle.loadString(path);
-    final lines = LineSplitter.split(csvData).toList();
-
-    if (lines.isEmpty) {
-      return ["No data in CSV", "", "", "", "", 0];
-    }
-
-    final rows = lines.map((line) => line.split('\t')).toList();
-
-    // Predefined grade order
-    const gradeOrder = ['5 Kyu', '4 Kyu', '3 Kyu', '2 Kyu', '1 Kyu', '1 Dan', '2 Dan'];
-
-    final gradeIndex = gradeOrder.indexOf(grade);
-    if (gradeIndex == -1) {
-      return ["Invalid grade: $grade", "", "", "", "", 0];
-    }
-
-    // Skip header row and filter rows
-    final filtered = rows.skip(1).where((row) {
-      if (row.length < 5) return false;
-      final rowGrade = row.last;
-      final rowGradeIndex = gradeOrder.indexOf(rowGrade);
-      return rowGradeIndex != -1 && rowGradeIndex <= gradeIndex;
-    }).toList();
-
-    if (filtered.isEmpty) {
-      return ["No matching techniques for grade $grade", "", "", "", "", 0];
-    }
+    final filtered = await getAllTechniques(path: path, grade: grade);
 
     if (index >= filtered.length) {
-      return ["Index out of range", "", "", "", "", filtered.length];
+      throw Exception("Index out of range");
     }
 
     // Sort by position (first column) in ascending order
@@ -74,16 +88,15 @@ Future<List<dynamic>?> getTechniqueNameFromCSV({
 
     // Return both the formatted technique name and the total number of filtered techniques
     return [
-      "$position",
-      "$attack",
-      "$technique",
-      form.isNotEmpty ? "$form" : "",
-      "$techniqueGrade",
+      position,
+      attack,
+      technique,
+      form.isNotEmpty ? form : "",
+      techniqueGrade,
       filtered.length,
     ];
   } catch (e, stack) {
-    print("Error reading technique from CSV: $e\n$stack");
-    return ["Failed to load technique", "", "", "", "", 0];
+    throw Exception("Failed to load technique: $e\n$stack");
   }
 }
 

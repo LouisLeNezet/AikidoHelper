@@ -97,7 +97,12 @@ class EvaluationScreen extends StatelessWidget {
                   child: FloatingActionButton.extended(
                     onPressed: () {
                       if (isLast) {
-                        Navigator.pushReplacementNamed(context, AppRoutes.examSummary);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.progressionDetail, arguments: {
+                            'examFile': examFile,
+                          }
+                        );
                       } else {
                         Navigator.pushReplacementNamed(
                           context,

@@ -9,7 +9,6 @@ import 'screens/main_menu/main_menu_screen.dart';
 import 'screens/exam/exam_menu_screen.dart';
 import 'screens/exam/countdown_screen.dart';
 import 'screens/exam/evaluation_screen.dart';
-import 'screens/exam/exam_summary_screen.dart';
 
 // Learn Section
 import 'screens/learn/learn_menu_screen.dart';
@@ -35,7 +34,6 @@ class AppRoutes {
   static const examMenu = '/exam/menu';
   static const countdown = '/exam/countdown';
   static const evaluation = '/exam/evaluation';
-  static const examSummary = '/exam/summary';
 
   // learn
   static const learnMenu = '/learn/menu';
@@ -82,8 +80,6 @@ final Map<String, WidgetBuilder> appRoutes = {
       index: index,
     );
   },
-  AppRoutes.examSummary: (context) => const ExamSummaryScreen(),
-
   // Learn
   AppRoutes.learnMenu: (context) => const LearnMenuScreen(),
   AppRoutes.techniqueFilter: (context) => const TechniqueFilterScreen(),
@@ -92,7 +88,11 @@ final Map<String, WidgetBuilder> appRoutes = {
 
   // Progression
   AppRoutes.progressionList: (context) => const ProgressionListScreen(),
-  AppRoutes.progressionDetail: (context) => const ProgressionDetailScreen(),
+  AppRoutes.progressionDetail: (context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    final examFile = args['examFile'] as File;
+    return ProgressionDetailScreen(examFile: examFile);
+  },
 
   // Config
   AppRoutes.config: (context) => const ConfigScreen(),

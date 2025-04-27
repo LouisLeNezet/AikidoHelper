@@ -31,7 +31,7 @@ class EvaluationScreen extends StatelessWidget {
           }
 
           final maxIndex = snapshot.data!['size'] as int;
-          final isLast = index + 1 == maxIndex;
+          final isLast = index == maxIndex;
 
           final techniqueData = snapshot.data!['technique'] as Map<String, dynamic>;
           final position = techniqueData['position'] as String;

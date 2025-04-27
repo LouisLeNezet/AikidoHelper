@@ -36,7 +36,7 @@ void main() {
       const fakeVersion = '1.0.0';
 
       // Act
-      final file = await createExamJsonFile(
+      final fileName = await createExamJsonFile(
         grade: fakeGrade,
         examName: fakeExamName,
         getAppVersionFn: () async => fakeVersion,
@@ -47,8 +47,7 @@ void main() {
       );
 
       // Assert
-      final content = await file.readAsString();
-      final decoded = jsonDecode(content);
+      final decoded = await getExamJsonData(fileName: fileName);
 
       expect(decoded['metadata']['grade'], fakeGrade);
       expect(decoded['metadata']['examName'], fakeExamName);
@@ -60,7 +59,7 @@ void main() {
       expect(decoded['evaluation'][0]['position'], 'Position1');
       expect(decoded['evaluation'][1]['position'], 'Position2');
 
-      expect(file.path.endsWith('My_Exam.json'), isTrue);
+      expect(fileName.endsWith('_My_Exam'), isTrue);
     });
   });
 }

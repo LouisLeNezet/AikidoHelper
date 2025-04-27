@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:shared_preferences/shared_preferences.dart';
 import './get_technique.dart';
 import './utils.dart';
 
-Future<File> createExamJsonFile({
+Future<String> createExamJsonFile({
   required String grade,
   required String examName,
   Future<String> Function()? getAppVersionFn,
@@ -53,27 +55,70 @@ Future<File> createExamJsonFile({
     };
 
     // Save JSON to file
-    final Directory appDocDir = await getApplicationDocumentsDirectory();
     final String safeExamName = examName.replaceAll(' ', '_'); // Avoid spaces in filenames
     final String dateTimePrefix = date.replaceAll('-', '_') + '_' + hour.replaceAll(':', '_'); 
-    final String safeFileName = '${dateTimePrefix}_${safeExamName}.json';
-    final String filePath = '${appDocDir.path}/$safeFileName.json';
-    final File file = File(filePath);
+    final String safeFileName = 'exam_${dateTimePrefix}_$safeExamName';
 
-    await file.writeAsString(jsonEncode(examJson), flush: true);
-    return file;
+    if (kIsWeb) {
+      // WEB: Save to local storage
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(safeFileName, jsonEncode(examJson));
+      return safeFileName; // Return a dummy file reference
+    } else {
+      // MOBILE: Save to file
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final String filePath = '${appDocDir.path}/$safeFileName.json';
+      final File file = File(filePath);
+
+      await file.writeAsString(jsonEncode(examJson), flush: true);
+      return safeFileName;
+    }
   } catch (e, stack) {
     throw Exception("Failed to create exam JSON: $e\n$stack");
   }
 }
 
+Future <Map<String, dynamic>> getExamJsonData({
+  required String fileName,
+}) async {
+  try {
+    late String content;
+    if (kIsWeb) {
+      // WEB: Load from local storage
+      final prefs = await SharedPreferences.getInstance();
+      content = prefs.getString(fileName) ?? '';
+      if (content.isEmpty) {
+        throw Exception('Exam file not found in local storage.');
+      }
+    } else {
+      // MOBILE: Load from file
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final String filePath = '${appDocDir.path}/$fileName.json';
+      final File jsonFile = File(filePath);
+      if (!jsonFile.existsSync()) {
+        throw Exception('Exam file not found at $filePath.');
+      }
+      content = await jsonFile.readAsString();
+    }
+
+    final Map<String, dynamic> data = jsonDecode(content);
+
+    if (data case {'metadata': Map<String, dynamic> _, 'evaluation': List _}) {
+      return data;
+    } else {
+      throw Exception('Invalid exam file: missing required fields.');
+    }
+  } catch (e, stack) {
+    throw Exception('Failed to get exam JSON data: $e\n$stack');
+  }
+}
+
 Future<Map<String, dynamic>> getTechniqueByIndex({
-  required File jsonFile,
+  required String fileName,
   required int index,
 }) async {
   try {
-    final String content = await jsonFile.readAsString();
-    final Map<String, dynamic> data = jsonDecode(content);
+    final Map<String, dynamic> data = await getExamJsonData(fileName: fileName);
 
     if (!data.containsKey('evaluation') || data['evaluation'] is! List) {
       throw Exception('Invalid exam file: missing or bad "evaluation" section.');
@@ -93,10 +138,9 @@ Future<Map<String, dynamic>> getTechniqueByIndex({
 }
 
 
-Future<Map<String, dynamic>> getExamMetaData({required File jsonFile}) async {
+Future<Map<String, dynamic>> getExamMetaData({required String fileName}) async {
   try {
-    final String content = await jsonFile.readAsString();
-    final Map<String, dynamic> data = jsonDecode(content);
+    final Map<String, dynamic> data = await getExamJsonData(fileName: fileName);
 
     if (data.containsKey('metadata') && data['metadata'] is Map<String, dynamic>) {
       final metadata = data['metadata'] as Map<String, dynamic>;
@@ -110,11 +154,11 @@ Future<Map<String, dynamic>> getExamMetaData({required File jsonFile}) async {
 }
 
 Future<T> getExamMetadataKey<T>({
-  required File jsonFile,
+  required String fileName,
   required String key
 }) async {
   try {
-    final metadata = await getExamMetaData(jsonFile: jsonFile);
+    final metadata = await getExamMetaData(fileName: fileName);
 
     if (!metadata.containsKey(key)) {
       throw Exception('Metadata does not contain key "$key".');
@@ -132,12 +176,12 @@ Future<T> getExamMetadataKey<T>({
 }
 
 Future<Map<String, dynamic>> getTechniqueAndExamSize({
-  required File jsonFile,
+  required String fileName,
   required int index,
 }) async {
   try {
-    final technique = await getTechniqueByIndex(jsonFile: jsonFile, index: index);
-    final size = await getExamMetadataKey<int>(jsonFile: jsonFile, key: 'size');
+    final technique = await getTechniqueByIndex(fileName: fileName, index: index);
+    final size = await getExamMetadataKey<int>(fileName: fileName, key: 'size');
 
     return {
       'technique': technique,

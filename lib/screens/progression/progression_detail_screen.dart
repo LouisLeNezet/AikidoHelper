@@ -1,14 +1,14 @@
+import 'package:aikido_helper/functions/exam_json.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import '../../routes.dart';
 import '../../constants/colors.dart';
 import 'dart:convert';
 
 class ProgressionDetailScreen extends StatefulWidget {
-  final File examFile;
+  final String fileName;
 
   const ProgressionDetailScreen({
-    required this.examFile,
+    required this.fileName,
     Key? key
   }) : super(key: key);
 
@@ -22,13 +22,7 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _examData = _loadExamData();
-  }
-
-  Future<Map<String, dynamic>> _loadExamData() async {
-    final String content = await widget.examFile.readAsString();
-    final Map<String, dynamic> data = jsonDecode(content);
-    return data;
+    _examData = getExamJsonData(fileName: widget.fileName);
   }
 
   @override

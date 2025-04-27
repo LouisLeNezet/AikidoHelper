@@ -4,12 +4,12 @@ import 'package:aikido_helper/functions/exam_json.dart';
 import 'dart:io';
 
 class EvaluationScreen extends StatelessWidget {
-  final File examFile;
+  final String fileName;
   final int index;
 
   const EvaluationScreen({
     super.key,
-    required this.examFile,
+    required this.fileName,
     required this.index,
   });
 
@@ -18,7 +18,7 @@ class EvaluationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Evaluate Technique")),
       body: FutureBuilder<Map<String, dynamic>?>(
-        future: getTechniqueSafe(examFile, index),
+        future: getTechniqueSafe(fileName, index),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -100,7 +100,7 @@ class EvaluationScreen extends StatelessWidget {
                         Navigator.pushNamed(
                           context,
                           AppRoutes.progressionDetail, arguments: {
-                            'examFile': examFile,
+                            'fileName': fileName,
                           }
                         );
                       } else {
@@ -108,7 +108,7 @@ class EvaluationScreen extends StatelessWidget {
                           context,
                           AppRoutes.evaluation,
                           arguments: {
-                            'examFile': examFile,
+                            'fileName': fileName,
                             'index': index + 1,
                           },
                         );
@@ -126,9 +126,9 @@ class EvaluationScreen extends StatelessWidget {
     );
   }
 
-  Future<Map<String, dynamic>?> getTechniqueSafe(File examFile, int index) async {
+  Future<Map<String, dynamic>?> getTechniqueSafe(String fileName, int index) async {
     final result = await getTechniqueAndExamSize(
-      jsonFile: examFile,
+      fileName: fileName,
       index: index,
     ).timeout(const Duration(seconds: 5));
     return result;

@@ -27,6 +27,10 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      # Run Flutter tests
+      - name: Run Flutter Tests
+        run: flutter test --test-randomize-ordering-seed=random
+
       # Build the Flutter web app
       - name: Build Flutter Web App
         run: flutter build web --release --base-href="/AikidoHelper/" # Builds the web app for release

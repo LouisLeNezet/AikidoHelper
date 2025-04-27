@@ -63,20 +63,20 @@ final Map<String, WidgetBuilder> appRoutes = {
     if (args == null) {
       return const Center(child: Text("Error: No arguments passed!"));
     }
-    final examFile = args['examFile'] as File?;
-    if (examFile == null || !examFile.existsSync()) {
+    final fileName = args['fileName'] as String?;
+    if (fileName == null || fileName.isEmpty) {
       return const Center(child: Text("Error: Invalid exam file!"));
     }
     return CountdownScreen(
-      examFile: examFile,
+      fileName: fileName,
     );
   },
   AppRoutes.evaluation: (context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
-    final examFile = args['examFile'] as File? ?? File('');
+    final fileName = args['fileName'] as String? ?? '';
     final index = args['index'] as int? ?? 0;
     return EvaluationScreen(
-      examFile: examFile,
+      fileName: fileName,
       index: index,
     );
   },
@@ -90,8 +90,8 @@ final Map<String, WidgetBuilder> appRoutes = {
   AppRoutes.progressionList: (context) => const ProgressionListScreen(),
   AppRoutes.progressionDetail: (context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
-    final examFile = args['examFile'] as File;
-    return ProgressionDetailScreen(examFile: examFile);
+    final fileName = args['fileName'] as String? ?? '';
+    return ProgressionDetailScreen(fileName: fileName);
   },
 
   // Config

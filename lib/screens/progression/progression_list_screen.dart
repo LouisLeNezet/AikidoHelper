@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../constants/colors.dart';
 import '../../functions/exam_json.dart';
+import 'package:flutter/foundation.dart';  // For kIsWeb check
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProgressionListScreen extends StatefulWidget {
   const ProgressionListScreen({super.key});
@@ -13,7 +15,7 @@ class ProgressionListScreen extends StatefulWidget {
 }
 
 class _ProgressionListScreenState extends State<ProgressionListScreen> {
-  late Future<List<FileSystemEntity>> _examFilesFuture;
+  late Future<List<String>> _examFilesFuture;
 
   @override
   void initState() {
@@ -21,20 +23,39 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
     _examFilesFuture = _loadExamFiles();
   }
 
-  Future<List<FileSystemEntity>> _loadExamFiles() async {
-    final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final List<FileSystemEntity> files = appDocDir.listSync();
+  Future<List<String>> _loadExamFiles() async {
+    if (kIsWeb) {
+      // On the Web: Load from SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      final keys = prefs.getKeys();
 
-    // Filter only .json files
-    final examFiles = files.where((file) => file.path.endsWith('.json')).toList();
-    return examFiles;
+      print("Stored keys in SharedPreferences: $keys");
+
+      // Filter keys to find those representing exam JSON files
+      final examFiles = keys.where((key) => key.startsWith('exam_')).toList();
+      return examFiles;
+    } else {
+      // On Mobile: Load from the filesystem
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final List<FileSystemEntity> files = appDocDir.listSync();
+
+      print("Files in appDocDir: $files");
+
+      // Filter only .json files
+      final examFiles = files
+          .where((file) => file.path.endsWith('.json') && file.path.split('/').last.startsWith('exam_'))
+            .map((file) => file.path.split('/').last.replaceAll('.json', ''))
+          .toList();
+      print("Filtered exam files: $examFiles");
+      return examFiles;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Progression List')),
-      body: FutureBuilder<List<FileSystemEntity>>(
+      body: FutureBuilder<List<String>>(
         future: _examFilesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -50,14 +71,14 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
           return ListView.builder(
             itemCount: examFiles.length,
             itemBuilder: (context, index) {
-              final file = examFiles[index] as File;
+              final fileName = examFiles[index];
 
               return FutureBuilder<Map<String, String>>(
                 future: Future.wait([
-                  getExamMetadataKey<String>(jsonFile: file, key: 'examName'),
-                  getExamMetadataKey<String>(jsonFile: file, key: 'date'),
-                  getExamMetadataKey<String>(jsonFile: file, key: 'hour'),
-                  getExamMetadataKey<String>(jsonFile: file, key: 'grade'),
+                  getExamMetadataKey<String>(fileName: fileName, key: 'examName'),
+                  getExamMetadataKey<String>(fileName: fileName, key: 'date'),
+                  getExamMetadataKey<String>(fileName: fileName, key: 'hour'),
+                  getExamMetadataKey<String>(fileName: fileName, key: 'grade'),
                 ]).then((values) => {
                       'examName': values[0],
                       'date': values[1],
@@ -95,7 +116,7 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
                         Navigator.pushNamed(
                           context,
                           AppRoutes.progressionDetail,
-                          arguments: {'examFile': file},
+                          arguments: {'fileName': fileName},
                         );
                       },
                       trailing: IconButton(
@@ -120,10 +141,25 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
                           );
 
                           if (confirm == true) {
-                            await file.delete();
-                            setState(() {
-                              _examFilesFuture = _loadExamFiles(); // 🔥 RELOAD the list after deletion
-                            });
+                            if (kIsWeb) {
+                              // Web: Remove from SharedPreferences (local storage)
+                              final prefs = await SharedPreferences.getInstance();
+                              await prefs.remove(fileName);
+                              setState(() {
+                                _examFilesFuture = _loadExamFiles();
+                              });
+                            } else {
+                              // Mobile: Delete file from filesystem
+                              final Directory appDocDir = await getApplicationDocumentsDirectory();
+                              final String filePath = '${appDocDir.path}/$fileName.json';
+                              final File fileToDelete = File(filePath);
+                              if (await fileToDelete.exists()) {
+                                await fileToDelete.delete();
+                                setState(() {
+                                  _examFilesFuture = _loadExamFiles();  // Refresh the file list
+                                });
+                              }
+                            }
                           }
                         },
                       ),

@@ -74,7 +74,7 @@ class _ExamMenuScreenState extends State<ExamMenuScreen> {
             // Start Button
             ElevatedButton(
               onPressed: () async {
-                final examFile = await createExamJsonFile(
+                final fileName = await createExamJsonFile(
                   grade: selectedGrade,
                   examName: examName.isNotEmpty ? examName : examNameDefault,
                 ).timeout(const Duration(seconds: 5));
@@ -82,7 +82,7 @@ class _ExamMenuScreenState extends State<ExamMenuScreen> {
                   context,
                   AppRoutes.countdown,
                   arguments: {
-                    'examFile': examFile,
+                    'fileName': fileName,
                   }
                 );
               },

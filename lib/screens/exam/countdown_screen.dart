@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../widgets/countdown_timer.dart';
 import '../../routes.dart';
-import 'dart:io';
 
 class CountdownScreen extends StatelessWidget {
-  final File examFile;
+  final String fileName;
 
   const CountdownScreen({
     super.key,
-    required this.examFile,
+    required this.fileName,
   }); // Update constructor
 
   @override
@@ -32,7 +31,7 @@ class CountdownScreen extends StatelessWidget {
                 context,
                 AppRoutes.evaluation,
                 arguments: {
-                  'examFile': examFile,
+                  'fileName': fileName,
                   'index': 1,
                 },
               );

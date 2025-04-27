@@ -24,7 +24,7 @@ class StartMenuScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // App Logo
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: Image.asset(
                   'assets/images/logo.jpg', // Correct asset path

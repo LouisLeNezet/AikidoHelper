@@ -8,7 +8,6 @@ import 'screens/main_menu/main_menu_screen.dart';
 import 'screens/exam/exam_menu_screen.dart';
 import 'screens/exam/countdown_screen.dart';
 import 'screens/exam/evaluation_screen.dart';
-import 'screens/exam/exam_summary_screen.dart';
 
 // Learn Section
 import 'screens/learn/learn_menu_screen.dart';
@@ -34,7 +33,6 @@ class AppRoutes {
   static const examMenu = '/exam/menu';
   static const countdown = '/exam/countdown';
   static const evaluation = '/exam/evaluation';
-  static const examSummary = '/exam/summary';
 
   // learn
   static const learnMenu = '/learn/menu';
@@ -60,22 +58,27 @@ final Map<String, WidgetBuilder> appRoutes = {
   // Exam
   AppRoutes.examMenu: (context) => const ExamMenuScreen(),
   AppRoutes.countdown: (context) {
-    final selectedGrade = ModalRoute.of(context)?.settings.arguments as String? ?? '5';
+    final args = ModalRoute.of(context)?.settings.arguments as Map?;
+    if (args == null) {
+      return const Center(child: Text("Error: No arguments passed!"));
+    }
+    final fileName = args['fileName'] as String?;
+    if (fileName == null || fileName.isEmpty) {
+      return const Center(child: Text("Error: Invalid exam file!"));
+    }
     return CountdownScreen(
-      selectedGrade: selectedGrade,
+      fileName: fileName,
     );
   },
   AppRoutes.evaluation: (context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
-    final selectedGrade = args['grade'] as String? ?? '5';
+    final fileName = args['fileName'] as String? ?? '';
     final index = args['index'] as int? ?? 0;
     return EvaluationScreen(
-      grade: selectedGrade,
+      fileName: fileName,
       index: index,
     );
   },
-  AppRoutes.examSummary: (context) => const ExamSummaryScreen(),
-
   // Learn
   AppRoutes.learnMenu: (context) => const LearnMenuScreen(),
   AppRoutes.techniqueFilter: (context) => const TechniqueFilterScreen(),
@@ -84,7 +87,11 @@ final Map<String, WidgetBuilder> appRoutes = {
 
   // Progression
   AppRoutes.progressionList: (context) => const ProgressionListScreen(),
-  AppRoutes.progressionDetail: (context) => const ProgressionDetailScreen(),
+  AppRoutes.progressionDetail: (context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    final fileName = args['fileName'] as String? ?? '';
+    return ProgressionDetailScreen(fileName: fileName);
+  },
 
   // Config
   AppRoutes.config: (context) => const ConfigScreen(),

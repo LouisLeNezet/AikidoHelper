@@ -3,16 +3,15 @@ import '../../widgets/countdown_timer.dart';
 import '../../routes.dart';
 
 class CountdownScreen extends StatelessWidget {
-  final String selectedGrade;
+  final String fileName;
 
   const CountdownScreen({
     super.key,
-    required this.selectedGrade,
+    required this.fileName,
   }); // Update constructor
 
   @override
   Widget build(BuildContext context) {
-    final grade = selectedGrade.isNotEmpty ? selectedGrade : '5';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Countdown'),
@@ -32,15 +31,11 @@ class CountdownScreen extends StatelessWidget {
                 context,
                 AppRoutes.evaluation,
                 arguments: {
-                  'grade': grade,
-                  'index': 0,
+                  'fileName': fileName,
+                  'index': 1,
                 },
               );
             },
-          ),
-          const SizedBox(height: 32),
-          Center(
-            child: Text('Selected grade: $selectedGrade'),
           ),
         ],
       ),

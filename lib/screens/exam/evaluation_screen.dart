@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../routes.dart';
-import 'package:aikido_helper/functions/get_technique.dart';
+import 'package:aikido_helper/functions/exam_json.dart';
 
 class EvaluationScreen extends StatelessWidget {
-  final String grade;
+  final String fileName;
   final int index;
 
   const EvaluationScreen({
     super.key,
-    required this.grade,
+    required this.fileName,
     required this.index,
   });
 
@@ -16,8 +16,8 @@ class EvaluationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Evaluate Technique")),
-      body: FutureBuilder<List<dynamic>?>(
-        future: getTechniqueSafe(grade, index),
+      body: FutureBuilder<Map<String, dynamic>?>(
+        future: getTechniqueSafe(fileName, index),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -29,14 +29,15 @@ class EvaluationScreen extends StatelessWidget {
             );
           }
 
-          final listTechnique = snapshot.data!;
-          final position = listTechnique[0] as String;
-          final attack = listTechnique[1] as String;
-          final technique = listTechnique[2] as String;
-          final form = listTechnique[3] as String;
-          final techniqueGrade = listTechnique[4] as String;
-          final maxIndex = listTechnique[5] as int;
-          final isLast = index + 1 >= maxIndex;
+          final maxIndex = snapshot.data!['size'] as int;
+          final isLast = index == maxIndex;
+
+          final techniqueData = snapshot.data!['technique'] as Map<String, dynamic>;
+          final position = techniqueData['position'] as String;
+          final attack = techniqueData['attack'] as String;
+          final technique = techniqueData['technique'] as String;
+          final form = techniqueData['form'] as String? ?? '';
+          final techniqueGrade = techniqueData['techniqueGrade'] as String;
 
           return Stack(
             children: [
@@ -78,7 +79,7 @@ class EvaluationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          "Technique: ${index + 1} / $maxIndex",
+                          "Technique: $index / $maxIndex",
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
@@ -95,13 +96,18 @@ class EvaluationScreen extends StatelessWidget {
                   child: FloatingActionButton.extended(
                     onPressed: () {
                       if (isLast) {
-                        Navigator.pushReplacementNamed(context, AppRoutes.examSummary);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.progressionDetail, arguments: {
+                            'fileName': fileName,
+                          }
+                        );
                       } else {
                         Navigator.pushReplacementNamed(
                           context,
                           AppRoutes.evaluation,
                           arguments: {
-                            'grade': grade,
+                            'fileName': fileName,
                             'index': index + 1,
                           },
                         );
@@ -119,12 +125,11 @@ class EvaluationScreen extends StatelessWidget {
     );
   }
 
-  Future<List<dynamic>?> getTechniqueSafe(String grade, int index) async {
-    final result = await getTechniqueNameFromCSV(
-      path: 'assets/technique/technique.csv',
-      grade: grade,
+  Future<Map<String, dynamic>?> getTechniqueSafe(String fileName, int index) async {
+    final result = await getTechniqueAndExamSize(
+      fileName: fileName,
       index: index,
-    );
+    ).timeout(const Duration(seconds: 5));
     return result;
   }
 }

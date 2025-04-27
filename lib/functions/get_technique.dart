@@ -2,25 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
-Future<List<dynamic>?> getTechniqueNameFromCSV({
+Future<List<List<String>>> getAllTechniques({
   required String path,
   required String grade,
-  required int index,
+  AssetBundle? bundle,
 }) async {
+  final effectiveBundle = bundle ?? rootBundle;
   try {
-    // Read technique order from CSV
-    final orders = await loadOrderingFromCSV('assets/technique/technique_ordering.csv');
-    final attackOrder = orders['Attack']!;
-    final positionOrder = orders['Position']!;
-    final techniqueOrder = orders['Technique']!;
-    final formOrder = orders['Form']!;
-
     // Load the CSV data
-    final csvData = await rootBundle.loadString(path);
+    final csvData = await effectiveBundle.loadString(path);
     final lines = LineSplitter.split(csvData).toList();
 
     if (lines.isEmpty) {
-      return ["No data in CSV", "", "", "", "", 0];
+      throw Exception("The CSV file is empty.");
     }
 
     final rows = lines.map((line) => line.split('\t')).toList();
@@ -30,7 +24,7 @@ Future<List<dynamic>?> getTechniqueNameFromCSV({
 
     final gradeIndex = gradeOrder.indexOf(grade);
     if (gradeIndex == -1) {
-      return ["Invalid grade: $grade", "", "", "", "", 0];
+      throw Exception("Invalid grade: $grade");
     }
 
     // Skip header row and filter rows
@@ -42,48 +36,13 @@ Future<List<dynamic>?> getTechniqueNameFromCSV({
     }).toList();
 
     if (filtered.isEmpty) {
-      return ["No matching techniques for grade $grade", "", "", "", "", 0];
+      throw Exception("No matching techniques for grade $grade");
     }
 
-    if (index >= filtered.length) {
-      return ["Index out of range", "", "", "", "", filtered.length];
-    }
+    return filtered;
 
-    // Sort by position (first column) in ascending order
-    filtered.sort((a, b) {
-      final cmpPosition = orderCompare(a[0], b[0], positionOrder);
-      if (cmpPosition != 0) return cmpPosition;
-
-      final cmpAttack = orderCompare(a[1], b[1], attackOrder);
-      if (cmpAttack != 0) return cmpAttack;
-
-      final cmpTechnique = orderCompare(a[2], b[2], techniqueOrder);
-      if (cmpTechnique != 0) return cmpTechnique;
-
-      final formA = a.length > 3 ? a[3] : '';
-      final formB = b.length > 3 ? b[3] : '';
-      return orderCompare(formA, formB, formOrder);
-    });
-
-    final row = filtered[index];
-    final position = row[0];
-    final attack = row[1];
-    final technique = row[2];
-    final form = row[3];
-    final techniqueGrade = row[4];
-
-    // Return both the formatted technique name and the total number of filtered techniques
-    return [
-      "$position",
-      "$attack",
-      "$technique",
-      form.isNotEmpty ? "$form" : "",
-      "$techniqueGrade",
-      filtered.length,
-    ];
   } catch (e, stack) {
-    print("Error reading technique from CSV: $e\n$stack");
-    return ["Failed to load technique", "", "", "", "", 0];
+    throw Exception("Failed to load technique: $e\n$stack");
   }
 }
 
@@ -112,9 +71,38 @@ Future<Map<String, Map<String, int>>> loadOrderingFromCSV(String orderCsvPath) a
   return orders;
 }
 
-
-// Helper for ordering by predefined lists
 int orderCompare(String a, String b, Map<String, int> orderMap) {
   return (orderMap[a.toLowerCase()] ?? 999)
       .compareTo(orderMap[b.toLowerCase()] ?? 999);
+}
+
+Future<List<List<String>>> getOrderedTechniques({
+  required String path,
+  required String grade,
+}) async {
+  final orders = await loadOrderingFromCSV('assets/technique/technique_ordering.csv');
+  final attackOrder = orders['Attack']!;
+  final positionOrder = orders['Position']!;
+  final techniqueOrder = orders['Technique']!;
+  final formOrder = orders['Form']!;
+
+  final filtered = await getAllTechniques(path: path, grade: grade);
+
+  // Sort by position (first column) in ascending order
+  filtered.sort((a, b) {
+    final cmpPosition = orderCompare(a[0], b[0], positionOrder);
+    if (cmpPosition != 0) return cmpPosition;
+
+    final cmpAttack = orderCompare(a[1], b[1], attackOrder);
+    if (cmpAttack != 0) return cmpAttack;
+
+    final cmpTechnique = orderCompare(a[2], b[2], techniqueOrder);
+    if (cmpTechnique != 0) return cmpTechnique;
+
+    final formA = a.length > 3 ? a[3] : '';
+    final formB = b.length > 3 ? b[3] : '';
+    return orderCompare(formA, formB, formOrder);
+  });
+
+  return filtered;
 }

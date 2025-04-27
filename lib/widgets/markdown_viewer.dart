@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:logger/logger.dart';
 
 class MarkdownViewer extends StatelessWidget {
   final String assetPath;
@@ -23,6 +24,17 @@ class MarkdownViewer extends StatelessWidget {
     }
   }
 
+  // Handle hyperlink taps
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      final logger = Logger();
+      logger.e('Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
@@ -37,14 +49,7 @@ class MarkdownViewer extends StatelessWidget {
             data: snapshot.data!,
             onTapLink: (text, href, title) async {
               if (href != null) {
-                final uri = Uri.parse(href);
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri, mode: LaunchMode.externalApplication);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Could not launch $href')),
-                  );
-                }
+                await _launchUrl(href);
               }
             },
             imageBuilder: (uri, title, alt) {

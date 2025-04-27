@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../routes.dart';
 import 'package:aikido_helper/functions/exam_json.dart';
-import 'dart:io';
 
 class EvaluationScreen extends StatelessWidget {
   final String fileName;

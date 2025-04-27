@@ -2,15 +2,14 @@ import 'package:aikido_helper/functions/exam_json.dart';
 import 'package:flutter/material.dart';
 import '../../routes.dart';
 import '../../constants/colors.dart';
-import 'dart:convert';
 
 class ProgressionDetailScreen extends StatefulWidget {
   final String fileName;
 
   const ProgressionDetailScreen({
     required this.fileName,
-    Key? key
-  }) : super(key: key);
+    super.key
+  });
 
   @override
   State<ProgressionDetailScreen> createState() => _ProgressionDetailScreenState();

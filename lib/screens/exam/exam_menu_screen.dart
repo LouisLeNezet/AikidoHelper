@@ -9,10 +9,11 @@ class ExamMenuScreen extends StatefulWidget {
   const ExamMenuScreen({super.key});
 
   @override
-  _ExamMenuScreenState createState() => _ExamMenuScreenState();
+  ExamMenuScreenState createState() => ExamMenuScreenState();
 }
 
-class _ExamMenuScreenState extends State<ExamMenuScreen> {
+
+class ExamMenuScreenState extends State<ExamMenuScreen> {
   String selectedGrade = '5 Kyu';
   String examName = '';
   String examNameDefault = 'My Exam';
@@ -73,18 +74,8 @@ class _ExamMenuScreenState extends State<ExamMenuScreen> {
 
             // Start Button
             ElevatedButton(
-              onPressed: () async {
-                final fileName = await createExamJsonFile(
-                  grade: selectedGrade,
-                  examName: examName.isNotEmpty ? examName : examNameDefault,
-                ).timeout(const Duration(seconds: 5));
-                Navigator.pushNamed(
-                  context,
-                  AppRoutes.countdown,
-                  arguments: {
-                    'fileName': fileName,
-                  }
-                );
+              onPressed: () {
+                _handleCreateExam();
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50), // Full width
@@ -103,6 +94,22 @@ class _ExamMenuScreenState extends State<ExamMenuScreen> {
           ],
         ),
       ),
+    );
+  }
+  Future<void> _handleCreateExam() async {
+    final fileName = await createExamJsonFile(
+      grade: selectedGrade,
+      examName: examName.isNotEmpty ? examName : examNameDefault,
+    ).timeout(const Duration(seconds: 5));
+
+    if (!mounted) return;
+
+    Navigator.pushNamed(
+      context,
+      AppRoutes.countdown,
+      arguments: {
+        'fileName': fileName,
+      }
     );
   }
 }

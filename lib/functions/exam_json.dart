@@ -56,7 +56,7 @@ Future<String> createExamJsonFile({
 
     // Save JSON to file
     final String safeExamName = examName.replaceAll(' ', '_'); // Avoid spaces in filenames
-    final String dateTimePrefix = date.replaceAll('-', '_') + '_' + hour.replaceAll(':', '_'); 
+    final String dateTimePrefix = '${date.replaceAll('-', '_')}_${hour.replaceAll(':', '_')}';
     final String safeFileName = 'exam_${dateTimePrefix}_$safeExamName';
 
     if (kIsWeb) {

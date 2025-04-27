@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../constants/colors.dart';
 import '../../functions/exam_json.dart';
-import 'package:flutter/foundation.dart';  // For kIsWeb check
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logger/logger.dart';
 
 class ProgressionListScreen extends StatefulWidget {
   const ProgressionListScreen({super.key});
@@ -16,6 +17,8 @@ class ProgressionListScreen extends StatefulWidget {
 
 class _ProgressionListScreenState extends State<ProgressionListScreen> {
   late Future<List<String>> _examFilesFuture;
+
+  final logger = Logger();
 
   @override
   void initState() {
@@ -29,7 +32,7 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
       final prefs = await SharedPreferences.getInstance();
       final keys = prefs.getKeys();
 
-      print("Stored keys in SharedPreferences: $keys");
+      logger.d('Stored keys in SharedPreferences: $keys');
 
       // Filter keys to find those representing exam JSON files
       final examFiles = keys.where((key) => key.startsWith('exam_')).toList();
@@ -39,14 +42,14 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
       final Directory appDocDir = await getApplicationDocumentsDirectory();
       final List<FileSystemEntity> files = appDocDir.listSync();
 
-      print("Files in appDocDir: $files");
+      logger.d("Files in appDocDir: $files");
 
       // Filter only .json files
       final examFiles = files
           .where((file) => file.path.endsWith('.json') && file.path.split('/').last.startsWith('exam_'))
             .map((file) => file.path.split('/').last.replaceAll('.json', ''))
           .toList();
-      print("Filtered exam files: $examFiles");
+      logger.d("Filtered exam files: $examFiles");
       return examFiles;
     }
   }

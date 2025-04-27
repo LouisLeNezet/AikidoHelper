@@ -16,6 +16,7 @@ dependencies:
   url_launcher: ^6.2.5
   path_provider: ^2.0.12
   shared_preferences: ^2.2.2
+  logger: ^2.0.2+1
 
 dev_dependencies:
   test: ^1.25.0

@@ -34,6 +34,7 @@ class TextInput extends StatelessWidget {
             hintText: hintText,
             border: const OutlineInputBorder(),
           ),
+          textDirection: TextDirection.ltr,
         ),
       ],
     );

@@ -4,6 +4,7 @@ import '../../routes.dart';
 import '../../widgets/drop_down_selection.dart';
 import '../../widgets/text_input.dart';
 import '../../functions/exam_json.dart';
+import '../../functions/config_service.dart';
 
 class ExamMenuScreen extends StatefulWidget {
   const ExamMenuScreen({super.key});
@@ -16,13 +17,22 @@ class ExamMenuScreen extends StatefulWidget {
 class ExamMenuScreenState extends State<ExamMenuScreen> {
   String selectedGrade = '5 Kyu';
   String examName = '';
-  String examNameDefault = 'My Exam';
+  String examNameDefault = 'Loading...';
 
   final List<String> gradesList = ['5 Kyu', '4 Kyu', '3 Kyu', '2 Kyu', '1 Kyu', '1 Dan', '2 Dan'];
 
   @override
   void initState() {
     super.initState();
+    _loadConfig();
+  }
+
+  Future<void> _loadConfig() async {
+    await ConfigService.loadConfig();
+    setState(() {
+      examNameDefault = ConfigService.getConfig('examDefaultName') ?? 'My Exam';  // Use the value from config or fallback to default
+      examName = examNameDefault;  // Set examName to the default value
+    });
   }
 
   @override

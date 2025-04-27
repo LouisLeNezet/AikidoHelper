@@ -15,22 +15,13 @@ class ExamMenuScreen extends StatefulWidget {
 class _ExamMenuScreenState extends State<ExamMenuScreen> {
   String selectedGrade = '5 Kyu';
   String examName = '';
-  String examNameDefault = '';
+  String examNameDefault = 'My Exam';
 
   final List<String> gradesList = ['5 Kyu', '4 Kyu', '3 Kyu', '2 Kyu', '1 Kyu', '1 Dan', '2 Dan'];
 
   @override
   void initState() {
     super.initState();
-
-    // Set default exam name to current date and time
-    examNameDefault = _getCurrentDateTime();
-  }
-
-  // Method to get current date and time in desired format
-  String _getCurrentDateTime() {
-    final now = DateTime.now();
-    return "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
   }
 
   @override

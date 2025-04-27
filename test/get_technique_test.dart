@@ -68,9 +68,9 @@ void main() {
       });
     });
 
-    group('getExamLength', () {
+    group('getExamMetadataKey', () {
       test('returns the correct exam size', () async {
-        final size = await getExamLength(jsonFile: examFile);
+        final size = await getExamMetadataKey<int>(jsonFile: examFile, key: 'size');
         expect(size, 2);
       });
 
@@ -79,7 +79,7 @@ void main() {
         await badFile.writeAsString(jsonEncode({'evaluation': []}));
 
         expect(
-          () => getExamLength(jsonFile: badFile),
+          () => getExamMetadataKey<int>(jsonFile: badFile, key: 'size'),
           throwsException,
         );
       });
@@ -89,7 +89,7 @@ void main() {
         await badFile.writeAsString(jsonEncode({'metadata': {}}));
 
         expect(
-          () => getExamLength(jsonFile: badFile),
+          () => getExamMetadataKey<int>(jsonFile: badFile, key: 'size'),
           throwsException,
         );
       });

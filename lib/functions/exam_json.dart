@@ -55,7 +55,9 @@ Future<File> createExamJsonFile({
     // Save JSON to file
     final Directory appDocDir = await getApplicationDocumentsDirectory();
     final String safeExamName = examName.replaceAll(' ', '_'); // Avoid spaces in filenames
-    final String filePath = '${appDocDir.path}/$safeExamName.json';
+    final String dateTimePrefix = date.replaceAll('-', '_') + '_' + hour.replaceAll(':', '_'); 
+    final String safeFileName = '${dateTimePrefix}_${safeExamName}.json';
+    final String filePath = '${appDocDir.path}/$safeFileName.json';
     final File file = File(filePath);
 
     await file.writeAsString(jsonEncode(examJson), flush: true);
@@ -90,23 +92,42 @@ Future<Map<String, dynamic>> getTechniqueByIndex({
   }
 }
 
-Future<int> getExamLength({required File jsonFile}) async {
+
+Future<Map<String, dynamic>> getExamMetaData({required File jsonFile}) async {
   try {
     final String content = await jsonFile.readAsString();
     final Map<String, dynamic> data = jsonDecode(content);
 
     if (data.containsKey('metadata') && data['metadata'] is Map<String, dynamic>) {
       final metadata = data['metadata'] as Map<String, dynamic>;
-      if (metadata.containsKey('size') && metadata['size'] is int) {
-        return metadata['size'];
-      } else {
-        throw Exception('Metadata does not contain a valid "size" field.');
-      }
+      return metadata;
     } else {
       throw Exception('Invalid exam file: missing "metadata" section.');
     }
   } catch (e, stack) {
     throw Exception('Failed to get exam length: $e\n$stack');
+  }
+}
+
+Future<T> getExamMetadataKey<T>({
+  required File jsonFile,
+  required String key
+}) async {
+  try {
+    final metadata = await getExamMetaData(jsonFile: jsonFile);
+
+    if (!metadata.containsKey(key)) {
+      throw Exception('Metadata does not contain key "$key".');
+    }
+
+    final value = metadata[key];
+    if (value.runtimeType != T) {
+      throw Exception('Expected "$key" to be of type $T, but got ${value.runtimeType}.');
+    }
+
+    return value;
+  } catch (e, stack) {
+    throw Exception('Failed to get exam $key: $e\n$stack');
   }
 }
 
@@ -116,7 +137,7 @@ Future<Map<String, dynamic>> getTechniqueAndExamSize({
 }) async {
   try {
     final technique = await getTechniqueByIndex(jsonFile: jsonFile, index: index);
-    final size = await getExamLength(jsonFile: jsonFile);
+    final size = await getExamMetadataKey<int>(jsonFile: jsonFile, key: 'size');
 
     return {
       'technique': technique,

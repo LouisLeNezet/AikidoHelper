@@ -1,3 +1,7 @@
+import '../../functions/config_service.dart';
+
 Future<String> getAppVersion() async {
-  return "0.0.1+1";
+  await ConfigService.loadConfig();
+  final appVersion = ConfigService.getConfig('appVersion');
+  return appVersion;
 }

@@ -34,3 +34,4 @@ flutter:
       - assets/technique/technique.csv
       - assets/technique/technique_ordering.csv
       - assets/markdowns/
+      - assets/config.json

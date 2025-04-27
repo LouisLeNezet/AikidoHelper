@@ -39231,7 +39231,7 @@ r=J.aC(s)
 q=A.cq(r.h(s,"size"))
 p=this.a
 o=p.d
-n=o+1===q
+n=o===q
 m=t.a.a(r.h(s,f))
 l=A.bs(m.h(0,"position"))
 k=A.bs(m.h(0,"attack"))

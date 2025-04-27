@@ -42,13 +42,12 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
       final Directory appDocDir = await getApplicationDocumentsDirectory();
       final List<FileSystemEntity> files = appDocDir.listSync();
 
-      logger.d("Files in appDocDir: $files");
-
       // Filter only .json files
       final examFiles = files
           .where((file) => file.path.endsWith('.json') && file.path.split('/').last.startsWith('exam_'))
-            .map((file) => file.path.split('/').last.replaceAll('.json', ''))
-          .toList();
+          .map((file) => file.path.split('/').last.replaceAll('.json', ''))
+          .toList()
+        ..sort((a, b) => b.compareTo(a)); // Sort in decreasing order
       logger.d("Filtered exam files: $examFiles");
       return examFiles;
     }

@@ -6,6 +6,6 @@ class AppColors {
   static const Color accentColor = Color(0xFFFFC107);  // Amber (Accent)
   static const Color backgroundColor = Color(0xFFF5F5F5); // Light Gray
   static const Color textColor = Color(0xFF212121); // Dark Gray (Text)
-  static const Color buttonColor = Color.fromARGB(255, 252, 225, 193); // Purple
+  static const Color buttonColor = Color.fromARGB(255, 252, 225, 195); // Purple
   static const Color headerColor = Color.fromARGB(255, 238, 127, 0); // Purple
 }

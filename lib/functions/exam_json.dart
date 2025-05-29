@@ -170,22 +170,23 @@ Future<T> getExamMetadataKey<T>({
   required String fileName,
   required String key
 }) async {
-  try {
-    final metadata = await getExamMetaData(fileName: fileName);
+    final examData = await getExamJsonData(fileName: fileName);
 
-    if (!metadata.containsKey(key)) {
-      throw Exception('Metadata does not contain key "$key".');
+    if (!examData.containsKey('metadata')) {
+      throw Exception('Failed to get exam metadata: Missing "metadata" section.');
+    }
+
+    final metadata = examData['metadata'];
+    if (metadata is! Map<String, dynamic>) {
+      throw Exception('Failed to get exam metadata: Expected "metadata" to be of type Map<String, dynamic>, but got ${metadata.runtimeType}.');
     }
 
     final value = metadata[key];
-    if (value.runtimeType != T) {
-      throw Exception('Expected "$key" to be of type $T, but got ${value.runtimeType}.');
+    if (value is! T) {
+      throw Exception('Failed to get exam metadata key: Expected "$key" to be of type $T, but got ${value.runtimeType}.');
     }
 
     return value;
-  } catch (e, stack) {
-    throw Exception('Failed to get exam $key: $e\n$stack');
-  }
 }
 
 Future<Map<String, dynamic>> getTechniqueAndExamSize({

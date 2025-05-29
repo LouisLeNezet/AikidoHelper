@@ -33,7 +33,9 @@ void main() {
       // Create a fake exam file before each test
       final examJson = {
         'metadata': {
-          'size': 2,
+          'size': {
+            'total': 2
+          },
         },
         'evaluation': [
           {
@@ -119,8 +121,8 @@ void main() {
 
     group('getExamMetadataKey', () {
       test('returns the correct exam size', () async {
-        final size = await getExamMetadataKey<int>(fileName: "exam", key: 'size');
-        expect(size, 2);
+        final size = await getExamMetadataKey<Map<String, dynamic>>(fileName: "exam", key: 'size');
+        expect(size['total'], 2);
       });
 
       test('throws if metadata is missing', () async {
@@ -152,7 +154,8 @@ void main() {
         expect(result['technique'], isA<Map<String, dynamic>>());
         expect(result['technique']['position'], 'Position1');
         expect(result['technique']['attack'], 'Attack1');
-        expect(result['size'], 2);
+        print(result);
+        expect(result['sizeExam'], 2);
       });
 
       test('throws if technique by index is not found', () async {

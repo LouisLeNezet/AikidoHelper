@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:aikido_helper/functions/technique_class.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:shared_preferences/shared_preferences.dart';
-import './get_technique.dart';
+import './technique_filter.dart';
+import './config_service.dart';
 import './utils.dart';
 
 Future<String> createExamJsonFile({
   required String grade,
   required String examName,
   Future<String> Function()? getAppVersionFn,
-  Future<List<List<String>>> Function({required String path, required String grade})? getOrderedTechniquesFn,
+  Future<List<Technique>> Function({required String path, required String grade, required String gradeTimeCsvPath})? subsetTechniquesFn,
 }) async {
   try {
     final appVersion = await (getAppVersionFn?.call() ?? getAppVersion());
@@ -21,25 +23,31 @@ Future<String> createExamJsonFile({
 
     // Use your getOrderedTechniques function
     final techniques = await (
-      getOrderedTechniquesFn?.call(path: 'assets/technique/technique.csv', grade: grade) ?? 
-      getOrderedTechniques(path: 'assets/technique/technique.csv', grade: grade)
+      subsetTechniquesFn?.call(path: 'assets/technique/techniques.csv', grade: grade, gradeTimeCsvPath: 'assets/technique/grade_time.csv') ?? 
+      subsetTechniques(path: 'assets/technique/techniques.csv', grade: grade, gradeTimeCsvPath: 'assets/technique/grade_time.csv')
     );
 
     final List<Map<String, dynamic>> evaluationList = [];
 
+    final timePerTechnique = ConfigService.getConfig('timePerTechnique') ?? 60;
+
     int index = 1;
     for (final technique in techniques) {
       evaluationList.add({
-        "position": technique[0],
-        "attack": technique[1],
-        "technique": technique[2],
-        "form": technique.length > 3 ? technique[3] : "",
-        "techniqueGrade": technique.length > 4 ? technique[4] : "",
-        "duration": 0,
+        "position": technique.position,
+        "attack": technique.attack,
+        "technique": technique.technique,
+        "form": technique.form,
+        "techniqueGrade": technique.grade,
+        "duration": timePerTechnique,
         "evaluation": "",
         "index": index++,
       });
     }
+
+    final tachi = techniques.where((t) => t.position == 'Tachi waza');
+    final suwari = techniques.where((t) => t.position == 'Suwari waza');
+    final hanmi = techniques.where((t) => t.position == 'Hanmi Handachi waza');
 
     // Final JSON structure
     final Map<String, dynamic> examJson = {
@@ -49,7 +57,12 @@ Future<String> createExamJsonFile({
         "grade": grade,
         "examName": examName,
         "version": appVersion,
-        "size": techniques.length,
+        "size": {
+          "Suwari waza": suwari.length,
+          "Hanmi Handachi waza": hanmi.length,
+          "Tachi waza": tachi.length,
+          "total": techniques.length
+        }
       },
       "evaluation": evaluationList,
     };
@@ -157,22 +170,23 @@ Future<T> getExamMetadataKey<T>({
   required String fileName,
   required String key
 }) async {
-  try {
-    final metadata = await getExamMetaData(fileName: fileName);
+    final examData = await getExamJsonData(fileName: fileName);
 
-    if (!metadata.containsKey(key)) {
-      throw Exception('Metadata does not contain key "$key".');
+    if (!examData.containsKey('metadata')) {
+      throw Exception('Failed to get exam metadata: Missing "metadata" section.');
+    }
+
+    final metadata = examData['metadata'];
+    if (metadata is! Map<String, dynamic>) {
+      throw Exception('Failed to get exam metadata: Expected "metadata" to be of type Map<String, dynamic>, but got ${metadata.runtimeType}.');
     }
 
     final value = metadata[key];
-    if (value.runtimeType != T) {
-      throw Exception('Expected "$key" to be of type $T, but got ${value.runtimeType}.');
+    if (value is! T) {
+      throw Exception('Failed to get exam metadata key: Expected "$key" to be of type $T, but got ${value.runtimeType}.');
     }
 
     return value;
-  } catch (e, stack) {
-    throw Exception('Failed to get exam $key: $e\n$stack');
-  }
 }
 
 Future<Map<String, dynamic>> getTechniqueAndExamSize({
@@ -181,11 +195,12 @@ Future<Map<String, dynamic>> getTechniqueAndExamSize({
 }) async {
   try {
     final technique = await getTechniqueByIndex(fileName: fileName, index: index);
-    final size = await getExamMetadataKey<int>(fileName: fileName, key: 'size');
+    final metadata = await getExamMetaData(fileName: fileName);
+    final sizeExam = metadata['size']['total'] as int;
 
     return {
       'technique': technique,
-      'size': size,
+      'sizeExam': sizeExam,
     };
   } catch (e, stack) {
     throw Exception('Failed to get technique and size: $e\n$stack');

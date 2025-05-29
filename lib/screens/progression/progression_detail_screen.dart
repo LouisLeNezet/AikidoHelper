@@ -50,7 +50,7 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
               Text('Grade: ${metadata['grade']}'),
               Text('Exam Name: ${metadata['examName']}'),
               Text('App Version: ${metadata['version']}'),
-              Text('Size: ${metadata['size']} techniques'),
+              Text('Size: ${metadata['size']['total']} techniques'),
               const SizedBox(height: 20),
               const Divider(),
               const SizedBox(height: 10),

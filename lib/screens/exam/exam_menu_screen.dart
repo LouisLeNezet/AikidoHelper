@@ -74,10 +74,12 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
               selectedValue: selectedGrade,
               onValueChanged: (newGrade) {
                 setState(() {
-                  selectedGrade = newGrade; // Update the selected grade
+                  selectedGrade = newGrade;
                 });
               },
-              valuesList: gradesList,  // Pass list of grades to the widget
+              valuesList: gradesList,
+              hintText: "Select Grade",
+              titleText: "Grade",
             ),
 
             const SizedBox(height: 50),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:aikido_helper/functions/technique_class.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:aikido_helper/functions/exam_json.dart';
@@ -32,15 +33,30 @@ void main() {
       const fakeGrade = '4 Kyu';
       const fakeExamName = 'My Exam';
       const fakeVersion = '1.0.0';
+      
+      final technique1 = Technique(
+        position: 'Position1',
+        attack: 'Attack1',
+        technique: 'Technique1',
+        form: 'Form1',
+        grade: fakeGrade,
+      );
+      final technique2 = Technique(
+        position: 'Position2',
+        attack: 'Attack2',
+        technique: 'Technique2',
+        form: 'Form2',
+        grade: fakeGrade,
+      );
 
       // Act
       final fileName = await createExamJsonFile(
         grade: fakeGrade,
         examName: fakeExamName,
         getAppVersionFn: () async => fakeVersion,
-        getOrderedTechniquesFn: ({required path, required grade}) async => [
-          ['Position1', 'Attack1', 'Technique1', 'Form1', '4 Kyu'],
-          ['Position2', 'Attack2', 'Technique2', 'Form2', '4 Kyu'],
+        subsetTechniquesFn: ({required path, required grade, required gradeTimeCsvPath}) async => [
+          technique1,
+          technique2,
         ],
       );
 
@@ -50,12 +66,13 @@ void main() {
       expect(decoded['metadata']['grade'], fakeGrade);
       expect(decoded['metadata']['examName'], fakeExamName);
       expect(decoded['metadata']['version'], fakeVersion);
-      expect(decoded['metadata']['size'], 2);
+      expect(decoded['metadata']['size']['total'], 2);
 
       expect(decoded['evaluation'], isA<List>());
       expect(decoded['evaluation'].length, 2);
       expect(decoded['evaluation'][0]['position'], 'Position1');
       expect(decoded['evaluation'][1]['position'], 'Position2');
+      expect(decoded['evaluation'][1]['duration'], 60);
 
       expect(fileName.endsWith('_My_Exam'), isTrue);
     });

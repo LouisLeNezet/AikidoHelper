@@ -22,7 +22,7 @@ class AikidoExamApp extends StatelessWidget {
         textTheme: TextTheme(
           headlineLarge: TextStyle(color: AppColors.textColor), // Previously headline1
           headlineMedium: TextStyle(color: AppColors.textColor), // Previously headline2
-          headlineSmall: TextStyle(color: AppColors.textColor),  // Previously headline3
+          headlineSmall: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textColor),  // Previously headline3
           titleLarge: TextStyle(color: AppColors.textColor),    // Previously headline4
           titleMedium: TextStyle(color: AppColors.textColor),  // Previously headline5
           titleSmall: TextStyle(color: AppColors.textColor),   // Previously headline6

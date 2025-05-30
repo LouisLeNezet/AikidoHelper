@@ -5,8 +5,19 @@ import '../../functions/technique_class.dart';
 import '../../functions/technique_load_files.dart';
 
 int orderCompare(String a, String b, Map<String, int> orderMap) {
-  return (orderMap[a.toLowerCase()] ?? 999)
-      .compareTo(orderMap[b.toLowerCase()] ?? 999);
+  if (a == b) return 0;
+  if (a.isEmpty) return 1; // empty string is always last
+  if (b.isEmpty) return -1; // empty string is always last
+
+  // Throw error if both are not in orderMap
+  if (!orderMap.containsKey(a)) {
+    throw Exception('Key "$a" not found in orderMap');
+  }
+  if (!orderMap.containsKey(b)) {
+    throw Exception('Key "$b" not found in orderMap');
+  }
+  return (orderMap[a] ?? 999)
+      .compareTo(orderMap[b] ?? 999);
 }
 
 Future<List<Technique>> orderTechniques({

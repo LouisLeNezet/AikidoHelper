@@ -93,8 +93,13 @@ void main() {
     };
 
     expect(orderCompare('a', 'b', orderMap), lessThan(0));
-    expect(orderCompare('b', 'A', orderMap), greaterThan(0));
-    expect(orderCompare('C', 'c', orderMap), equals(0));
+    expect(orderCompare('b', 'a', orderMap), greaterThan(0));
+    expect(orderCompare('c', 'c', orderMap), equals(0));
+
+    final orders = await loadOrderTechnique('assets/technique/techniques_ordering.csv');
+    final positionOrder = orders['Position']!;
+    final orderPosition = orderCompare("Tachi waza", "Suwari waza", positionOrder);
+    expect(orderPosition, 1, reason: 'Tachi waza should come after Suwari waza');
   });
 
   test('orderTechniques', () async {
@@ -103,10 +108,10 @@ void main() {
     
     expect(orderedTechniques, isNotEmpty);
 
-    expect(orderedTechniques[0].position, 'Tachi waza');
-    expect(orderedTechniques[0].attack, 'Katate dori');
-    expect(orderedTechniques[0].technique, 'Nikyo');
-    expect(orderedTechniques[0].form, 'Ura');
+    expect(orderedTechniques[0].position, 'Suwari waza');
+    expect(orderedTechniques[0].attack, 'Ai hanmi katate dori');
+    expect(orderedTechniques[0].technique, 'Ikkyo');
+    expect(orderedTechniques[0].form, 'Omote');
     expect(orderedTechniques[0].grade, '4 Kyu');
   });
 

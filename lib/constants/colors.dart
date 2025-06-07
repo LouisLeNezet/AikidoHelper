@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color primaryColor = Color.fromARGB(255, 255, 149, 0);  // Green (Primary)
-  static const Color secondaryColor = Color.fromARGB(255, 210, 6, 6);  // Blue (Secondary)
-  static const Color accentColor = Color(0xFFFFC107);  // Amber (Accent)
-  static const Color backgroundColor = Color(0xFFF5F5F5); // Light Gray
-  static const Color textColor = Color(0xFF212121); // Dark Gray (Text)
-  static const Color buttonColor = Color.fromARGB(255, 252, 225, 193); // Purple
-  static const Color headerColor = Color.fromARGB(255, 238, 127, 0); // Purple
+  static const Color purple = Color(0xFF5f0f40);
+  static const Color red = Color(0xFF9a031e);
+  static const Color darkOrange = Color(0xFFE36414);
+  static const Color lightOrange = Color(0xFFFB8B24);
+  static const Color yellow = Color(0xFFFFB434);
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color grey = Color(0xFFBDBDBD);
+  static const Color lightBlue = Color(0xFF0F4C5C);
+  static const Color darkBlue = Color(0xFF09151A);
+  static const Color black = Color.fromARGB(255, 1, 11, 15);
+
+
+  static const Color primaryColor = purple;
+  static const Color secondaryColor = red;
+  static const Color accentColor = lightOrange;
+  static const Color backgroundColor = white;
+  static const Color textColor = darkBlue;
+  static const Color buttonColor = lightBlue;
+  static const Color headerColor = darkOrange;
 }

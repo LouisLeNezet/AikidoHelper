@@ -1,16 +1,15 @@
-# Aïkido Helper
+# AïkiGrade
+|-----|-----|
+| Welcome to **AïkiGrade**!<br><br>AïkiGrade is a mobile application designed to help practitioners of Aïkido track their progress and to train / pass grade.<br>It is built using Flutter and Dart, and it is open source.|<img src="./assets/images/logo_circle.png" alt="AïkiGrade Logo" width="200"/>|
 
-A new Flutter project.
+## Features
 
-## Getting Started
+- **Track Progress**: Keep track of your training sessions, techniques learned, and grades achieved.
+- **Training Resources**: Access a library of training resources (currently empty).
+- **User-Friendly Interface**: Designed with a clean and intuitive interface for easy navigation.
+- **Open Source**: Contribute to the project on GitHub and help improve the app.
+- **Cross-Platform**: Available on both Android and iOS devices.
 
-This project is a starting point for a Flutter application.
+## Developer Information
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project is currently developped by the Aïkido club of Le Rheu, France.

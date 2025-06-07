@@ -27,16 +27,16 @@ class StartMenuScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
-                  'assets/images/logo.jpg', // Correct asset path
+                  'assets/images/logo_circle',
                   height: 160,
-                  fit: BoxFit.contain, // Make sure it scales properly
+                  fit: BoxFit.contain,
                 ),
               ),
               const SizedBox(height: 32),
 
               // App Name
               const Text(
-                'Aïkido Exam Trainer',
+                'AïkiGrade',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 32,

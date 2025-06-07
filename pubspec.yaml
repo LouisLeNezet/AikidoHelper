@@ -29,7 +29,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-      - assets/images/logo.jpg
+      - assets/images/logo_simple.png
       - assets/images/icon_github.png
       - assets/technique/grade_time.csv
       - assets/technique/techniques_ordering.csv

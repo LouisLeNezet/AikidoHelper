@@ -18,14 +18,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           // App Logo
           Image.asset(
-            'assets/images/logo.jpg', // Your logo
+            'assets/images/logo_simple', // Your logo
             height: 50,
             fit: BoxFit.contain,
           ),
           const SizedBox(height: 8),
           // App Name
           const Text(
-            'Aïkido Exam Trainer',
+            'AïkiGrade',
             style: TextStyle(
               fontSize: 24,
               color: Colors.white,

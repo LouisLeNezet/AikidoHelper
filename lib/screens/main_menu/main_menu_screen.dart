@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../../constants/colors.dart';
+import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 import '../../routes.dart';
 
 class MainMenuScreen extends StatelessWidget {
@@ -8,100 +7,50 @@ class MainMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
+    return ScaffoldWithWideBottomPanel(
       body: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Start Exam Button
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.examMenu);
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50), // Full width
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                foregroundColor: AppColors.textColor, // Text color
-                backgroundColor: AppColors.buttonColor, // Button color
-              ),
+            Center(
               child: const Text(
-                'Start Exam',
-                style: TextStyle(fontSize: 18),
+                'Home',
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 16),
-            
-            // Learn Button
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.learnMenu);
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                foregroundColor: AppColors.textColor,
-                backgroundColor: AppColors.buttonColor,
-              ),
-              child: const Text(
-                'Learn',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            const SizedBox(height: 16),
-            
-            // Progression Button
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.progressionList);
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                foregroundColor: AppColors.textColor,
-                backgroundColor: AppColors.buttonColor,
-              ),
-              child: const Text(
-                'Progression',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            const SizedBox(height: 16),
-            
-            // Configure Button
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.config);
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                foregroundColor: AppColors.textColor,
-                backgroundColor: AppColors.buttonColor,
-              ),
-              child: const Text(
-                'Configure',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            const SizedBox(height: 16),
-            
-            // More Info Button
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.moreInfos);
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                foregroundColor: AppColors.textColor,
-                backgroundColor: AppColors.buttonColor,
-              ),
-              child: const Text(
-                'More Info',
-                style: TextStyle(fontSize: 18),
-              ),
+            const SizedBox(height: 32),
+
+            // Two columns side-by-side
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.examMenu),
+                    child: Column(
+                      children: [
+                        Image.asset('assets/images/exam.png', height: 200),
+                        const SizedBox(height: 8),
+                        const Text('Exam', style: TextStyle(fontSize: 18)),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 32),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.learnMenu),
+                    child: Column(
+                      children: [
+                        Image.asset('assets/images/train.png', height: 200),
+                        const SizedBox(height: 8),
+                        const Text('Train', style: TextStyle(fontSize: 18)),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

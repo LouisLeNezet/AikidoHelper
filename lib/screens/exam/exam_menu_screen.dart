@@ -39,7 +39,7 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Aikido Exam Helper"),
+        title: const Text("AïkiGrade"),
         centerTitle: true,
       ),
       body: Padding(

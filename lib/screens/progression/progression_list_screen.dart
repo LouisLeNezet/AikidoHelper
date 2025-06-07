@@ -1,12 +1,13 @@
 import 'dart:io';
-import '../../routes.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import '../../constants/colors.dart';
-import '../../functions/exam_json.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
+import '../../routes.dart';
+import '../../constants/colors.dart';
+import '../../functions/exam_json.dart';
+import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 
 class ProgressionListScreen extends StatefulWidget {
   const ProgressionListScreen({super.key});
@@ -55,8 +56,7 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Progression List')),
+    return ScaffoldWithWideBottomPanel(
       body: FutureBuilder<List<String>>(
         future: _examFilesFuture,
         builder: (context, snapshot) {
@@ -144,24 +144,23 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
 
                           if (confirm == true) {
                             if (kIsWeb) {
-                              // Web: Remove from SharedPreferences (local storage)
                               final prefs = await SharedPreferences.getInstance();
                               await prefs.remove(fileName);
                               setState(() {
                                 _examFilesFuture = _loadExamFiles();
                               });
                             } else {
-                              // Mobile: Delete file from filesystem
                               final Directory appDocDir = await getApplicationDocumentsDirectory();
                               final String filePath = '${appDocDir.path}/$fileName.json';
                               final File fileToDelete = File(filePath);
                               if (await fileToDelete.exists()) {
                                 await fileToDelete.delete();
-                                setState(() {
-                                  _examFilesFuture = _loadExamFiles();  // Refresh the file list
-                                });
                               }
                             }
+
+                            setState(() {
+                              _examFilesFuture = _loadExamFiles();
+                            });
                           }
                         },
                       ),

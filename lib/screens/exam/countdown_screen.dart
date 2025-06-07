@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/countdown_timer.dart';
+import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 import '../../routes.dart';
 
 class CountdownScreen extends StatelessWidget {
@@ -12,10 +13,8 @@ class CountdownScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Countdown'),
-      ),
+    return ScaffoldWithWideBottomPanel(
+      showWidePanel: false,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

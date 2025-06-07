@@ -13,13 +13,7 @@ class StartMenuScreen extends StatelessWidget {
         body: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(32.0),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [AppColors.headerColor, AppColors.accentColor],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
+            color: AppColors.startMenuColor1,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -27,8 +21,8 @@ class StartMenuScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
-                  'assets/images/logo_circle',
-                  height: 160,
+                  'assets/images/logo_circle.png',
+                  height: 250,
                   fit: BoxFit.contain,
                 ),
               ),

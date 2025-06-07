@@ -18,6 +18,9 @@ class AppColors {
   static const Color accentColor = lightOrange;
   static const Color backgroundColor = white;
   static const Color textColor = darkBlue;
-  static const Color buttonColor = lightBlue;
-  static const Color headerColor = darkOrange;
+  static const Color buttonColor = yellow;
+  static const Color headerColor = grey;
+
+  static const Color startMenuColor1 = white;
+  static const Color startMenuColor2 = white;
 }

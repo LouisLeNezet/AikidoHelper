@@ -2,7 +2,7 @@
     "appName": "AikiGrade",
     "appVersion": "0.0.1+1",
     "examDefaultName": "My Exam",
-    "timePerTechnique": "60",
+    "timePerTechnique": 60,
     "prioritizeBy": "Attack",
-    "numberOfTechniquePerAttack": "2"
+    "numberOfTechniquePerAttack": 2
 }

@@ -19,7 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           // App Logo
           Image.asset(
-            'assets/images/logo_simple.png',
+            'assets/images/logo_minimalist_black.png',
             height: 45,
             fit: BoxFit.contain,
           ),
@@ -29,7 +29,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             'AïkiGrade',
             style: TextStyle(
               fontSize: 30,
-              color: Colors.white,
+              color: AppColors.headerTitleColor,
               fontWeight: FontWeight.bold,
               fontFamily: 'Katana',
             ),

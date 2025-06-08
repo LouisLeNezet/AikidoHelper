@@ -37,6 +37,7 @@ flutter:
   assets:
       - assets/images/logo_circle.png
       - assets/images/logo_simple.png
+      - assets/images/logo_minimalist_black.png
       - assets/images/exam.png
       - assets/images/train.png
       - assets/images/icon_github.png

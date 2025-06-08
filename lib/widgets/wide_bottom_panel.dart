@@ -10,7 +10,7 @@ class WideBottomPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.buttonColor,
+        color: AppColors.widePanelBackground,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

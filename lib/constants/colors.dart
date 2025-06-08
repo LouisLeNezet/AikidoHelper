@@ -18,9 +18,12 @@ class AppColors {
   static const Color accentColor = lightOrange;
   static const Color backgroundColor = white;
   static const Color textColor = darkBlue;
-  static const Color buttonColor = yellow;
-  static const Color headerColor = grey;
+  static const Color buttonColor = Color.fromARGB(255, 207, 186, 188);
 
-  static const Color startMenuColor1 = white;
-  static const Color startMenuColor2 = white;
+  static const Color headerColor = Color.fromARGB(255, 243, 234, 235);
+  static const Color headerTitleColor = black;
+
+  static const Color startMenuBackground = white;
+
+  static const Color widePanelBackground = Color.fromARGB(255, 243, 234, 235);
 }

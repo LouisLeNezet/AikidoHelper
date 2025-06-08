@@ -36,6 +36,7 @@ class StartMenuScreen extends StatelessWidget {
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
+                  fontFamily: 'Katana',
                 ),
               ),
 

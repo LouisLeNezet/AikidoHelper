@@ -27,6 +27,12 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 flutter:
+  fonts:
+      - family: Katana
+        fonts:
+          - asset: assets/fonts/Katanf.ttf
+          - asset: assets/fonts/Katanfi.ttf
+            style: italic
   uses-material-design: true
   assets:
       - assets/images/logo_circle.png

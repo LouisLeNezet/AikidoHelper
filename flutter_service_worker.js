@@ -40,7 +40,7 @@ const RESOURCES = {"icons/logo_minimaliste_200.png": "b478361f3c74934c33aaa2c299
 "canvaskit/chromium/canvaskit.js": "34beda9f39eb7d992d46125ca868dc61",
 "canvaskit/chromium/canvaskit.wasm": "64a386c87532ae52ae041d18a32a3635",
 "canvaskit/chromium/canvaskit.js.symbols": "5a23598a2a8efd18ec3b60de5d28af8f",
-"flutter_bootstrap.js": "5c45b227b26d9781fe6e269ec3a2cad8",
+"flutter_bootstrap.js": "2e2b8c84aa91019f2a20b650d0616f56",
 "favicon.png": "37133fa5498c84a1f8b6f49df0182623",
 "index.html": "16edb43e63b397394d3c301c375feb97",
 "/": "16edb43e63b397394d3c301c375feb97",

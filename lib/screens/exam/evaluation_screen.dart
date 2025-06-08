@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../functions/exam_json.dart';
 import '../../routes.dart';
-import 'package:aikido_helper/functions/exam_json.dart';
+import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 
 class EvaluationScreen extends StatelessWidget {
   final String fileName;
@@ -14,8 +15,8 @@ class EvaluationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Evaluate Technique")),
+    return ScaffoldWithWideBottomPanel(
+      showWidePanel: false,
       body: FutureBuilder<Map<String, dynamic>?>(
         future: getTechniqueSafe(fileName, index),
         builder: (context, snapshot) {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../functions/config_service.dart';
+import '../../functions/utils.dart';
 import '../../constants/colors.dart';
 import '../../widgets/text_input.dart';
 import '../../widgets/drop_down_selection.dart';
-import '../../functions/utils.dart';
+import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 
 class ConfigScreen extends StatefulWidget {
   const ConfigScreen({super.key});
@@ -58,83 +59,88 @@ class ConfigScreenState extends State<ConfigScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Config Screen')),
+    return ScaffoldWithWideBottomPanel(
+      isScrollable: false,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextInput(
-              onChanged: (value) {
+        padding: const EdgeInsets.all(32.0),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height - 140, // minus bottom panel height
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextInput(
+                onChanged: (value) {
                   examDefaultNameNew = value;
-              },
-              hintText: "Enter Exam Name",
-              title: "Exam Name",
-              initialValue: examDefaultName,
-            ),
-
-            const SizedBox(height: 20),
-
-            Center(
-              child: ValueSelectionWidget<int>(
-                selectedValue: timePerTechniqueNew,
-                onValueChanged: (int newValue) {
-                  setState(() {
-                    timePerTechniqueNew = newValue;
-                  });
                 },
-                valuesList: [10, 15, 20, 25, 30, 40, 60, 90, 120, 180],
-                hintText: "Select Time in second per technique",
-                titleText: "Time per Technique",
+                hintText: "Enter Exam Name",
+                title: "Exam Name",
+                initialValue: examDefaultName,
               ),
-            ),
-
-            const SizedBox(height: 20),
-
-            Center(
-              child: ValueSelectionWidget<String>(
-                selectedValue: prioritizeByNew,
-                onValueChanged: (String newValue) {
-                  setState(() {
-                    prioritizeByNew = newValue;
-                  });
-                },
-                valuesList: ["Attack", "Technique"],
-                hintText: "Select if technique should be prioritize by new",
-                titleText: "Prioritize By",
+          
+              const SizedBox(height: 20),
+          
+              Center(
+                child: ValueSelectionWidget<int>(
+                  selectedValue: timePerTechniqueNew,
+                  onValueChanged: (int newValue) {
+                    setState(() {
+                      timePerTechniqueNew = newValue;
+                    });
+                  },
+                  valuesList: [10, 15, 20, 25, 30, 40, 60, 90, 120, 180],
+                  hintText: "Select Time in seconds per technique",
+                  titleText: "Time per Technique",
+                ),
               ),
-            ),
-
-            const SizedBox(height: 20),
-
-            Center(
-              child: ValueSelectionWidget<int>(
-                selectedValue: numberOfTechniquePerAttackNew,
-                onValueChanged: (int newValue) {
-                  setState(() {
-                    numberOfTechniquePerAttackNew = newValue;
-                  });
-                },
-                valuesList: [1, 2, 3, 4, 5],
-                hintText: "Select the maximum number of techniques that should be selected by attack",
-                titleText: "Max Number of Technique per Attack",
+          
+              const SizedBox(height: 20),
+          
+              Center(
+                child: ValueSelectionWidget<String>(
+                  selectedValue: prioritizeByNew,
+                  onValueChanged: (String newValue) {
+                    setState(() {
+                      prioritizeByNew = newValue;
+                    });
+                  },
+                  valuesList: ["Attack", "Technique"],
+                  hintText: "Select if technique should be prioritized by",
+                  titleText: "Prioritize By",
+                ),
               ),
-            ),
-
-            const SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: _saveConfig,
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50), // Full width
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                foregroundColor: AppColors.textColor, // Text color
-                backgroundColor: AppColors.buttonColor, // Button color
+          
+              const SizedBox(height: 20),
+          
+              Center(
+                child: ValueSelectionWidget<int>(
+                  selectedValue: numberOfTechniquePerAttackNew,
+                  onValueChanged: (int newValue) {
+                    setState(() {
+                      numberOfTechniquePerAttackNew = newValue;
+                    });
+                  },
+                  valuesList: [1, 2, 3, 4, 5],
+                  hintText: "Select the maximum number of techniques per attack",
+                  titleText: "Max Number of Technique per Attack",
+                ),
               ),
-              child: const Text('Save Configuration'),
-            ),
-          ],
+          
+              const SizedBox(height: 20),
+          
+              ElevatedButton(
+                onPressed: _saveConfig,
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  foregroundColor: AppColors.textColor,
+                  backgroundColor: AppColors.buttonColor,
+                ),
+                child: const Text('Save Configuration'),
+              ),
+            ],
+          ),
         ),
       ),
     );

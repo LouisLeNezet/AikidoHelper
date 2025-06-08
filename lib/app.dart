@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'constants/colors.dart';
 import 'routes.dart';
 
-class AikidoExamApp extends StatelessWidget {
-  const AikidoExamApp({super.key});
+class AikiGradeApp extends StatelessWidget {
+  const AikiGradeApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Aikido Exam Trainer',
+      title: 'AïkiGrade',
       theme: ThemeData(
         // Set your primary color
         primaryColor: AppColors.primaryColor,
@@ -36,7 +36,7 @@ class AikidoExamApp extends StatelessWidget {
         // Button styles
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.buttonColor,  // Set button color
+            backgroundColor: AppColors.buttonColor,
           ),
         ),
       ),

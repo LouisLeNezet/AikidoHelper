@@ -13,13 +13,7 @@ class StartMenuScreen extends StatelessWidget {
         body: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(32.0),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [AppColors.headerColor, AppColors.accentColor],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
+            color: AppColors.startMenuBackground,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -27,21 +21,22 @@ class StartMenuScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: Image.asset(
-                  'assets/images/logo.jpg', // Correct asset path
-                  height: 160,
-                  fit: BoxFit.contain, // Make sure it scales properly
+                  'assets/images/logo_circle.png',
+                  height: 250,
+                  fit: BoxFit.contain,
                 ),
               ),
               const SizedBox(height: 32),
 
               // App Name
               const Text(
-                'Aïkido Exam Trainer',
+                'AïkiGrade',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
+                  fontFamily: 'Katana',
                 ),
               ),
 

@@ -1,7 +1,6 @@
 import 'package:aikido_helper/functions/exam_json.dart';
 import 'package:flutter/material.dart';
-import '../../routes.dart';
-import '../../constants/colors.dart';
+import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 
 class ProgressionDetailScreen extends StatefulWidget {
   final String fileName;
@@ -26,8 +25,7 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Progression Details')),
+    return ScaffoldWithWideBottomPanel(
       body: FutureBuilder<Map<String, dynamic>>(
         future: _examData,
         builder: (context, snapshot) {
@@ -64,21 +62,6 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
                   trailing: Text('Index: ${technique['index']}'),
                 ),
               )),
-              const SizedBox(height: 20),
-              const Divider(),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.mainMenu);
-                },
-                style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      foregroundColor: AppColors.textColor,
-                      backgroundColor: AppColors.buttonColor,
-                    ),
-                child: const Text('Back to Menu'),
-              ),
             ],
           );
         },

@@ -1,6 +1,17 @@
 # AïkiGrade
-|-----|-----|
-| Welcome to **AïkiGrade**!<br><br>AïkiGrade is a mobile application designed to help practitioners of Aïkido track their progress and to train / pass grade.<br>It is built using Flutter and Dart, and it is open source.|<img src="./assets/images/logo_circle.png" alt="AïkiGrade Logo" width="200"/>|
+
+<table>
+  <tr>
+    <td>
+      <strong>Welcome to AïkiGrade!</strong><br><br>
+      AïkiGrade is a mobile application designed to help practitioners of Aïkido track their progress and to train / pass grade.<br>
+      It is built using Flutter and Dart, and it is open source.
+    </td>
+    <td>
+      <img src="./assets/images/logo_circle.png" alt="AïkiGrade Logo" width="200"/>
+    </td>
+  </tr>
+</table>
 
 ## Features
 

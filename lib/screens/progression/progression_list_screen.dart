@@ -65,7 +65,7 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error loading exams: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No exam found.'));
+            return const Center(child: Text('No exam yet available.'));
           }
 
           final examFiles = snapshot.data!;

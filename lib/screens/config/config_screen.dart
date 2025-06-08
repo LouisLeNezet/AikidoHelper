@@ -62,7 +62,7 @@ class ConfigScreenState extends State<ConfigScreen> {
     return ScaffoldWithWideBottomPanel(
       isScrollable: false,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(32.0),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height - 140, // minus bottom panel height

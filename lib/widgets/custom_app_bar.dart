@@ -20,17 +20,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           // App Logo
           Image.asset(
             'assets/images/logo_simple.png',
-            height: 40,
+            height: 45,
             fit: BoxFit.contain,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 20),
           // App Name
           const Text(
             'AïkiGrade',
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 30,
               color: Colors.white,
               fontWeight: FontWeight.bold,
+              fontFamily: 'Katana',
             ),
           ),
         ],

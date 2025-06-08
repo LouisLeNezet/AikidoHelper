@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 import '../../routes.dart';
+import '../../constants/colors.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -8,52 +9,100 @@ class MainMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithWideBottomPanel(
-      body: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: const Text(
-                'Home',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 32),
-
-            // Two columns side-by-side
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, AppRoutes.examMenu),
-                    child: Column(
-                      children: [
-                        Image.asset('assets/images/exam.png', height: 200),
-                        const SizedBox(height: 8),
-                        const Text('Exam', style: TextStyle(fontSize: 18)),
-                      ],
+                Center(
+                  child: const Text(
+                    'Home',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const SizedBox(width: 32),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, AppRoutes.learnMenu),
-                    child: Column(
-                      children: [
-                        Image.asset('assets/images/train.png', height: 200),
-                        const SizedBox(height: 8),
-                        const Text('Train', style: TextStyle(fontSize: 18)),
-                      ],
+                const SizedBox(height: 32),
+
+                // Two columns side-by-side
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.examMenu),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset('assets/images/exam.png', height: 200, fit: BoxFit.cover),
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: AppColors.buttonColor,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Text(
+                                'Exam',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 32),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.learnMenu),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset('assets/images/train.png', height: 200, fit: BoxFit.cover),
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: AppColors.buttonColor,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Text(
+                                'Train',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+
+          // Lightbulb icon button at the top-right
+          Positioned(
+            top: 16,
+            right: 16,
+            child: IconButton(
+              icon: const Icon(Icons.lightbulb_outline),
+              tooltip: 'More Info',
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.moreInfos),
+            ),
+          ),
+        ],
       ),
     );
   }

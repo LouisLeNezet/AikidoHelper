@@ -40,7 +40,7 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
   Widget build(BuildContext context) {
     return ScaffoldWithWideBottomPanel(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -53,7 +53,7 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
 
             // Get exam name from user
             TextInput(

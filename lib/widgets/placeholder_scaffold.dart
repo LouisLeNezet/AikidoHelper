@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 
 class PlaceholderScaffold extends StatelessWidget {
   final String title;
@@ -6,8 +7,7 @@ class PlaceholderScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
+    return ScaffoldWithWideBottomPanel(
       body: Center(
         child: Text(
           title,

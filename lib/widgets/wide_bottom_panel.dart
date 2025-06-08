@@ -17,16 +17,19 @@ class WideBottomPanel extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            iconSize: 32,
+            icon: const Icon(Icons.settings,),
             onPressed: () => Navigator.pushNamed(context, AppRoutes.config),
             tooltip: 'Configure',
           ),
           IconButton(
+            iconSize: 32,
             icon: const Icon(Icons.home),
             onPressed: () => Navigator.pushNamed(context, AppRoutes.mainMenu),
             tooltip: 'Home',
           ),
           IconButton(
+            iconSize: 32,
             icon: const Icon(Icons.trending_up),
             onPressed: () => Navigator.pushNamed(context, AppRoutes.progressionList),
             tooltip: 'Progression',

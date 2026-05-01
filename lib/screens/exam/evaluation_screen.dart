@@ -3,16 +3,32 @@ import '../../functions/exam_json.dart';
 import '../../routes.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class EvaluationScreen extends StatelessWidget {
+class EvaluationScreen extends StatefulWidget {
   final String fileName;
   final int index;
 
-  EvaluationScreen({
+  const EvaluationScreen({
     super.key,
     required this.fileName,
     required this.index,
   });
+
+  @override
+  State<EvaluationScreen> createState() => _EvaluationScreenState();
+}
+
+class _EvaluationScreenState extends State<EvaluationScreen> {
+  double _currentRating = 3;
+
+  Future<void> _saveRating(double rating) async {
+    await saveTechniqueRating(
+      fileName: widget.fileName,
+      index: widget.index,
+      rating: rating,
+    );
+  }
 
   final logger = Logger();
 
@@ -21,7 +37,7 @@ class EvaluationScreen extends StatelessWidget {
     return ScaffoldWithWideBottomPanel(
       showWidePanel: false,
       body: FutureBuilder<Map<String, dynamic>?>(
-        future: getTechniqueSafe(fileName, index),
+        future: getTechniqueSafe(widget.fileName, widget.index),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -34,7 +50,7 @@ class EvaluationScreen extends StatelessWidget {
           }
 
           final maxIndex = snapshot.data!['sizeExam'] - 1 as int;
-          final isLast = index == maxIndex;
+          final isLast = widget.index == maxIndex;
 
           final techniqueData = snapshot.data!['technique'] as Map<String, dynamic>;
           final position = techniqueData['position'] as String;
@@ -87,7 +103,7 @@ class EvaluationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          "Technique: $index / $maxIndex",
+                          "Technique: ${widget.index} / $maxIndex",
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
@@ -95,6 +111,47 @@ class EvaluationScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  RatingBar.builder(
+                    initialRating: 3,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      switch (index) {
+                          case 0:
+                            return Icon(
+                                Icons.sentiment_very_dissatisfied,
+                                color: Colors.red,
+                            );
+                          case 1:
+                            return Icon(
+                                Icons.sentiment_dissatisfied,
+                                color: Colors.redAccent,
+                            );
+                          case 2:
+                            return Icon(
+                                Icons.sentiment_neutral,
+                                color: Colors.amber,
+                            );
+                          case 3:
+                            return Icon(
+                                Icons.sentiment_satisfied,
+                                color: Colors.lightGreen,
+                            );
+                          case 4:
+                              return Icon(
+                                Icons.sentiment_very_satisfied,
+                                color: Colors.green,
+                              );
+                          default:
+                            return Icon(
+                              Icons.sentiment_neutral,
+                              color: Colors.grey,
+                            );
+                      }
+                    },
+                    onRatingUpdate: (rating) {
+                      _currentRating = rating;
+                    },
+                  ),
                 ],
               ),
               Align(
@@ -106,15 +163,17 @@ class EvaluationScreen extends StatelessWidget {
                       children: [
                         if (nextWazaIndex != null) ...[
                           FloatingActionButton.extended(
-                            onPressed: () {
-                            Navigator.pushReplacementNamed(
-                              context,
-                              AppRoutes.evaluation,
-                              arguments: {
-                              'fileName': fileName,
-                              'index': nextWazaIndex,
-                              },
-                            );
+                            onPressed: () async {
+                              await _saveRating(_currentRating);
+                              if (!mounted) return;
+                              Navigator.pushReplacementNamed(
+                                context,
+                                AppRoutes.evaluation,
+                                arguments: {
+                                'fileName': widget.fileName,
+                                'index': nextWazaIndex,
+                                },
+                              );
                             },
                             label: const Text('Next Waza'),
                             icon: const Icon(Icons.skip_next),
@@ -123,38 +182,42 @@ class EvaluationScreen extends StatelessWidget {
                         ],
                         if (nextAttackIndex != null) ...[
                           FloatingActionButton.extended(
-                            onPressed: () {
-                            Navigator.pushReplacementNamed(
-                              context,
-                              AppRoutes.evaluation,
-                              arguments: {
-                              'fileName': fileName,
-                              'index': nextAttackIndex,
+                              onPressed: () async {
+                                await _saveRating(_currentRating);
+                                if (!mounted) return;
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  AppRoutes.evaluation,
+                                  arguments: {
+                                  'fileName': widget.fileName,
+                                  'index': nextAttackIndex,
+                                  },
+                                );
                               },
-                            );
-                            },
-                            label: const Text('Next Attack'),
-                            icon: const Icon(Icons.skip_next),
-                          ),
+                              label: const Text('Next Attack'),
+                              icon: const Icon(Icons.skip_next),
+                            ),
                           const SizedBox(width: 12),
                         ],
                         FloatingActionButton.extended(
-                          onPressed: () {
+                          onPressed: () async {
+                            await _saveRating(_currentRating);
+                            if (!mounted) return;
                             if (isLast) {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutes.progressionDetail,
-                              arguments: {'fileName': fileName},
-                            );
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.progressionDetail,
+                                arguments: {'fileName': widget.fileName},
+                              );
                             } else {
-                            Navigator.pushReplacementNamed(
-                              context,
-                              AppRoutes.evaluation,
-                              arguments: {
-                              'fileName': fileName,
-                              'index': index + 1,
-                              },
-                            );
+                              Navigator.pushReplacementNamed(
+                                context,
+                                AppRoutes.evaluation,
+                                arguments: {
+                                'fileName': widget.fileName,
+                                'index': widget.index + 1,
+                                },
+                              );
                             }
                           },
                           label: Text(isLast ? 'Finish Exam' : 'Next'),

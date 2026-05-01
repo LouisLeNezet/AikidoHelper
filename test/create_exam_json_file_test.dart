@@ -145,5 +145,10 @@ void main() {
       expect(decoded['evaluation'][0]['position'], 'Suwari waza');
       expect(decoded['evaluation'][0]['nextWazaIndex'], 2);
       expect(decoded['evaluation'][0]['nextAttackIndex'], 1);
+
+      await saveTechniqueRating(fileName: fileName, index: 1, rating: 3.5);
+      final decodedUpd = await getExamJsonData(fileName: fileName);
+      logger.d(decodedUpd);
+      expect(decodedUpd['evaluation'][1]['rating'], 3.5);
     });
 }

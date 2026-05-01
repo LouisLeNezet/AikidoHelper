@@ -66,7 +66,7 @@ Future<String> createExamJsonFile({
         "form": technique.form,
         "techniqueGrade": technique.grade,
         "duration": timePerTechnique,
-        "evaluation": "",
+        "rating": "",
         "index": index,
         "nextWazaIndex": nextWazaIndices[i],
         "nextAttackIndex": nextAttackIndices[i]
@@ -232,5 +232,36 @@ Future<Map<String, dynamic>> getTechniqueAndExamSize({
     };
   } catch (e, stack) {
     throw Exception('Failed to get technique and size: $e\n$stack');
+  }
+}
+
+Future<void> saveTechniqueRating({
+  required String fileName,
+  required int index,
+  required double rating,
+}) async {
+  if (kIsWeb) {
+    // WEB: Update in local storage
+    final prefs = await SharedPreferences.getInstance();
+    final content = prefs.getString(fileName);
+    if (content == null) {
+      throw Exception('Exam file not found in local storage.');
+    }
+    final jsonData = jsonDecode(content);
+    final evaluation = jsonData['evaluation'] as List<dynamic>;
+    evaluation[index]['rating'] = rating;
+    await prefs.setString(fileName, jsonEncode(jsonData));
+  } else {
+    // MOBILE: Update in file
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String filePath = '${appDocDir.path}/$fileName.json';
+    final File file = File(filePath);
+    if (!file.existsSync()) {
+      throw Exception('Exam file not found at $filePath.');
+    }
+    final jsonData = jsonDecode(await file.readAsString());
+    final evaluation = jsonData['evaluation'] as List<dynamic>;
+    evaluation[index]['rating'] = rating;
+    await file.writeAsString(jsonEncode(jsonData), flush: true);
   }
 }

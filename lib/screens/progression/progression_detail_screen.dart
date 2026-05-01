@@ -59,7 +59,7 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
                 child: ListTile(
                   title: Text('${technique['position']} - ${technique['technique']}'),
                   subtitle: Text('Attack: ${technique['attack']}\nForm: ${technique['form']} | Grade: ${technique['techniqueGrade']}'),
-                  trailing: Text('Index: ${technique['index']}'),
+                  trailing: Text('Index: ${technique['index']}\nRating: ${technique['rating']}'),
                 ),
               )),
             ],

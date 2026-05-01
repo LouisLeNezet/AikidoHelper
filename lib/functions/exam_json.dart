@@ -27,12 +27,38 @@ Future<String> createExamJsonFile({
       subsetTechniques(path: 'assets/technique/techniques.csv', grade: grade, gradeTimeCsvPath: 'assets/technique/grade_time.csv')
     );
 
-    final List<Map<String, dynamic>> evaluationList = [];
+    final wazas = techniques.map((t) => t.position).toList();
+    final nextWazaIndices = List<int?>.filled(techniques.length, null);
 
+    for (int i = 0; i < techniques.length; i++) {
+      final currentWaza = wazas[i];
+      for (int j = i + 1; j < techniques.length; j++) {
+        if (wazas[j] != currentWaza) {
+          nextWazaIndices[i] = j;
+          break;
+        }
+      }
+    }
+
+    final attacks = techniques.map((t) => t.attack).toList();
+    final nextAttackIndices = List<int?>.filled(techniques.length, null);
+
+    for (int i = 0; i < techniques.length; i++) {
+      final currentAttack = attacks[i];
+      for (int j = i + 1; j < techniques.length; j++) {
+        if (attacks[j] != currentAttack) {
+          nextAttackIndices[i] = j;
+          break;
+        }
+      }
+    }
+
+    final List<Map<String, dynamic>> evaluationList = [];
     final timePerTechnique = ConfigService.getConfig('timePerTechnique') ?? 60;
 
-    int index = 1;
-    for (final technique in techniques) {
+    int index = 0;
+    for (int i = 0; i < techniques.length; i++) {
+      final technique = techniques[i];
       evaluationList.add({
         "position": technique.position,
         "attack": technique.attack,
@@ -41,8 +67,11 @@ Future<String> createExamJsonFile({
         "techniqueGrade": technique.grade,
         "duration": timePerTechnique,
         "evaluation": "",
-        "index": index++,
+        "index": index,
+        "nextWazaIndex": nextWazaIndices[i],
+        "nextAttackIndex": nextAttackIndices[i]
       });
+      index++;
     }
 
     final tachi = techniques.where((t) => t.position == 'Tachi waza');
@@ -149,7 +178,6 @@ Future<Map<String, dynamic>> getTechniqueByIndex({
     throw Exception('Failed to get technique: $e\n$stack');
   }
 }
-
 
 Future<Map<String, dynamic>> getExamMetaData({required String fileName}) async {
   try {

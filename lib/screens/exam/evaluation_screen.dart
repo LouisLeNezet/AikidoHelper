@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import '../../functions/exam_json.dart';
 import '../../routes.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
+import 'package:logger/logger.dart';
 
 class EvaluationScreen extends StatelessWidget {
   final String fileName;
   final int index;
 
-  const EvaluationScreen({
+  EvaluationScreen({
     super.key,
     required this.fileName,
     required this.index,
   });
+
+  final logger = Logger();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class EvaluationScreen extends StatelessWidget {
             );
           }
 
-          final maxIndex = snapshot.data!['sizeExam'] as int;
+          final maxIndex = snapshot.data!['sizeExam'] - 1 as int;
           final isLast = index == maxIndex;
 
           final techniqueData = snapshot.data!['technique'] as Map<String, dynamic>;
@@ -39,6 +42,10 @@ class EvaluationScreen extends StatelessWidget {
           final technique = techniqueData['technique'] as String;
           final form = techniqueData['form'] as String? ?? '';
           final techniqueGrade = techniqueData['techniqueGrade'] as String;
+          final nextWazaIndex = techniqueData['nextWazaIndex'] as int?;
+          final nextAttackIndex = techniqueData['nextAttackIndex'] as int?;
+
+          logger.d(techniqueData);
 
           return Stack(
             children: [
@@ -94,31 +101,69 @@ class EvaluationScreen extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: FloatingActionButton.extended(
-                    onPressed: () {
-                      if (isLast) {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoutes.progressionDetail, arguments: {
-                            'fileName': fileName,
-                          }
-                        );
-                      } else {
-                        Navigator.pushReplacementNamed(
-                          context,
-                          AppRoutes.evaluation,
-                          arguments: {
-                            'fileName': fileName,
-                            'index': index + 1,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (nextWazaIndex != null) ...[
+                          FloatingActionButton.extended(
+                            onPressed: () {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              AppRoutes.evaluation,
+                              arguments: {
+                              'fileName': fileName,
+                              'index': nextWazaIndex,
+                              },
+                            );
+                            },
+                            label: const Text('Next Waza'),
+                            icon: const Icon(Icons.skip_next),
+                          ),
+                          const SizedBox(width: 12),
+                        ],
+                        if (nextAttackIndex != null) ...[
+                          FloatingActionButton.extended(
+                            onPressed: () {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              AppRoutes.evaluation,
+                              arguments: {
+                              'fileName': fileName,
+                              'index': nextAttackIndex,
+                              },
+                            );
+                            },
+                            label: const Text('Next Attack'),
+                            icon: const Icon(Icons.skip_next),
+                          ),
+                          const SizedBox(width: 12),
+                        ],
+                        FloatingActionButton.extended(
+                          onPressed: () {
+                            if (isLast) {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.progressionDetail,
+                              arguments: {'fileName': fileName},
+                            );
+                            } else {
+                            Navigator.pushReplacementNamed(
+                              context,
+                              AppRoutes.evaluation,
+                              arguments: {
+                              'fileName': fileName,
+                              'index': index + 1,
+                              },
+                            );
+                            }
                           },
-                        );
-                      }
-                    },
-                    label: Text(isLast ? 'Finish Exam' : 'Next'),
-                    icon: Icon(isLast ? Icons.check : Icons.navigate_next),
+                          label: Text(isLast ? 'Finish Exam' : 'Next'),
+                          icon: Icon(isLast ? Icons.check : Icons.navigate_next),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           );
         },

@@ -154,7 +154,6 @@ void main() {
         expect(result['technique'], isA<Map<String, dynamic>>());
         expect(result['technique']['position'], 'Position1');
         expect(result['technique']['attack'], 'Attack1');
-        print(result);
         expect(result['sizeExam'], 2);
       });
 

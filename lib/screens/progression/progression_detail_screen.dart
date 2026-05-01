@@ -1,6 +1,7 @@
 import 'package:aikido_helper/functions/exam_json.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
+import '../../widgets/rating_emoticon.dart';
 
 class ProgressionDetailScreen extends StatefulWidget {
   final String fileName;
@@ -59,7 +60,18 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
                 child: ListTile(
                   title: Text('${technique['position']} - ${technique['technique']}'),
                   subtitle: Text('Attack: ${technique['attack']}\nForm: ${technique['form']} | Grade: ${technique['techniqueGrade']}'),
-                  trailing: Text('Index: ${technique['index']}\nRating: ${technique['rating']}'),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text('Index: ${technique['index']}'),
+                      const SizedBox(height: 4),
+                      RatingEmoticon(
+                        rating: (technique['rating'] as num?)?.toInt() ?? 0,
+                        showValue: true,
+                      ),
+                    ],
+                  ),
                 ),
               )),
             ],

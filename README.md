@@ -16,7 +16,9 @@
 ## Features
 
 - **Track Progress**: Keep track of your training sessions, techniques learned, and grades achieved.
-- **Training Resources**: Access a library of training resources (currently empty).
+  - Use the "Examination" mode to evaluate yourself and rate your knowledge on each technics.
+  - Use the "Training" mode to look at what you know and don't know and how to improve (WIP).
+- **Training Resources**: Access a library of training resources (WIP).
 - **User-Friendly Interface**: Designed with a clean and intuitive interface for easy navigation.
 - **Open Source**: Contribute to the project on GitHub and help improve the app.
 - **Cross-Platform**: Available on both Android and iOS devices.

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../../functions/exam_json.dart';
 import '../../routes.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
+import '../../widgets/rating_selector.dart';
 import 'package:logger/logger.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class EvaluationScreen extends StatefulWidget {
   final String fileName;
@@ -20,14 +20,46 @@ class EvaluationScreen extends StatefulWidget {
 }
 
 class _EvaluationScreenState extends State<EvaluationScreen> {
-  double _currentRating = 3;
+  int _currentRating = 0;
 
-  Future<void> _saveRating(double rating) async {
+  Future<void> _saveRating(int rating) async {
     await saveTechniqueRating(
       fileName: widget.fileName,
       index: widget.index,
       rating: rating,
     );
+  }
+
+  Future<void> _goNextNamed(String route, Map<String, Object?> arguments) async {
+    await _saveRating(_currentRating);
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(
+      context,
+      route,
+      arguments: arguments,
+    );
+  }
+
+  Future<void> _finishOrNext(bool isLast) async {
+    await _saveRating(_currentRating);
+    if (!mounted) return;
+
+    if (isLast) {
+      Navigator.pushNamed(
+        context,
+        AppRoutes.progressionDetail,
+        arguments: {'fileName': widget.fileName},
+      );
+    } else {
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoutes.evaluation,
+        arguments: {
+          'fileName': widget.fileName,
+          'index': widget.index + 1,
+        },
+      );
+    }
   }
 
   final logger = Logger();
@@ -49,7 +81,8 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
             );
           }
 
-          final maxIndex = snapshot.data!['sizeExam'] - 1 as int;
+          final examSize = snapshot.data!['sizeExam'] as int;
+          final maxIndex = examSize - 1;
           final isLast = widget.index == maxIndex;
 
           final techniqueData = snapshot.data!['technique'] as Map<String, dynamic>;
@@ -103,7 +136,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          "Technique: ${widget.index} / $maxIndex",
+                          "Technique: ${widget.index + 1} / $examSize",
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
@@ -111,45 +144,12 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  RatingBar.builder(
-                    initialRating: 3,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-                          case 0:
-                            return Icon(
-                                Icons.sentiment_very_dissatisfied,
-                                color: Colors.red,
-                            );
-                          case 1:
-                            return Icon(
-                                Icons.sentiment_dissatisfied,
-                                color: Colors.redAccent,
-                            );
-                          case 2:
-                            return Icon(
-                                Icons.sentiment_neutral,
-                                color: Colors.amber,
-                            );
-                          case 3:
-                            return Icon(
-                                Icons.sentiment_satisfied,
-                                color: Colors.lightGreen,
-                            );
-                          case 4:
-                              return Icon(
-                                Icons.sentiment_very_satisfied,
-                                color: Colors.green,
-                              );
-                          default:
-                            return Icon(
-                              Icons.sentiment_neutral,
-                              color: Colors.grey,
-                            );
-                      }
-                    },
-                    onRatingUpdate: (rating) {
-                      _currentRating = rating;
+                  RatingSelector(
+                    rating: _currentRating,
+                    onChanged: (rating) {
+                      setState(() {
+                        _currentRating = rating;
+                      });
                     },
                   ),
                 ],
@@ -163,18 +163,13 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                       children: [
                         if (nextWazaIndex != null) ...[
                           FloatingActionButton.extended(
-                            onPressed: () async {
-                              await _saveRating(_currentRating);
-                              if (!mounted) return;
-                              Navigator.pushReplacementNamed(
-                                context,
-                                AppRoutes.evaluation,
-                                arguments: {
+                            onPressed: () => _goNextNamed(
+                              AppRoutes.evaluation,
+                              {
                                 'fileName': widget.fileName,
                                 'index': nextWazaIndex,
-                                },
-                              );
-                            },
+                              },
+                            ),
                             label: const Text('Next Waza'),
                             icon: const Icon(Icons.skip_next),
                           ),
@@ -182,44 +177,20 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                         ],
                         if (nextAttackIndex != null) ...[
                           FloatingActionButton.extended(
-                              onPressed: () async {
-                                await _saveRating(_currentRating);
-                                if (!mounted) return;
-                                Navigator.pushReplacementNamed(
-                                  context,
-                                  AppRoutes.evaluation,
-                                  arguments: {
-                                  'fileName': widget.fileName,
-                                  'index': nextAttackIndex,
-                                  },
-                                );
+                            onPressed: () => _goNextNamed(
+                              AppRoutes.evaluation,
+                              {
+                                'fileName': widget.fileName,
+                                'index': nextAttackIndex,
                               },
-                              label: const Text('Next Attack'),
-                              icon: const Icon(Icons.skip_next),
                             ),
+                            label: const Text('Next Attack'),
+                            icon: const Icon(Icons.skip_next),
+                          ),
                           const SizedBox(width: 12),
                         ],
                         FloatingActionButton.extended(
-                          onPressed: () async {
-                            await _saveRating(_currentRating);
-                            if (!mounted) return;
-                            if (isLast) {
-                              Navigator.pushNamed(
-                                context,
-                                AppRoutes.progressionDetail,
-                                arguments: {'fileName': widget.fileName},
-                              );
-                            } else {
-                              Navigator.pushReplacementNamed(
-                                context,
-                                AppRoutes.evaluation,
-                                arguments: {
-                                'fileName': widget.fileName,
-                                'index': widget.index + 1,
-                                },
-                              );
-                            }
-                          },
+                          onPressed: () => _finishOrNext(isLast),
                           label: Text(isLast ? 'Finish Exam' : 'Next'),
                           icon: Icon(isLast ? Icons.check : Icons.navigate_next),
                         ),

@@ -7,6 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './technique_filter.dart';
 import './config_service.dart';
 import './utils.dart';
+import 'package:logger/logger.dart';
+
+final Logger logger = Logger();
 
 Future<String> createExamJsonFile({
   required String grade,
@@ -66,7 +69,7 @@ Future<String> createExamJsonFile({
         "form": technique.form,
         "techniqueGrade": technique.grade,
         "duration": timePerTechnique,
-        "rating": "",
+        "rating": 0,
         "index": index,
         "nextWazaIndex": nextWazaIndices[i],
         "nextAttackIndex": nextAttackIndices[i]
@@ -100,6 +103,8 @@ Future<String> createExamJsonFile({
     final String safeExamName = examName.replaceAll(' ', '_'); // Avoid spaces in filenames
     final String dateTimePrefix = '${date.replaceAll('-', '_')}_${hour.replaceAll(':', '_')}';
     final String safeFileName = 'exam_${dateTimePrefix}_$safeExamName';
+
+    logger.d(examJson);
 
     if (kIsWeb) {
       // WEB: Save to local storage
@@ -238,7 +243,7 @@ Future<Map<String, dynamic>> getTechniqueAndExamSize({
 Future<void> saveTechniqueRating({
   required String fileName,
   required int index,
-  required double rating,
+  required int rating,
 }) async {
   if (kIsWeb) {
     // WEB: Update in local storage

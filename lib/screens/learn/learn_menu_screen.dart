@@ -80,61 +80,70 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: TextField(
-                  decoration: const InputDecoration(
-                    labelText: 'Search techniques',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value.toLowerCase();
-                    });
-                  },
-                ),
-              ),
-              Padding(
                 padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
                 child: Row(
                   children: [
-                    const Text('Order by:'),
-                    const SizedBox(width: 8),
-                    PopupMenuButton<String>(
-                      onSelected: _setSort,
-                      itemBuilder: (context) => [
-                        const PopupMenuItem(value: 'rating', child: Text('Rating')),
-                        const PopupMenuItem(value: 'grade', child: Text('Grade')),
-                        const PopupMenuItem(value: 'waza', child: Text('Waza')),
-                        const PopupMenuItem(value: 'attack', child: Text('Attack')),
-                        const PopupMenuItem(value: 'technique', child: Text('Technique')),
-                      ],
-                      child: Row(
-                        children: [
-                          Text(_sortField[0].toUpperCase() + _sortField.substring(1)),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _ascending = !_ascending;
-                              });
-                            },
-                            child: Icon(_ascending ? Icons.arrow_upward : Icons.arrow_downward),
+                    // SEARCH (70%)
+                    Expanded(
+                      flex: 7,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          labelText: 'Search techniques',
+                          prefixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value.toLowerCase();
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 2),
+                    Expanded(
+                      flex: 3,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: PopupMenuButton<String>(
+                          onSelected: _setSort,
+                          itemBuilder: (context) => const [
+                            PopupMenuItem(value: 'rating', child: Text('Rating')),
+                            PopupMenuItem(value: 'grade', child: Text('Grade')),
+                            PopupMenuItem(value: 'waza', child: Text('Waza')),
+                            PopupMenuItem(value: 'attack', child: Text('Attack')),
+                            PopupMenuItem(value: 'technique', child: Text('Technique')),
+                          ],
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                _sortField[0].toUpperCase() + _sortField.substring(1),
+                              ),
+                              const SizedBox(width: 4),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _ascending = !_ascending;
+                                  });
+                                },
+                                child: Icon(
+                                  _ascending ? Icons.arrow_upward : Icons.arrow_downward,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
+              const Text('Techniques:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
               Expanded(
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
-                    const SizedBox(height: 20),
-                    const Divider(),
-                    const SizedBox(height: 10),
-                    const Text('Techniques:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10),
                     ...learnList.map((technique) => Card(
                       margin: const EdgeInsets.symmetric(vertical: 8),
                       child: ListTile(

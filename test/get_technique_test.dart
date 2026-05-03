@@ -87,7 +87,7 @@ void main() {
 
         // File name is 'bad_exam' (without .json)
         await expectLater(
-          () => getJsonData(fileName: 'bad_exam'),
+          () => getJsonData(fileName: 'bad_exam2'),
           throwsException,
         );
       });

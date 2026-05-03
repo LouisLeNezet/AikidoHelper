@@ -5,6 +5,7 @@ import 'package:aikido_helper/functions/config_service.dart';
 import 'package:aikido_helper/functions/technique_class.dart';
 import 'package:aikido_helper/functions/technique_load_files.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
+import 'package:logger/logger.dart';
 
 class _FakePathProvider extends PathProviderPlatform {
   final String path;
@@ -16,6 +17,7 @@ class _FakePathProvider extends PathProviderPlatform {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  final logger = Logger();
 
   group('Technique class', () {
     test('Technique constructor initializes properties correctly', () {
@@ -57,6 +59,7 @@ void main() {
     test('loadAllTechniques returns techniques up to given grade', () async {
       final techniques = await loadAllTechniques('assets/technique/techniques.csv', '4 Kyu');
 
+      logger.d(techniques);
       expect(techniques, isNotEmpty);
       expect(techniques.every((t) => 
         ['5 Kyu', '4 Kyu'].contains(t.grade)), isTrue);
@@ -80,8 +83,8 @@ void main() {
       expect(result['Attack']!.containsKey('Shomen uchi'), isTrue);
       expect(result['Attack']!['Shomen uchi'], 10);
 
-      expect(result['Position']!.containsKey('Tachi waza'), isTrue);
-      expect(result['Position']!['Tachi waza'], 3);
+      expect(result['Waza']!.containsKey('Tachi waza'), isTrue);
+      expect(result['Waza']!['Tachi waza'], 3);
     });
   });
 
@@ -97,7 +100,7 @@ void main() {
     expect(orderCompare('c', 'c', orderMap), equals(0));
 
     final orders = await loadOrderTechnique('assets/technique/techniques_ordering.csv');
-    final positionOrder = orders['Position']!;
+    final positionOrder = orders['Waza']!;
     final orderPosition = orderCompare("Tachi waza", "Suwari waza", positionOrder);
     expect(orderPosition, 1, reason: 'Tachi waza should come after Suwari waza');
   });

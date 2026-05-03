@@ -93,8 +93,8 @@ void main() {
       expect(decoded['evaluation'], isA<List>());
       expect(decoded['evaluation'].length, 4);
 
-      expect(decoded['evaluation'][0]['position'], 'Position1');
-      expect(decoded['evaluation'][3]['position'], 'Position2');
+      expect(decoded['evaluation'][0]['waza'], 'Position1');
+      expect(decoded['evaluation'][3]['waza'], 'Position2');
       expect(decoded['evaluation'][1]['duration'], 60);
 
       // Check nextPositionIndex
@@ -142,7 +142,7 @@ void main() {
       expect(decoded['evaluation'], isA<List>());
       expect(decoded['evaluation'].length, 10);
 
-      expect(decoded['evaluation'][0]['position'], 'Suwari waza');
+      expect(decoded['evaluation'][0]['waza'], 'Suwari waza');
       expect(decoded['evaluation'][0]['nextWazaIndex'], 2);
       expect(decoded['evaluation'][0]['nextAttackIndex'], 1);
 

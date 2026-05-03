@@ -18,9 +18,9 @@ Ushiro ryo hiji dori	Attack	16
 Ushiro eri dori	Attack	17
 Ushiro katate dori kubi shime	Attack	18
 Divers	Attack	19
-Suwari waza	Position	1
-Hanmi handachi waza	Position	2
-Tachi waza	Position	3
+Suwari waza	Waza	1
+Hanmi handachi waza	Waza	2
+Tachi waza	Waza	3
 Ikkyo	Technique	1
 Nikyo	Technique	2
 Sankyo	Technique	3

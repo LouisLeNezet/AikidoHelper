@@ -40,13 +40,13 @@ void main() {
         'evaluation': [
           {
             'index': 1,
-            'position': 'Position1',
+            'waza': 'Position1',
             'attack': 'Attack1',
             'technique': 'Technique1',
           },
           {
             'index': 2,
-            'position': 'Position2',
+            'waza': 'Position2',
             'attack': 'Attack2',
             'technique': 'Technique2',
           },
@@ -68,7 +68,7 @@ void main() {
         final evaluation = result['evaluation'] as List;
         final firstTechnique = evaluation.first as Map<String, dynamic>;
 
-        expect(firstTechnique['position'], 'Position1');
+        expect(firstTechnique['waza'], 'Position1');
         expect(firstTechnique['attack'], 'Attack1');
         expect(firstTechnique['technique'], 'Technique1');
       });
@@ -97,7 +97,7 @@ void main() {
         final result = await getTechniqueByIndex(fileName: "exam", index: 1);
 
         expect(result, isA<Map<String, dynamic>>());
-        expect(result['position'], 'Position1');
+        expect(result['waza'], 'Position1');
         expect(result['attack'], 'Attack1');
       });
 
@@ -152,7 +152,7 @@ void main() {
 
         expect(result, isA<Map<String, dynamic>>());
         expect(result['technique'], isA<Map<String, dynamic>>());
-        expect(result['technique']['position'], 'Position1');
+        expect(result['technique']['waza'], 'Position1');
         expect(result['technique']['attack'], 'Attack1');
         expect(result['sizeExam'], 2);
       });

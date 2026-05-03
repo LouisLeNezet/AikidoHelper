@@ -13,7 +13,7 @@ Future<List<Technique>> loadAllTechniques(String path, String grade) async {
 
   return lines
     .map((l)=>l.split('\t'))
-    .where((r) => grades.indexOf(r.last) <= maxIdx)
+    .where((r) => grades.indexOf(r[4]) <= maxIdx)
     .map((r)=>Technique(
       waza: r[0],
       attack: r[1],
@@ -22,7 +22,7 @@ Future<List<Technique>> loadAllTechniques(String path, String grade) async {
       grade: r[4],
       links: r[5].split(','),
       markdown: r[6],
-      progression: List.empty()
+      progression: List.empty(),
     ))
     .toList();
 }
@@ -51,7 +51,7 @@ Future<Map<String, Map<String,int>>> loadOrderTechnique(String path) async {
     final parts = l.split('\t');
     if (parts.length<3) throw Exception("Invalid CSV format");
     final n = parts[0], t=parts[1];
-    final o=int.tryParse(parts[2])??0;
+    final o = int.tryParse(parts[2])??0;
     out.putIfAbsent(t,()=>{})[n]=o;
   }
   return out;

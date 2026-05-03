@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/wide_bottom_panel.dart';
 import '../../widgets/custom_app_bar.dart';
+import 'package:aikido_helper/widgets/centered_constrained.dart';
 
 class ScaffoldWithWideBottomPanel extends StatelessWidget {
   final PreferredSizeWidget appBar;
@@ -23,18 +24,25 @@ class ScaffoldWithWideBottomPanel extends StatelessWidget {
       body: SizedBox.expand(
         child: Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: showWidePanel ? 140 : 0),
-              child: isScrollable
-                  ? SingleChildScrollView(child: body)
-                  : body,
+            CenteredConstrained(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: showWidePanel ? 140 : 0),
+                child: isScrollable
+                    ? SingleChildScrollView(child: body)
+                    : body,
+              ),
             ),
             if (showWidePanel)
-              const Positioned(
-                left: 32,
-                right: 32,
+              Positioned(
+                left: 0,
+                right: 0,
                 bottom: 40,
-                child: WideBottomPanel(),
+                child: CenteredConstrained(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: WideBottomPanel(),
+                  ),
+                ),
               ),
           ],
         ),

@@ -15,13 +15,29 @@
 
 ## Features
 
-- **Track Progress**: Keep track of your training sessions, techniques learned, and grades achieved.
-  - Use the "Examination" mode to evaluate yourself and rate your knowledge on each technics.
-  - Use the "Training" mode to look at what you know and don't know and how to improve (WIP).
-- **Training Resources**: Access a library of training resources (WIP).
-- **User-Friendly Interface**: Designed with a clean and intuitive interface for easy navigation.
-- **Open Source**: Contribute to the project on GitHub and help improve the app.
-- **Cross-Platform**: Available on both Android and iOS devices.
+- **Examination mode**:
+  - All expected technique by Kyu from the FFAAA handbook
+  - Self-evaluate your knowledge before grading
+- **Training Mode**:
+  - Review techniques you know (and those you don’t yet master)
+  - Track improvement over time per technique
+- **Training Resources**:
+  - Access a library of training resources (i.e. youtube videos) (WIP)
+- **Privacy stance**:
+  - No cloud, no account system
+  - All data is stored locally in JSON files
+- **Cross-Platform**:
+  - Available for the moment on the [Github page](https://louislenezet.github.io/AikiGrade)
+  - Will in the future be available directly on mobile as a local application
+
+## Contributing
+
+Contribute to the project on GitHub and help improve the app.
+
+Feel free to:
+- Report issues
+- Suggest improvements
+- Submit pull requests.
 
 ## Developer Information
 

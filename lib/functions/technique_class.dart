@@ -46,6 +46,16 @@ class Technique {
   // Override toString for custom printing
   @override
   String toString() {
-    return '$waza $attack $technique $form, grade: $grade)';
+    return '''
+Technique(
+  waza: $waza,
+  attack: $attack,
+  technique: $technique,
+  form: $form,
+  grade: $grade,
+  links: $links,
+  markdown: $markdown,
+  progression: $progression
+)''';
   }
 }

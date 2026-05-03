@@ -51,7 +51,16 @@ void main() {
       );
 
       expect(technique.toString(), 
-        'Tachi waza Katate dori Nikyo Ura, grade: 4 Kyu)');
+        '''Technique(
+  waza: Tachi waza,
+  attack: Katate dori,
+  technique: Nikyo,
+  form: Ura,
+  grade: 4 Kyu,
+  links: [],
+  markdown: ,
+  progression: []
+)''');
     });
   });
 

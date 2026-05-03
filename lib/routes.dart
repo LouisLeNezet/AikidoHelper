@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:aikido_helper/functions/technique_class.dart';
 
 // Start & Main Menu
 import 'screens/start_menu/start_menu_screen.dart';
@@ -11,8 +12,7 @@ import 'screens/exam/evaluation_screen.dart';
 
 // Learn Section
 import 'screens/learn/learn_menu_screen.dart';
-import 'screens/learn/technique_filter_screen.dart';
-import 'screens/learn/technique_list_screen.dart';
+import 'screens/learn/technique_detail_screen.dart';
 import 'screens/learn/vocabulary_screen.dart';
 
 // Progression Section
@@ -37,7 +37,7 @@ class AppRoutes {
   // learn
   static const learnMenu = '/learn/menu';
   static const techniqueFilter = '/learn/technique-filter';
-  static const techniqueList = '/learn/technique-list';
+  static const techniqueDetail = '/learn/technique-detail';
   static const vocabulary = '/learn/vocabulary';
 
   // Progression
@@ -80,9 +80,23 @@ final Map<String, WidgetBuilder> appRoutes = {
     );
   },
   // Learn
-  AppRoutes.learnMenu: (context) => const LearnMenuScreen(),
-  AppRoutes.techniqueFilter: (context) => const TechniqueFilterScreen(),
-  AppRoutes.techniqueList: (context) => const TechniqueListScreen(),
+  AppRoutes.learnMenu: (context) => const LearnMenuScreen(fileName: "learningJson",),
+  AppRoutes.techniqueDetail: (context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    // Convert the map to a Technique object
+    final techniqueMap = args;
+    final technique = Technique(
+      waza: techniqueMap['waza'] ?? '',
+      attack: techniqueMap['attack'] ?? '',
+      technique: techniqueMap['technique'] ?? '',
+      form: techniqueMap['form'] ?? '',
+      grade: techniqueMap['techniqueGrade'] ?? techniqueMap['grade'] ?? '',
+      links: List<String>.from(techniqueMap['links'] ?? []),
+      markdown: techniqueMap['markdown'] ?? '',
+      progression: List<Map<String, dynamic>>.from(techniqueMap['progression'] ?? []),
+    );
+    return TechniqueDetailScreen(technique: technique);
+  },
   AppRoutes.vocabulary: (context) => const VocabularyScreen(),
 
   // Progression

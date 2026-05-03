@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-import '../../widgets/scaffold_with_wide_bottom_panel.dart';
-import '../../routes.dart';
-import '../../constants/colors.dart';
+import 'package:aikido_helper/widgets/scaffold_with_wide_bottom_panel.dart';
+import 'package:aikido_helper/routes.dart';
+import 'package:aikido_helper/constants/colors.dart';
+import 'package:aikido_helper/functions/learn_json.dart';
+
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
 
+  void _initializeLearnJsonFile() {
+    createLearnJsonFile(path: 'assets/technique/techniques.csv');
+  }
+
   @override
   Widget build(BuildContext context) {
+    _initializeLearnJsonFile();
     return ScaffoldWithWideBottomPanel(
       body: Stack(
         children: [

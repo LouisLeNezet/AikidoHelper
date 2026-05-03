@@ -1,4 +1,4 @@
-import 'package:aikido_helper/functions/exam_json.dart';
+import 'package:aikido_helper/functions/utils.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 import '../../widgets/rating_emoticon.dart';
@@ -21,7 +21,7 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _examData = getExamJsonData(fileName: widget.fileName);
+    _examData = getJsonData(fileName: widget.fileName);
   }
 
   @override

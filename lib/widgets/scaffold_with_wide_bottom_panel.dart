@@ -20,22 +20,24 @@ class ScaffoldWithWideBottomPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar,
-      body: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: showWidePanel ? 140 : 0),
-            child: isScrollable
-                ? SingleChildScrollView(child: body)
-                : body,
-          ),
-          if (showWidePanel)
-            const Positioned(
-              left: 32,
-              right: 32,
-              bottom: 40,
-              child: WideBottomPanel(),
+      body: SizedBox.expand(
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: showWidePanel ? 140 : 0),
+              child: isScrollable
+                  ? SingleChildScrollView(child: body)
+                  : body,
             ),
-        ],
+            if (showWidePanel)
+              const Positioned(
+                left: 32,
+                right: 32,
+                bottom: 40,
+                child: WideBottomPanel(),
+              ),
+          ],
+        ),
       ),
     );
   }

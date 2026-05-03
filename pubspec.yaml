@@ -18,6 +18,8 @@ dependencies:
   shared_preferences: ^2.2.2
   logger: ^2.0.2+1
   flutter_rating_bar: ^4.0.1
+  fl_chart: ^0.66.0
+  youtube_player_iframe: ^5.2.1
 
 dev_dependencies:
   test: ^1.25.0

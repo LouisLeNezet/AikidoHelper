@@ -20,7 +20,11 @@ Future<List<Technique>> loadAllTechniques(String path, String grade) async {
       technique: r[2],
       form: r[3],
       grade: r[4],
-      links: r[5].split(','),
+      links: r[5]
+        .split(',')
+        .map((s) => s.trim())
+        .where((s) => s.isNotEmpty)
+        .toList(),
       markdown: r[6],
       progression: List.empty(),
     ))

@@ -24,34 +24,7 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
   @override
   void initState() {
     super.initState();
-    _examFilesFuture = _loadExamFiles();
-  }
-
-  Future<List<String>> _loadExamFiles() async {
-    if (kIsWeb) {
-      // On the Web: Load from SharedPreferences
-      final prefs = await SharedPreferences.getInstance();
-      final keys = prefs.getKeys();
-
-      logger.d('Stored keys in SharedPreferences: $keys');
-
-      // Filter keys to find those representing exam JSON files
-      final examFiles = keys.where((key) => key.startsWith('exam_')).toList();
-      return examFiles;
-    } else {
-      // On Mobile: Load from the filesystem
-      final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final List<FileSystemEntity> files = appDocDir.listSync();
-
-      // Filter only .json files
-      final examFiles = files
-          .where((file) => file.path.endsWith('.json') && file.path.split('/').last.startsWith('exam_'))
-          .map((file) => file.path.split('/').last.replaceAll('.json', ''))
-          .toList()
-        ..sort((a, b) => b.compareTo(a)); // Sort in decreasing order
-      logger.d("Filtered exam files: $examFiles");
-      return examFiles;
-    }
+    _examFilesFuture = loadExamFiles();
   }
 
   @override
@@ -147,7 +120,7 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
                               final prefs = await SharedPreferences.getInstance();
                               await prefs.remove(fileName);
                               setState(() {
-                                _examFilesFuture = _loadExamFiles();
+                                _examFilesFuture = loadExamFiles();
                               });
                             } else {
                               final Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -159,7 +132,7 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
                             }
 
                             setState(() {
-                              _examFilesFuture = _loadExamFiles();
+                              _examFilesFuture = loadExamFiles();
                             });
                           }
                         },

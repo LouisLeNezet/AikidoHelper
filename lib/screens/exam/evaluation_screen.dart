@@ -1,3 +1,4 @@
+import 'package:aikido_helper/functions/learn_json.dart';
 import 'package:flutter/material.dart';
 import '../../functions/exam_json.dart';
 import '../../routes.dart';
@@ -45,6 +46,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
     if (!mounted) return;
 
     if (isLast) {
+      updateLearnJsonFile(learnFile: "learningJson", examFile: widget.fileName);
       Navigator.pushNamed(
         context,
         AppRoutes.progressionDetail,

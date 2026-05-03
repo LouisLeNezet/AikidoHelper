@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:aikido_helper/functions/technique_class.dart';
 import 'package:path_provider/path_provider.dart';
@@ -106,57 +105,10 @@ Future<String> createExamJsonFile({
 
     logger.d(examJson);
 
-    if (kIsWeb) {
-      // WEB: Save to local storage
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(safeFileName, jsonEncode(examJson));
-      return safeFileName; // Return a dummy file reference
-    } else {
-      // MOBILE: Save to file
-      final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String filePath = '${appDocDir.path}/$safeFileName.json';
-      final File file = File(filePath);
-
-      await file.writeAsString(jsonEncode(examJson), flush: true);
-      return safeFileName;
-    }
+    await saveJsonData(fileName: safeFileName, jsonData: examJson);
+    return safeFileName;
   } catch (e, stack) {
     throw Exception("Failed to create exam JSON: $e\n$stack");
-  }
-}
-
-Future <Map<String, dynamic>> getExamJsonData({
-  required String fileName,
-}) async {
-  try {
-    late String content;
-    if (kIsWeb) {
-      // WEB: Load from local storage
-      final prefs = await SharedPreferences.getInstance();
-      content = prefs.getString(fileName) ?? '';
-      if (content.isEmpty) {
-        throw Exception('Exam file not found in local storage.');
-      }
-    } else {
-      // MOBILE: Load from file
-      final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String filePath = '${appDocDir.path}/$fileName.json';
-      final File jsonFile = File(filePath);
-      if (!jsonFile.existsSync()) {
-        throw Exception('Exam file not found at $filePath.');
-      }
-      content = await jsonFile.readAsString();
-    }
-
-    final Map<String, dynamic> data = jsonDecode(content);
-
-    if (data case {'metadata': Map<String, dynamic> _, 'evaluation': List _}) {
-      return data;
-    } else {
-      throw Exception('Invalid exam file: missing required fields.');
-    }
-  } catch (e, stack) {
-    throw Exception('Failed to get exam JSON data: $e\n$stack');
   }
 }
 
@@ -165,7 +117,7 @@ Future<Map<String, dynamic>> getTechniqueByIndex({
   required int index,
 }) async {
   try {
-    final Map<String, dynamic> data = await getExamJsonData(fileName: fileName);
+    final Map<String, dynamic> data = await getJsonData(fileName: fileName);
 
     if (!data.containsKey('evaluation') || data['evaluation'] is! List) {
       throw Exception('Invalid exam file: missing or bad "evaluation" section.');
@@ -186,7 +138,7 @@ Future<Map<String, dynamic>> getTechniqueByIndex({
 
 Future<Map<String, dynamic>> getExamMetaData({required String fileName}) async {
   try {
-    final Map<String, dynamic> data = await getExamJsonData(fileName: fileName);
+    final Map<String, dynamic> data = await getJsonData(fileName: fileName);
 
     if (data.containsKey('metadata') && data['metadata'] is Map<String, dynamic>) {
       final metadata = data['metadata'] as Map<String, dynamic>;
@@ -203,7 +155,7 @@ Future<T> getExamMetadataKey<T>({
   required String fileName,
   required String key
 }) async {
-    final examData = await getExamJsonData(fileName: fileName);
+    final examData = await getJsonData(fileName: fileName);
 
     if (!examData.containsKey('metadata')) {
       throw Exception('Failed to get exam metadata: Missing "metadata" section.');
@@ -245,28 +197,35 @@ Future<void> saveTechniqueRating({
   required int index,
   required int rating,
 }) async {
+  final examData = await getJsonData(fileName: fileName);
+  final evaluation = examData['evaluation'] as List<dynamic>;
+  evaluation[index]['rating'] = rating;
+  saveJsonData(fileName: fileName, jsonData: examData);
+}
+
+Future<List<String>> loadExamFiles() async {
   if (kIsWeb) {
-    // WEB: Update in local storage
+    // On the Web: Load from SharedPreferences
     final prefs = await SharedPreferences.getInstance();
-    final content = prefs.getString(fileName);
-    if (content == null) {
-      throw Exception('Exam file not found in local storage.');
-    }
-    final jsonData = jsonDecode(content);
-    final evaluation = jsonData['evaluation'] as List<dynamic>;
-    evaluation[index]['rating'] = rating;
-    await prefs.setString(fileName, jsonEncode(jsonData));
+    final keys = prefs.getKeys();
+
+    logger.d('Stored keys in SharedPreferences: $keys');
+
+    // Filter keys to find those representing exam JSON files
+    final examFiles = keys.where((key) => key.startsWith('exam_')).toList();
+    return examFiles;
   } else {
-    // MOBILE: Update in file
+    // On Mobile: Load from the filesystem
     final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final String filePath = '${appDocDir.path}/$fileName.json';
-    final File file = File(filePath);
-    if (!file.existsSync()) {
-      throw Exception('Exam file not found at $filePath.');
-    }
-    final jsonData = jsonDecode(await file.readAsString());
-    final evaluation = jsonData['evaluation'] as List<dynamic>;
-    evaluation[index]['rating'] = rating;
-    await file.writeAsString(jsonEncode(jsonData), flush: true);
+    final List<FileSystemEntity> files = appDocDir.listSync();
+
+    // Filter only .json files
+    final examFiles = files
+        .where((file) => file.path.endsWith('.json') && file.path.split('/').last.startsWith('exam_'))
+        .map((file) => file.path.split('/').last.replaceAll('.json', ''))
+        .toList()
+      ..sort((a, b) => b.compareTo(a)); // Sort in decreasing order
+    logger.d("Filtered exam files: $examFiles");
+    return examFiles;
   }
 }

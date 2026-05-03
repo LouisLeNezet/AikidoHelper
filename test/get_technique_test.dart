@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:aikido_helper/functions/exam_json.dart';
+import 'package:aikido_helper/functions/utils.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
 class MockPathProviderPlatform extends PathProviderPlatform {
@@ -56,9 +57,9 @@ void main() {
       await examFile.writeAsString(jsonEncode(examJson), flush: true);
     });
 
-    group('getExamJsonData', () {
+    group('getJsonData', () {
       test('returns the correct technique when index exists', () async {
-        final result = await getExamJsonData(fileName: 'exam');
+        final result = await getJsonData(fileName: 'exam');
 
         expect(result, isA<Map<String, dynamic>>());
         expect(result.containsKey('metadata'), isTrue);
@@ -75,7 +76,7 @@ void main() {
 
       test('throws exception if file does not exist', () async {
         await expectLater(
-          () => getExamJsonData(fileName: 'nonexistent_file'),
+          () => getJsonData(fileName: 'nonexistent_file'),
           throwsException,
         );
       });
@@ -86,7 +87,7 @@ void main() {
 
         // File name is 'bad_exam' (without .json)
         await expectLater(
-          () => getExamJsonData(fileName: 'bad_exam'),
+          () => getJsonData(fileName: 'bad_exam'),
           throwsException,
         );
       });

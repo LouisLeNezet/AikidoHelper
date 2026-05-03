@@ -5,6 +5,7 @@ import 'package:aikido_helper/functions/technique_filter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:aikido_helper/functions/exam_json.dart';
+import 'package:aikido_helper/functions/utils.dart';
 import 'package:logger/logger.dart';
 
 // --- Fake path_provider ---
@@ -81,7 +82,7 @@ void main() {
       );
 
       // Assert
-      final decoded = await getExamJsonData(fileName: fileName);
+      final decoded = await getJsonData(fileName: fileName);
 
       logger.d(decoded);
 
@@ -130,7 +131,7 @@ void main() {
       );
 
       // Assert
-      final decoded = await getExamJsonData(fileName: fileName);
+      final decoded = await getJsonData(fileName: fileName);
 
       logger.d(decoded);
 
@@ -147,7 +148,7 @@ void main() {
       expect(decoded['evaluation'][0]['nextAttackIndex'], 1);
 
       await saveTechniqueRating(fileName: fileName, index: 1, rating: 3);
-      final decodedUpd = await getExamJsonData(fileName: fileName);
+      final decodedUpd = await getJsonData(fileName: fileName);
       logger.d(decodedUpd);
       expect(decodedUpd['evaluation'][1]['rating'], 3);
     });

@@ -1,23 +1,29 @@
 /// A single technique record.
 class Technique {
-  final String position;
+  final String waza;
   final String attack;
   final String technique;
   final String form;
   final String grade;
+  final List<String> links;
+  final String markdown;
+  final List<Map<String, dynamic>> progression;
 
   Technique({
-    required this.position,
+    required this.waza,
     required this.attack,
     required this.technique,
     required this.form,
     required this.grade,
+    this.links = const [],
+    this.markdown = '',
+    this.progression = const [],
   });
 
-  String operator [](String key) {
+  dynamic operator [](String key) {
     switch (key) {
-      case 'position':
-        return position;
+      case 'waza':
+        return waza;
       case 'attack':
         return attack;
       case 'technique':
@@ -26,6 +32,12 @@ class Technique {
         return form;
       case 'grade':
         return grade;
+      case 'links':
+        return links;
+      case 'markdown':
+        return markdown;
+      case 'progression':
+        return progression;
       default:
         throw ArgumentError('Invalid key: $key');
     }
@@ -34,6 +46,6 @@ class Technique {
   // Override toString for custom printing
   @override
   String toString() {
-    return '$position $attack $technique $form, grade: $grade)';
+    return '$waza $attack $technique $form, grade: $grade)';
   }
 }

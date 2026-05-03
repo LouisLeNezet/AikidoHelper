@@ -25,14 +25,14 @@ Future<List<Technique>> orderTechniques({
 }) async {
   final orders = await loadOrderTechnique('assets/technique/techniques_ordering.csv');
   final attackOrder = orders['Attack']!;
-  final positionOrder = orders['Position']!;
+  final wazaOrder = orders['Waza']!;
   final techniqueOrder = orders['Technique']!;
   final formOrder = orders['Form']!;
 
-  // Sort by position (first column) in ascending order
+  // Sort by waza (first column) in ascending order
   lstTechniques.sort((a, b) {
-    final cmpPosition = orderCompare(a.position, b.position, positionOrder);
-    if (cmpPosition != 0) return cmpPosition;
+    final cmpWaza = orderCompare(a.waza, b.waza, wazaOrder);
+    if (cmpWaza != 0) return cmpWaza;
 
     final cmpAttack = orderCompare(a.attack, b.attack, attackOrder);
     if (cmpAttack != 0) return cmpAttack;
@@ -67,7 +67,7 @@ List<T> pick<T>(
 
 /// [path] to techniques CSV, [grade] current,
 /// returns a subset to fit time-constraints, split 60/30/10 over grades,
-/// and per-position time quotas.
+/// and per-waza time quotas.
 Future<List<Technique>> subsetTechniques({
   required String path,
   required String grade,
@@ -93,21 +93,21 @@ Future<List<Technique>> subsetTechniques({
       allTech.where((t)=>t.grade==poolGrades[i]).toList();
   }
 
-  // 4) per-position time, then #techniques by timePerTechnique
+  // 4) per-waza time, then #techniques by timePerTechnique
   final timePerTechnique = ConfigService.getConfig('timePerTechnique') ?? 60;
   debugPrint('Time per technique: $timePerTechnique');
-  final positions = gradeTimes[grade]?.keys.toList() ?? [];
-  debugPrint('Positions: $positions');
+  final wazas = gradeTimes[grade]?.keys.toList() ?? [];
+  debugPrint('Wazas: $wazas');
   if (timePerTechnique == 0) {
     throw Exception('timePerTechnique cannot be 0');
   }
   final perPosSeconds = gradeTimes[grade]!;
-  debugPrint('Per position seconds: $perPosSeconds');
+  debugPrint('Per waza seconds: $perPosSeconds');
   final perPosSlots = <String, int>{
-    for (var p in positions)
-      p: (perPosSeconds[p] ?? 0) ~/ timePerTechnique
+    for (var w in wazas)
+      w: (perPosSeconds[w] ?? 0) ~/ timePerTechnique
   };
-  debugPrint('Per position slots: $perPosSlots');
+  debugPrint('Per waza slots: $perPosSlots');
 
   // 5) prioritize by key
   final byKey = (ConfigService.getConfig('prioritizeBy') ?? 'attack').toLowerCase();
@@ -118,12 +118,12 @@ Future<List<Technique>> subsetTechniques({
 
   // 7) assemble subset
   final subset = <Technique>[];
-  for (var pos in positions) {
-    final slots = perPosSlots[pos] ?? 0;
+  for (var waza in wazas) {
+    final slots = perPosSlots[waza] ?? 0;
     if (slots<=0) continue;
 
-    // gather all by position, then split by grade-ratio
-    final posTech = allTech.where((t)=>t.position==pos).toList();
+    // gather all by waza, then split by grade-ratio
+    final posTech = allTech.where((t)=>t.waza==waza).toList();
 
     for (var i=0; i < ratios.length; i++) {
       if (i>=poolGrades.length) break;
@@ -136,8 +136,8 @@ Future<List<Technique>> subsetTechniques({
     }
 
     // if rounding gap, fill from current grade
-    if (subset.where((t)=>t.position==pos).length < slots) {
-      final remaining = slots - subset.where((t)=>t.position==pos).length;
+    if (subset.where((t)=>t.waza==waza).length < slots) {
+      final remaining = slots - subset.where((t)=>t.waza==waza).length;
       final currBucket = posTech.where((t)=>t.grade==grade).toList();
       subset.addAll(pick(currBucket, remaining, (t) => t[byKey], seenKeys));
     }

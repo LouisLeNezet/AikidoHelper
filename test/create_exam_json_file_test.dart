@@ -39,28 +39,28 @@ void main() {
       const fakeVersion = '1.0.0';
       
       final technique1 = Technique(
-        position: 'Position1',
+        waza: 'Position1',
         attack: 'Attack1',
         technique: 'Technique1',
         form: 'Form1',
         grade: fakeGrade,
       );
       final technique2 = Technique(
-        position: 'Position1',
+        waza: 'Position1',
         attack: 'Attack1',
         technique: 'Technique2',
         form: 'Form1',
         grade: fakeGrade,
       );
       final technique3 = Technique(
-        position: 'Position1',
+        waza: 'Position1',
         attack: 'Attack2',
         technique: 'Technique2',
         form: 'Form2',
         grade: fakeGrade,
       );
       final technique4 = Technique(
-        position: 'Position2',
+        waza: 'Position2',
         attack: 'Attack2',
         technique: 'Technique2',
         form: 'Form2',

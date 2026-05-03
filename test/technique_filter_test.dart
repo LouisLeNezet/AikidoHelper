@@ -20,15 +20,15 @@ void main() {
   group('Technique class', () {
     test('Technique constructor initializes properties correctly', () {
       final technique = Technique(
-        position: 'Tachi waza',
+        waza: 'Tachi waza',
         attack: 'Katate dori',
         technique: 'Nikyo',
         form: 'Ura',
         grade: '4 Kyu',
       );
 
-      expect(technique.position, 'Tachi waza');
-      expect(technique.position, technique['position']);
+      expect(technique.waza, 'Tachi waza');
+      expect(technique.waza, technique['waza']);
       expect(technique.attack, 'Katate dori');
       expect(technique.attack, technique['attack']);
       expect(technique.technique, 'Nikyo');
@@ -41,7 +41,7 @@ void main() {
 
     test('Technique toString returns formatted string', () {
       final technique = Technique(
-        position: 'Tachi waza',
+        waza: 'Tachi waza',
         attack: 'Katate dori',
         technique: 'Nikyo',
         form: 'Ura',
@@ -108,7 +108,7 @@ void main() {
     
     expect(orderedTechniques, isNotEmpty);
 
-    expect(orderedTechniques[0].position, 'Suwari waza');
+    expect(orderedTechniques[0].waza, 'Suwari waza');
     expect(orderedTechniques[0].attack, 'Ai hanmi katate dori');
     expect(orderedTechniques[0].technique, 'Ikkyo');
     expect(orderedTechniques[0].form, 'Omote');
@@ -159,7 +159,7 @@ void main() {
       await tempDir.delete(recursive: true);
     });
 
-    test('subsetTechniques returns correct number of techniques per position', () async {
+    test('subsetTechniques returns correct number of techniques per waza', () async {
       await ConfigService.loadConfig();
       ConfigService.setConfig('prioritizeBy', 'attack');
       ConfigService.setConfig('timePerTechnique', 70);
@@ -174,9 +174,9 @@ void main() {
       expect(subset, isNotEmpty);
 
       // Example: 3 positions = tachi, suwari, hanmi → check distribution
-      final tachi = subset.where((t) => t.position == 'Tachi waza');
-      final suwari = subset.where((t) => t.position == 'Suwari waza');
-      final hanmi = subset.where((t) => t.position == 'Hanmi Handachi waza');
+      final tachi = subset.where((t) => t.waza == 'Tachi waza');
+      final suwari = subset.where((t) => t.waza == 'Suwari waza');
+      final hanmi = subset.where((t) => t.waza == 'Hanmi Handachi waza');
 
       expect(tachi.length, 8);
       expect(suwari.length, 2);

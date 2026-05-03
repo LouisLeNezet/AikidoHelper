@@ -15,11 +15,14 @@ Future<List<Technique>> loadAllTechniques(String path, String grade) async {
     .map((l)=>l.split('\t'))
     .where((r) => grades.indexOf(r.last) <= maxIdx)
     .map((r)=>Technique(
-      position: r[0],
+      waza: r[0],
       attack: r[1],
       technique: r[2],
       form: r[3],
-      grade: r[4]
+      grade: r[4],
+      links: r[5].split(','),
+      markdown: r[6],
+      progression: List.empty()
     ))
     .toList();
 }

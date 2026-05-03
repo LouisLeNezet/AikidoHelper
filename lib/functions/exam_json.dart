@@ -30,7 +30,7 @@ Future<String> createExamJsonFile({
       subsetTechniques(path: 'assets/technique/techniques.csv', grade: grade, gradeTimeCsvPath: 'assets/technique/grade_time.csv')
     );
 
-    final wazas = techniques.map((t) => t.position).toList();
+    final wazas = techniques.map((t) => t.waza).toList();
     final nextWazaIndices = List<int?>.filled(techniques.length, null);
 
     for (int i = 0; i < techniques.length; i++) {
@@ -63,7 +63,7 @@ Future<String> createExamJsonFile({
     for (int i = 0; i < techniques.length; i++) {
       final technique = techniques[i];
       evaluationList.add({
-        "position": technique.position,
+        "waza": technique.waza,
         "attack": technique.attack,
         "technique": technique.technique,
         "form": technique.form,
@@ -77,9 +77,9 @@ Future<String> createExamJsonFile({
       index++;
     }
 
-    final tachi = techniques.where((t) => t.position == 'Tachi waza');
-    final suwari = techniques.where((t) => t.position == 'Suwari waza');
-    final hanmi = techniques.where((t) => t.position == 'Hanmi Handachi waza');
+    final tachi = techniques.where((t) => t.waza == 'Tachi waza');
+    final suwari = techniques.where((t) => t.waza == 'Suwari waza');
+    final hanmi = techniques.where((t) => t.waza == 'Hanmi Handachi waza');
 
     // Final JSON structure
     final Map<String, dynamic> examJson = {

@@ -58,7 +58,7 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
               ...evaluationList.map((technique) => Card(
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 child: ListTile(
-                  title: Text('${technique['position']} - ${technique['technique']}'),
+                  title: Text('${technique['waza']} - ${technique['technique']}'),
                   subtitle: Text('Attack: ${technique['attack']}\nForm: ${technique['form']} | Grade: ${technique['techniqueGrade']}'),
                   trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

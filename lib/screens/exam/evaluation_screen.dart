@@ -86,7 +86,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
           final isLast = widget.index == maxIndex;
 
           final techniqueData = snapshot.data!['technique'] as Map<String, dynamic>;
-          final position = techniqueData['position'] as String;
+          final waza = techniqueData['waza'] as String;
           final attack = techniqueData['attack'] as String;
           final technique = techniqueData['technique'] as String;
           final form = techniqueData['form'] as String? ?? '';
@@ -106,7 +106,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          position,
+                          waza,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),

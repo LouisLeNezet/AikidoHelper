@@ -93,7 +93,12 @@ Future<String> updateLearnJsonFile({
   }
 }
 
-int compareTechniques(Map<String, dynamic> a, Map<String, dynamic> b, String sortField, bool ascending) {
+int compareTechniques(
+  Map<String, dynamic> a,
+  Map<String, dynamic> b,
+  String sortField,
+  bool ascending,
+) {
   dynamic getField(Map<String, dynamic> t, String field) {
     switch (field) {
       case 'rating':
@@ -108,18 +113,50 @@ int compareTechniques(Map<String, dynamic> a, Map<String, dynamic> b, String sor
         return t['attack'] ?? '';
       case 'technique':
         return t['technique'] ?? '';
+      case 'form':
+        return t['form'] ?? '';
       default:
         return '';
     }
   }
 
-  final valA = getField(a, sortField);
-  final valB = getField(b, sortField);
+  int compareValues(dynamic va, dynamic vb) {
+    if (va is num && vb is num) {
+      return va.compareTo(vb);
+    }
 
-  if (valA is num && valB is num) {
-    return ascending ? valA.compareTo(valB) : valB.compareTo(valA);
+    return va
+        .toString()
+        .toLowerCase()
+        .compareTo(vb.toString().toLowerCase());
   }
-  return ascending
-      ? valA.toString().compareTo(valB.toString())
-      : valB.toString().compareTo(valA.toString());
+
+  // Primary sort
+  int result = compareValues(
+    getField(a, sortField),
+    getField(b, sortField),
+  );
+
+  // Secondary sorts
+  if (result == 0) {
+    const fallbackFields = [
+      'waza',
+      'attack',
+      'technique',
+      'form',
+    ];
+
+    for (final field in fallbackFields) {
+      result = compareValues(
+        getField(a, field),
+        getField(b, field),
+      );
+
+      if (result != 0) {
+        break;
+      }
+    }
+  }
+
+  return ascending ? result : -result;
 }

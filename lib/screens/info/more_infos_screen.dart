@@ -9,10 +9,13 @@ class MoreInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScaffoldWithWideBottomPanel(
       isScrollable: true,
-      body: const MarkdownViewer(
-        assetPath: 'assets/markdowns/more_infos.md',
-        imageWidth: 100,
-        imageHeight: 100,
+      body: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: const MarkdownViewer(
+          assetPath: 'assets/markdowns/more_infos.md',
+          imageWidth: 100,
+          imageHeight: 100,
+        ),
       ),
     );
   }

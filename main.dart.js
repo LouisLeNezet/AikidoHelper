@@ -7149,9 +7149,9 @@ m=new A.eA(Date.now(),0,!1)
 l=""+A.aCE(m)+"-"+B.d.ll(B.i.k(A.aCD(m)),2,"0")+"-"+B.d.ll(B.i.k(A.aCA(m)),2,"0")
 k=B.d.ll(B.i.k(A.aCB(m)),2,"0")+":"+B.d.ll(B.i.k(A.aCC(m)),2,"0")
 b5=c1
-b5=b5==null?null:b5.$3$grade$gradeTimeCsvPath$path(c4,"assets/technique/grade_time.csv","assets/technique/techniques.csv")
+b5=b5==null?null:b5.$3$grade$gradeTimeCsvPath$path(c4,"assets/csv/grade_time.csv","assets/csv/techniques.csv")
 s=8
-return A.M(b5==null?A.a_5(c4,"assets/technique/grade_time.csv","assets/technique/techniques.csv"):b5,$async$I2)
+return A.M(b5==null?A.a_5(c4,"assets/csv/grade_time.csv","assets/csv/techniques.csv"):b5,$async$I2)
 case 8:j=c6
 b5=t.N
 b6=J.hw(j,new A.au3(),b5)
@@ -7463,7 +7463,7 @@ return B.i.bn(s,r==null?999:r)},
 av2(a){var s=0,r=A.H(t.uq),q,p,o,n,m,l
 var $async$av2=A.I(function(b,c){if(b===1)return A.E(c,r)
 while(true)switch(s){case 0:s=3
-return A.M(A.auS("assets/technique/techniques_ordering.csv"),$async$av2)
+return A.M(A.auS("assets/csv/techniques_ordering.csv"),$async$av2)
 case 3:m=c
 l=m.h(0,"Attack")
 l.toString
@@ -41468,7 +41468,7 @@ A.vx.prototype={
 I(a){return B.Oz}}
 A.tL.prototype={
 I(a){var s,r=null
-A.wT("assets/technique/techniques.csv")
+A.wT("assets/csv/techniques.csv")
 s=t.p
 return A.jI(A.iQ(B.bG,A.b([new A.bb(B.dn,A.dD(A.b([A.dt(B.X2,r,r),B.kF,A.iL(A.b([A.t3(A.h3(r,A.dD(A.b([A.aw3(A.ih(16),A.LK("assets/images/exam.png",r,B.lJ,200,r),B.bZ),B.kG,A.h_(B.D,B.X8,B.u,r,new A.cM(B.eg,r,r,A.ih(12),r,r,B.an),r,r,r,B.cp,r)],s),B.cG,B.a_,B.aa),B.a3,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.a8b(a),r,r,r,r,r,r),1),B.Rj,A.t3(A.h3(r,A.dD(A.b([A.aw3(A.ih(16),A.LK("assets/images/train.png",r,B.lJ,200,r),B.bZ),B.kG,A.h_(B.D,B.Xi,B.u,r,new A.cM(B.eg,r,r,A.ih(12),r,r,B.an),r,r,r,B.cp,r)],s),B.cG,B.a_,B.aa),B.a3,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.a8c(a),r,r,r,r,r,r),1)],s),B.a2,B.hd,B.aa,r)],s),B.b4,B.a_,B.aa),r),A.Bd(r,A.p3(r,r,r,B.Hd,r,r,new A.a8d(a),r,r,r,"More Info"),r,r,r,16,16,r)],s),B.M,B.bm,r),!1,!0)}}
 A.a8b.prototype={

@@ -20,7 +20,10 @@ class CenteredActionScreenLayout extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 24,
-            child: Center(child: bottom),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: bottom,
+            ),
           ),
       ],
     );

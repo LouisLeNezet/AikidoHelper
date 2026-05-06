@@ -39,7 +39,7 @@ void main() {
       ConfigService.saveConfig();
 
       final fileNameLearn = await createLearnJsonFile(
-        path: 'assets/technique/techniques.csv',
+        path: 'assets/csv/techniques.csv',
       );
 
       // Assert
@@ -53,9 +53,9 @@ void main() {
       expect(decoded['Suwari waza|Ai hanmi katate dori|Ikkyo|Omote']['progression'], []);
 
       final subset = await subsetTechniques(
-        path: 'assets/technique/techniques.csv',
+        path: 'assets/csv/techniques.csv',
         grade: '4 Kyu',
-        gradeTimeCsvPath: 'assets/technique/grade_time.csv',
+        gradeTimeCsvPath: 'assets/csv/grade_time.csv',
       );
 
       const fakeGrade = '4 Kyu';

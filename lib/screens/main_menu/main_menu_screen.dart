@@ -9,7 +9,7 @@ class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
 
   void _initializeLearnJsonFile() {
-    createLearnJsonFile(path: 'assets/technique/techniques.csv');
+    createLearnJsonFile(path: 'assets/csv/techniques.csv');
   }
 
   @override

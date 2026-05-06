@@ -115,9 +115,9 @@ void main() {
       ConfigService.saveConfig();
 
       final subset = await subsetTechniques(
-        path: 'assets/technique/techniques.csv',
+        path: 'assets/csv/techniques.csv',
         grade: '4 Kyu',
-        gradeTimeCsvPath: 'assets/technique/grade_time.csv',
+        gradeTimeCsvPath: 'assets/csv/grade_time.csv',
       );
 
       const fakeGrade = '4 Kyu';

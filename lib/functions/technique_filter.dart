@@ -23,7 +23,7 @@ int orderCompare(String a, String b, Map<String, int> orderMap) {
 Future<List<Technique>> orderTechniques({
   required List<Technique> lstTechniques,
 }) async {
-  final orders = await loadOrderTechnique('assets/technique/techniques_ordering.csv');
+  final orders = await loadOrderTechnique('assets/csv/techniques_ordering.csv');
   final attackOrder = orders['Attack']!;
   final wazaOrder = orders['Waza']!;
   final techniqueOrder = orders['Technique']!;

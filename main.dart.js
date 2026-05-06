@@ -41442,7 +41442,7 @@ for(o=0;o<r.length;++o){n=r[o]
 q.push(new A.cY(o,A.eH(n.h(0,"rating"))))
 m=n.h(0,"date")
 p.push(m==null?"":m)}m=t.p
-l=A.b([A.b9("Waza: "+i.a,k,k,k,A.T(a).p1.w,k,k),A.b9("Attack: "+i.b,k,k,k,A.T(a).p1.w,k,k),A.b9("Technique: "+i.c,k,k,k,A.T(a).p1.w,k,k),A.b9("Form: "+i.d,k,k,k,A.T(a).p1.w,k,k),A.b9("Expected at Grade: "+i.e,k,k,k,A.T(a).p1.w,k,k),B.d0],m)
+l=A.b([A.b9("Waza: "+i.a,k,k,k,A.T(a).p1.w,k,k),A.b9("Attack: "+i.b,k,k,k,A.T(a).p1.w,k,k),A.b9("Technique2: "+i.c,k,k,k,A.T(a).p1.w,k,k),A.b9("Form: "+i.d,k,k,k,A.T(a).p1.w,k,k),A.b9("Expected at Grade: "+i.e,k,k,k,A.T(a).p1.w,k,k),B.d0],m)
 i=i.r
 if(i.length!==0)B.b.M(l,A.b([A.b9("Notes:",k,k,k,A.T(a).p1.w,k,k),new A.An(i,300,300,k),B.d0],m))
 l.push(B.d0)

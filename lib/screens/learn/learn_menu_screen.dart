@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
-import '../../widgets/page_layout.dart';
+import '../../widgets/list_screen_layout.dart';
 import '../../widgets/rating_emoticon.dart';
 import 'package:aikido_helper/functions/utils.dart';
 import 'package:aikido_helper/functions/learn_json.dart';
@@ -79,32 +79,29 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
 
           learnList.sort((a, b) => compareTechniques(a, b, _sortField, _ascending));
 
-          return ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              // SEARCH + SORT BAR
-              Row(
-                children: [
-                  Expanded(
-                    flex: 7,
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        labelText: 'Search techniques',
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(),
+          return ListScreenLayout(
+            header: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 7,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          labelText: 'Search techniques',
+                          prefixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value.toLowerCase();
+                          });
+                        },
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          _searchQuery = value.toLowerCase();
-                        });
-                      },
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 3,
-                    child: Align(
-                      alignment: Alignment.centerRight,
+                    const SizedBox(width: 12),
+                    Expanded(
+                      flex: 3,
                       child: PopupMenuButton<String>(
                         onSelected: _setSort,
                         itemBuilder: (context) => const [
@@ -117,68 +114,61 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              _sortField[0].toUpperCase() + _sortField.substring(1),
-                            ),
+                            Text(_sortField[0].toUpperCase() + _sortField.substring(1)),
                             const SizedBox(width: 4),
                             GestureDetector(
                               onTap: () {
-                                setState(() {
-                                  _ascending = !_ascending;
-                                });
+                                setState(() => _ascending = !_ascending);
                               },
                               child: Icon(
-                                _ascending
-                                    ? Icons.arrow_upward
-                                    : Icons.arrow_downward,
+                                _ascending ? Icons.arrow_upward : Icons.arrow_downward,
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+                const Text(
+                  'Techniques:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
 
-              const SizedBox(height: 16),
-
-              const Text(
-                'Techniques:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(height: 10),
-
-              ...learnList.map(
-                (technique) => Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  child: ListTile(
-                    title: Text(
-                      '${technique['waza']} - ${technique['attack']} - ${technique['technique']}',
+            child: ListView(
+              children: [
+                ...learnList.map(
+                  (technique) => Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: ListTile(
+                      title: Text(
+                        '${technique['waza']} - ${technique['attack']} - ${technique['technique']}',
+                      ),
+                      subtitle: Text(
+                        '${(technique['form'] ?? '').toString().isNotEmpty ? 'Form: ${technique['form']} | ' : ''}'
+                        'Grade: ${technique['techniqueGrade']}',
+                      ),
+                      trailing: RatingEmoticon(
+                        rating: (technique['progression'].isNotEmpty
+                            ? (technique['progression'].last['rating'] as num?)
+                                    ?.toInt() ??
+                                0
+                            : 0),
+                        showValue: false,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          '/learn/technique-detail',
+                          arguments: technique,
+                        );
+                      },
                     ),
-                    subtitle: Text(
-                      '${(technique['form'] ?? '').toString().isNotEmpty ? 'Form: ${technique['form']} | ' : ''}'
-                      'Grade: ${technique['techniqueGrade']}',
-                    ),
-                    trailing: RatingEmoticon(
-                      rating: (technique['progression'].isNotEmpty
-                          ? (technique['progression'].last['rating'] as num?)
-                                  ?.toInt() ??
-                              0
-                          : 0),
-                      showValue: false,
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        '/learn/technique-detail',
-                        arguments: technique,
-                      );
-                    },
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),

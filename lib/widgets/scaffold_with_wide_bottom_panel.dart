@@ -27,6 +27,7 @@ class ScaffoldWithWideBottomPanel extends StatelessWidget {
             ),
           ),
 
+          const SizedBox(height: 16),
           if (showWidePanel)
             Padding(
               padding: const EdgeInsets.only(bottom: 40),

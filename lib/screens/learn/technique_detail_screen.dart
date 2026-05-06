@@ -37,7 +37,7 @@ class TechniqueDetailScreen extends StatelessWidget {
           children: [
             Text('Waza: ${technique.waza}', style: Theme.of(context).textTheme.titleMedium),
             Text('Attack: ${technique.attack}', style: Theme.of(context).textTheme.titleMedium),
-            Text('Technique: ${technique.technique}', style: Theme.of(context).textTheme.titleMedium),
+            Text('Technique2: ${technique.technique}', style: Theme.of(context).textTheme.titleMedium),
             Text('Form: ${technique.form}', style: Theme.of(context).textTheme.titleMedium),
             Text('Expected at Grade: ${technique.grade}', style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 16),

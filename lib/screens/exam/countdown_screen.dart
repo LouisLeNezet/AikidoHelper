@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/countdown_timer.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
-import '../../widgets/page_layout.dart';
+import '../../widgets/layouts/centered_action_screen_layout.dart';
 import '../../routes.dart';
 
 class CountdownScreen extends StatelessWidget {
@@ -16,10 +16,9 @@ class CountdownScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScaffoldWithWideBottomPanel(
       showWidePanel: false,
-      body: PageLayout(
-        scrollable: false, // IMPORTANT
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: CenteredActionScreenLayout(
+        center: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
               'The exam will start in:',

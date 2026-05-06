@@ -11,7 +11,7 @@ import '../../functions/exam_json.dart';
 import '../../functions/utils.dart';
 
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
-import '../../widgets/list_screen_layout.dart';
+import '../../widgets/layouts/list_screen_layout.dart';
 
 class ProgressionListScreen extends StatefulWidget {
   const ProgressionListScreen({super.key});

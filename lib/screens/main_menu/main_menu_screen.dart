@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:aikido_helper/widgets/scaffold_with_wide_bottom_panel.dart';
-import 'package:aikido_helper/widgets/page_layout.dart';
+import 'package:aikido_helper/widgets/layouts/page_layout.dart';
 import 'package:aikido_helper/routes.dart';
 import 'package:aikido_helper/constants/colors.dart';
 import 'package:aikido_helper/functions/learn_json.dart';

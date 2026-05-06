@@ -1,7 +1,7 @@
 import 'package:aikido_helper/functions/utils.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
-import '../../widgets/list_screen_layout.dart';
+import '../../widgets/layouts/list_screen_layout.dart';
 import '../../widgets/rating_emoticon.dart';
 import '../../widgets/header_chip.dart';
 

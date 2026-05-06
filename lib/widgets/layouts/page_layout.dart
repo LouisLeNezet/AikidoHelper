@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'centered_constrained.dart';
+import '../centered_constrained.dart';
 
 class PageLayout extends StatelessWidget {
   final Widget child;

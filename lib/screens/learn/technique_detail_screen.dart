@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
-import '../../widgets/page_layout.dart';
+import '../../widgets/layouts/page_layout.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../functions/technique_class.dart';
 import '../../widgets/rating_emoticon.dart';

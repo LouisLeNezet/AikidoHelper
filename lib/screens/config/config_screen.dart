@@ -6,6 +6,7 @@ import '../../widgets/text_input.dart';
 import '../../widgets/drop_down_selection.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 import '../../widgets/layouts/page_layout.dart';
+import '../../widgets/confirm_dialog.dart';
 
 class ConfigScreen extends StatefulWidget {
   const ConfigScreen({super.key});
@@ -147,27 +148,13 @@ class ConfigScreenState extends State<ConfigScreen> {
                   backgroundColor: Colors.red,
                 ),
                 onPressed: () async {
-                  final confirm = await showDialog<bool>(
+                  final confirm = await showConfirmDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Reset data'),
-                      content: const Text(
+                    title: 'Reset data',
+                    content:
                         'This will permanently delete all your local data. This action cannot be undone.',
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: const Text(
-                            'Delete',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ),
-                      ],
-                    ),
+                    confirmText: 'Delete',
+                    confirmColor: Colors.red,
                   );
 
                   if (confirm == true) {

@@ -1,17 +1,11 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
-
 import '../../routes.dart';
-import '../../constants/colors.dart';
 import '../../functions/exam_json.dart';
 import '../../functions/utils.dart';
-
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 import '../../widgets/layouts/list_screen_layout.dart';
+import '../../widgets/confirm_dialog.dart';
 
 class ProgressionListScreen extends StatefulWidget {
   const ProgressionListScreen({super.key});
@@ -115,29 +109,15 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
                         trailing: IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () async {
-                            final confirm = await showDialog<bool>(
+                            final confirm = await showConfirmDialog(
                               context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Delete Exam'),
-                                content: const Text('Are you sure?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, false),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, true),
-                                    child: const Text('Delete'),
-                                  ),
-                                ],
-                              ),
+                              title: 'Delete Exam',
+                              content: 'This will permanently delete this exam from your progression.',
+                              confirmText: 'Delete',
+                              confirmColor: Colors.red,
                             );
-
                             if (confirm == true) {
                               await deleteExamFile(fileName);
-
                               setState(() {
                                 _examFilesFuture = loadExamFiles();
                               });

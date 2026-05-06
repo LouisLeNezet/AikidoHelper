@@ -12,7 +12,7 @@ const RESOURCES = {"assets/assets/config.json": "280a7bf31c7a572189408eb50c523a2
 "assets/assets/images/train.png": "2b04cdb4e67b8c9c438d594dc171855e",
 "assets/assets/images/logo_circle.png": "ed690b1f78e4b5a1c3342c2abcc63c4a",
 "assets/assets/images/logo_minimalist_black.png": "513719de370b21e9b09e39808d062b90",
-"assets/assets/csv/techniques.csv": "63f9f869f5f8809f27d73088c5e8f2b8",
+"assets/assets/csv/techniques.csv": "b1fa4c567972fd7a57ac4d8e7d001c52",
 "assets/assets/csv/grade_time.csv": "95558f8343fefc9a40fc5a3444926799",
 "assets/assets/csv/techniques_ordering.csv": "16b6ed717275aa23df4814dcb4c078bb",
 "assets/assets/markdowns/techniques/tachiwaza_shomenuchi_ikkyo_omote.md": "2010e0d95040bd0452a41c39fd70ce2b",
@@ -43,7 +43,7 @@ const RESOURCES = {"assets/assets/config.json": "280a7bf31c7a572189408eb50c523a2
 "canvaskit/skwasm.js": "f2ad9363618c5f62e813740099a80e63",
 "canvaskit/skwasm_st.js": "d1326ceef381ad382ab492ba5d96f04d",
 "flutter.js": "76f08d47ff9f5715220992f993002504",
-"flutter_bootstrap.js": "64dd77ad419ccddb668c487f6e135e34",
+"flutter_bootstrap.js": "6cdc469a321e0a8036b9f1ca5660a50a",
 "main.dart.js": "8de67c999f81c570c5a8e28ae762f2c9",
 "version.json": "c83ba0d53303978d5b54a6f14369f2b4",
 "icons/logo_minimaliste_200.png": "b478361f3c74934c33aaa2c2997f88c8"};

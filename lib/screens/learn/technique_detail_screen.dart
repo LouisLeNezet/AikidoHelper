@@ -43,6 +43,7 @@ class TechniqueDetailScreen extends StatelessWidget {
             const SizedBox(height: 16),
             if (technique.markdown.isNotEmpty) ...[
               Text('Notes:', style: Theme.of(context).textTheme.titleMedium),
+              Text(technique.markdown, style: Theme.of(context).textTheme.titleMedium),
               MarkdownViewer(
                 assetPath: technique.markdown,
                 imageWidth: 300,

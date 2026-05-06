@@ -6,14 +6,12 @@ import 'package:aikido_helper/widgets/centered_constrained.dart';
 class ScaffoldWithWideBottomPanel extends StatelessWidget {
   final PreferredSizeWidget appBar;
   final Widget body;
-  final bool isScrollable;
   final bool showWidePanel;
 
   const ScaffoldWithWideBottomPanel({
     super.key,
     this.appBar = const CustomAppBar(),
     required this.body,
-    this.isScrollable = false,
     this.showWidePanel = true,
   });
 
@@ -21,31 +19,25 @@ class ScaffoldWithWideBottomPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar,
-      body: SizedBox.expand(
-        child: Stack(
-          children: [
-            CenteredConstrained(
-              child: Padding(
-                padding: EdgeInsets.only(bottom: showWidePanel ? 140 : 0),
-                child: isScrollable
-                    ? SingleChildScrollView(child: body)
-                    : body,
-              ),
+      body: Column(
+        children: [
+          Expanded(
+            child: CenteredConstrained(
+              child: body,
             ),
-            if (showWidePanel)
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 40,
-                child: CenteredConstrained(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: WideBottomPanel(),
-                  ),
+          ),
+
+          if (showWidePanel)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 40),
+              child: CenteredConstrained(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: WideBottomPanel(),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

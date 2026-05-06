@@ -1,6 +1,7 @@
 import 'package:aikido_helper/functions/utils.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
+import '../../widgets/page_layout.dart';
 import '../../widgets/rating_emoticon.dart';
 
 class ProgressionDetailScreen extends StatefulWidget {
@@ -32,14 +33,23 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error loading exam: ${snapshot.error}'));
-          } else if (!snapshot.hasData) {
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error loading exam: ${snapshot.error}'),
+            );
+          }
+
+          if (!snapshot.hasData) {
             return const Center(child: Text('No data found.'));
           }
 
-          final metadata = snapshot.data!['metadata'] as Map<String, dynamic>;
-          final evaluationList = List<Map<String, dynamic>>.from(snapshot.data!['evaluation']);
+          final metadata =
+              snapshot.data!['metadata'] as Map<String, dynamic>;
+
+          final evaluationList =
+              List<Map<String, dynamic>>.from(snapshot.data!['evaluation']);
 
           return ListView(
             padding: const EdgeInsets.all(16),
@@ -50,30 +60,44 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
               Text('Exam Name: ${metadata['examName']}'),
               Text('App Version: ${metadata['version']}'),
               Text('Size: ${metadata['size']['total']} techniques'),
+
               const SizedBox(height: 20),
               const Divider(),
               const SizedBox(height: 10),
-              const Text('Techniques:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+
+              const Text(
+                'Techniques:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+
               const SizedBox(height: 10),
-              ...evaluationList.map((technique) => Card(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                child: ListTile(
-                  title: Text('${technique['waza']} - ${technique['technique']}'),
-                  subtitle: Text('Attack: ${technique['attack']}\nForm: ${technique['form']} | Grade: ${technique['techniqueGrade']}'),
-                  trailing: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text('Index: ${technique['index']}'),
-                      const SizedBox(height: 4),
-                      RatingEmoticon(
-                        rating: (technique['rating'] as num?)?.toInt() ?? 0,
-                        showValue: true,
-                      ),
-                    ],
+
+              ...evaluationList.map(
+                (technique) => Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: ListTile(
+                    title: Text(
+                      '${technique['waza']} - ${technique['technique']}',
+                    ),
+                    subtitle: Text(
+                      'Attack: ${technique['attack']}\n'
+                      'Form: ${technique['form']} | Grade: ${technique['techniqueGrade']}',
+                    ),
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text('Index: ${technique['index']}'),
+                        const SizedBox(height: 4),
+                        RatingEmoticon(
+                          rating: (technique['rating'] as num?)?.toInt() ?? 0,
+                          showValue: true,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              )),
+              ),
             ],
           );
         },

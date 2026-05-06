@@ -5,6 +5,7 @@ import '../../constants/colors.dart';
 import '../../widgets/text_input.dart';
 import '../../widgets/drop_down_selection.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
+import '../../widgets/page_layout.dart';
 
 class ConfigScreen extends StatefulWidget {
   const ConfigScreen({super.key});
@@ -60,9 +61,7 @@ class ConfigScreenState extends State<ConfigScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithWideBottomPanel(
-      isScrollable: false,
-      body: Padding(
-        padding: const EdgeInsets.all(32.0),
+      body: PageLayout(
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height - 140, // minus bottom panel height
@@ -139,6 +138,44 @@ class ConfigScreenState extends State<ConfigScreen> {
                 ),
                 child: const Text('Save Configuration'),
               ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.red,
+                ),
+                onPressed: () async {
+                  final confirm = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Reset data'),
+                      content: const Text(
+                        'This will permanently delete all your local data. This action cannot be undone.',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text(
+                            'Delete',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+
+                  if (confirm == true) {
+                    await resetData();
+                  }
+                },
+                child: const Text('Reset local data'),
+              )
             ],
           ),
         ),

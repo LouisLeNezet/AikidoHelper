@@ -7,7 +7,9 @@ import 'package:logger/logger.dart';
 import '../../routes.dart';
 import '../../constants/colors.dart';
 import '../../functions/exam_json.dart';
+import '../../functions/utils.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
+import '../../widgets/page_layout.dart';
 
 class ProgressionListScreen extends StatefulWidget {
   const ProgressionListScreen({super.key});
@@ -44,6 +46,7 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
           final examFiles = snapshot.data!;
 
           return ListView.builder(
+            padding: const EdgeInsets.all(16),
             itemCount: examFiles.length,
             itemBuilder: (context, index) {
               final fileName = examFiles[index];
@@ -55,37 +58,27 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
                   getExamMetadataKey<String>(fileName: fileName, key: 'hour'),
                   getExamMetadataKey<String>(fileName: fileName, key: 'grade'),
                 ]).then((values) => {
-                      'examName': values[0],
-                      'date': values[1],
-                      'hour': values[2],
-                      'grade': values[3],
-                    }),
+                  'examName': values[0],
+                  'date': values[1],
+                  'hour': values[2],
+                  'grade': values[3],
+                }),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error loading metadata: ${snapshot.error}'));
-                  } else if (!snapshot.hasData) {
-                    return const Center(child: Text('Metadata not found.'));
+                  if (!snapshot.hasData) {
+                    return const SizedBox(
+                      height: 80,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
                   }
 
                   final metadata = snapshot.data!;
-                  final examName = metadata['examName']!;
-                  final date = metadata['date']!;
-                  final hour = metadata['hour']!;
-                  final grade = metadata['grade']!;
 
                   return Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    margin: const EdgeInsets.symmetric(vertical: 8),
                     child: ListTile(
-                      title: Text(examName),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Date: $date'),
-                          Text('Hour: $hour'),
-                          Text('Grade: $grade'),
-                        ],
+                      title: Text(metadata['examName']!),
+                      subtitle: Text(
+                        'Date: ${metadata['date']}\nHour: ${metadata['hour']}\nGrade: ${metadata['grade']}',
                       ),
                       onTap: () {
                         Navigator.pushNamed(
@@ -95,42 +88,28 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
                         );
                       },
                       trailing: IconButton(
-                        icon: const Icon(Icons.delete, color: AppColors.primaryColor),
+                        icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () async {
                           final confirm = await showDialog<bool>(
                             context: context,
                             builder: (context) => AlertDialog(
                               title: const Text('Delete Exam'),
-                              content: const Text('Are you sure you want to delete this exam file?'),
+                              content: const Text('Are you sure?'),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context, false),
-                                  child: const Text('Cancel', style: TextStyle(color: AppColors.textColor)),
+                                  child: const Text('Cancel'),
                                 ),
                                 TextButton(
                                   onPressed: () => Navigator.pop(context, true),
-                                  child: const Text('Delete', style: TextStyle(color: AppColors.primaryColor)),
+                                  child: const Text('Delete'),
                                 ),
                               ],
                             ),
                           );
 
                           if (confirm == true) {
-                            if (kIsWeb) {
-                              final prefs = await SharedPreferences.getInstance();
-                              await prefs.remove(fileName);
-                              setState(() {
-                                _examFilesFuture = loadExamFiles();
-                              });
-                            } else {
-                              final Directory appDocDir = await getApplicationDocumentsDirectory();
-                              final String filePath = '${appDocDir.path}/$fileName.json';
-                              final File fileToDelete = File(filePath);
-                              if (await fileToDelete.exists()) {
-                                await fileToDelete.delete();
-                              }
-                            }
-
+                            await deleteExamFile(fileName); // 👈 extract logic (see below)
                             setState(() {
                               _examFilesFuture = loadExamFiles();
                             });

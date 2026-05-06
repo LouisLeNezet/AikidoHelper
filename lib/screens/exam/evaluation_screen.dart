@@ -22,6 +22,7 @@ class EvaluationScreen extends StatefulWidget {
 
 class _EvaluationScreenState extends State<EvaluationScreen> {
   int _currentRating = 0;
+  final Logger logger = Logger();
 
   Future<void> _saveRating(int rating) async {
     await saveTechniqueRating(
@@ -34,6 +35,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
   Future<void> _goNextNamed(String route, Map<String, Object?> arguments) async {
     await _saveRating(_currentRating);
     if (!mounted) return;
+
     Navigator.pushReplacementNamed(
       context,
       route,
@@ -46,7 +48,11 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
     if (!mounted) return;
 
     if (isLast) {
-      updateLearnJsonFile(learnFile: "learningJson", examFile: widget.fileName);
+      updateLearnJsonFile(
+        learnFile: "learningJson",
+        examFile: widget.fileName,
+      );
+
       Navigator.pushNamed(
         context,
         AppRoutes.progressionDetail,
@@ -64,48 +70,59 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
     }
   }
 
-  final logger = Logger();
+  Future<Map<String, dynamic>?> getTechniqueSafe(
+    String fileName,
+    int index,
+  ) async {
+    return getTechniqueAndExamSize(
+      fileName: fileName,
+      index: index,
+    ).timeout(const Duration(seconds: 5));
+  }
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithWideBottomPanel(
       showWidePanel: false,
-      body: FutureBuilder<Map<String, dynamic>?>(
-        future: getTechniqueSafe(widget.fileName, widget.index),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
 
-          if (!snapshot.hasData || snapshot.data == null) {
-            return const Center(
-              child: Text("No data found", style: TextStyle(color: Colors.red)),
-            );
-          }
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // ================= CONTENT =================
+            Expanded(
+              child: Center(
+                child: FutureBuilder<Map<String, dynamic>?>(
+                  future: getTechniqueSafe(widget.fileName, widget.index),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
 
-          final examSize = snapshot.data!['sizeExam'] as int;
-          final maxIndex = examSize - 1;
-          final isLast = widget.index == maxIndex;
+                    if (!snapshot.hasData || snapshot.data == null) {
+                      return const Text(
+                        "No data found",
+                        style: TextStyle(color: Colors.red),
+                      );
+                    }
 
-          final techniqueData = snapshot.data!['technique'] as Map<String, dynamic>;
-          final waza = techniqueData['waza'] as String;
-          final attack = techniqueData['attack'] as String;
-          final technique = techniqueData['technique'] as String;
-          final form = techniqueData['form'] as String? ?? '';
-          final techniqueGrade = techniqueData['techniqueGrade'] as String;
-          final nextWazaIndex = techniqueData['nextWazaIndex'] as int?;
-          final nextAttackIndex = techniqueData['nextAttackIndex'] as int?;
+                    final data = snapshot.data!;
+                    final examSize = data['sizeExam'] as int;
 
-          logger.d(techniqueData);
+                    final techniqueData =
+                        data['technique'] as Map<String, dynamic>;
 
-          return Stack(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    final waza = techniqueData['waza'] as String;
+                    final attack = techniqueData['attack'] as String;
+                    final technique = techniqueData['technique'] as String;
+                    final form = techniqueData['form'] as String? ?? '';
+                    final techniqueGrade =
+                        techniqueData['techniqueGrade'] as String;
+
+                    logger.d(techniqueData);
+
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           waza,
@@ -113,105 +130,131 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                         const SizedBox(height: 10),
+
                         Text(
                           attack,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                         const SizedBox(height: 10),
+
                         Text(
                           technique,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                         const SizedBox(height: 10),
+
                         Text(
                           form,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
+
                         const SizedBox(height: 40),
+
                         Text(
                           techniqueGrade,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
+
                         const SizedBox(height: 10),
+
                         Text(
                           "Technique: ${widget.index + 1} / $examSize",
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  RatingSelector(
-                    rating: _currentRating,
-                    onChanged: (rating) {
-                      setState(() {
-                        _currentRating = rating;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (nextWazaIndex != null) ...[
-                          FloatingActionButton.extended(
-                            onPressed: () => _goNextNamed(
-                              AppRoutes.evaluation,
-                              {
-                                'fileName': widget.fileName,
-                                'index': nextWazaIndex,
-                              },
-                            ),
-                            label: const Text('Next Waza'),
-                            icon: const Icon(Icons.skip_next),
-                          ),
-                          const SizedBox(width: 12),
-                        ],
-                        if (nextAttackIndex != null) ...[
-                          FloatingActionButton.extended(
-                            onPressed: () => _goNextNamed(
-                              AppRoutes.evaluation,
-                              {
-                                'fileName': widget.fileName,
-                                'index': nextAttackIndex,
-                              },
-                            ),
-                            label: const Text('Next Attack'),
-                            icon: const Icon(Icons.skip_next),
-                          ),
-                          const SizedBox(width: 12),
-                        ],
-                        FloatingActionButton.extended(
-                          onPressed: () => _finishOrNext(isLast),
-                          label: Text(isLast ? 'Finish Exam' : 'Next'),
-                          icon: Icon(isLast ? Icons.check : Icons.navigate_next),
+
+                        const SizedBox(height: 20),
+
+                        RatingSelector(
+                          rating: _currentRating,
+                          onChanged: (rating) {
+                            setState(() {
+                              _currentRating = rating;
+                            });
+                          },
                         ),
                       ],
-                    ),
-                  ),
+                    );
+                  },
                 ),
-            ],
-          );
-        },
+              ),
+            ),
+
+            // ================= BOTTOM BAR =================
+            FutureBuilder<Map<String, dynamic>?>(
+              future: getTechniqueSafe(widget.fileName, widget.index),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox.shrink();
+                }
+
+                final data = snapshot.data!;
+                final examSize = data['sizeExam'] as int;
+                final isLast = widget.index == examSize - 1;
+
+                final techniqueData =
+                    data['technique'] as Map<String, dynamic>;
+
+                final nextWazaIndex = techniqueData['nextWazaIndex'] as int?;
+                final nextAttackIndex = techniqueData['nextAttackIndex'] as int?;
+
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      if (nextWazaIndex != null) ...[
+                        FloatingActionButton.extended(
+                          heroTag: null,
+                          onPressed: () => _goNextNamed(
+                            AppRoutes.evaluation,
+                            {
+                              'fileName': widget.fileName,
+                              'index': nextWazaIndex,
+                            },
+                          ),
+                          label: const Text('Next Waza'),
+                          icon: const Icon(Icons.skip_next),
+                        ),
+                        const SizedBox(width: 12),
+                      ],
+
+                      if (nextAttackIndex != null) ...[
+                        FloatingActionButton.extended(
+                          heroTag: null,
+                          onPressed: () => _goNextNamed(
+                            AppRoutes.evaluation,
+                            {
+                              'fileName': widget.fileName,
+                              'index': nextAttackIndex,
+                            },
+                          ),
+                          label: const Text('Next Attack'),
+                          icon: const Icon(Icons.skip_next),
+                        ),
+                        const SizedBox(width: 12),
+                      ],
+
+                      FloatingActionButton.extended(
+                        heroTag: null,
+                        onPressed: () => _finishOrNext(isLast),
+                        label: Text(isLast ? 'Finish Exam' : 'Next'),
+                        icon: Icon(
+                          isLast ? Icons.check : Icons.navigate_next,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
-  }
-
-  Future<Map<String, dynamic>?> getTechniqueSafe(String fileName, int index) async {
-    final result = await getTechniqueAndExamSize(
-      fileName: fileName,
-      index: index,
-    ).timeout(const Duration(seconds: 5));
-    return result;
   }
 }

@@ -70,3 +70,37 @@ Future saveJsonData({
     throw Exception('Failed to write JSON data: $e\n$stack');
   }
 }
+
+Future<void> deleteExamFile(String fileName) async {
+  if (kIsWeb) {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(fileName);
+  } else {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/$fileName.json');
+
+    if (await file.exists()) {
+      await file.delete();
+    }
+  }
+}
+
+Future resetData() async {
+  try {
+    if (kIsWeb) {
+      // WEB: Save to local storage
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+    } else {
+      // MOBILE: Save to file
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      if (await appDocDir.exists()) {
+        await appDocDir.delete(recursive: true);
+      }
+      // Recreate empty directory
+      await appDocDir.create(recursive: true);
+    }
+  } catch (e, stack) {
+    throw Exception('Failed to erase local data: $e\n$stack');
+  }
+}

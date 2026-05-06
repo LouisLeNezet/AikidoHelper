@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
+import '../../widgets/page_layout.dart';
 import '../../widgets/rating_emoticon.dart';
 import 'package:aikido_helper/functions/utils.dart';
 import 'package:aikido_helper/functions/learn_json.dart';
@@ -53,6 +54,7 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
           } else if (!snapshot.hasData) {
             return const Center(child: Text('No data found.'));
           }
+
           var learnList = List<Map<String, dynamic>>.from(snapshot.data!.values);
 
           if (_searchQuery.isNotEmpty) {
@@ -77,101 +79,103 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
 
           learnList.sort((a, b) => compareTechniques(a, b, _sortField, _ascending));
 
-          return Column(
+          return ListView(
+            padding: const EdgeInsets.all(16),
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-                child: Row(
-                  children: [
-                    // SEARCH (70%)
-                    Expanded(
-                      flex: 7,
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          labelText: 'Search techniques',
-                          prefixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder(),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            _searchQuery = value.toLowerCase();
-                          });
-                        },
+              // SEARCH + SORT BAR
+              Row(
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        labelText: 'Search techniques',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(),
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          _searchQuery = value.toLowerCase();
+                        });
+                      },
                     ),
-                    const SizedBox(width: 2),
-                    Expanded(
-                      flex: 3,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: PopupMenuButton<String>(
-                          onSelected: _setSort,
-                          itemBuilder: (context) => const [
-                            PopupMenuItem(value: 'rating', child: Text('Rating')),
-                            PopupMenuItem(value: 'grade', child: Text('Grade')),
-                            PopupMenuItem(value: 'waza', child: Text('Waza')),
-                            PopupMenuItem(value: 'attack', child: Text('Attack')),
-                            PopupMenuItem(value: 'technique', child: Text('Technique')),
-                          ],
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                _sortField[0].toUpperCase() + _sortField.substring(1),
-                              ),
-                              const SizedBox(width: 4),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _ascending = !_ascending;
-                                  });
-                                },
-                                child: Icon(
-                                  _ascending ? Icons.arrow_upward : Icons.arrow_downward,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Text('Techniques:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    ...learnList.map((technique) => Card(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: ListTile(
-                        title: Text('${technique['waza']} - ${technique['attack']} - ${technique['technique']}'),
-                        subtitle: Text(
-                          '${(technique['form'] ?? '').toString().isNotEmpty ? 'Form: ${technique['form']} | ' : ''}'
-                          'Grade: ${technique['techniqueGrade']}'),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 3,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: PopupMenuButton<String>(
+                        onSelected: _setSort,
+                        itemBuilder: (context) => const [
+                          PopupMenuItem(value: 'rating', child: Text('Rating')),
+                          PopupMenuItem(value: 'grade', child: Text('Grade')),
+                          PopupMenuItem(value: 'waza', child: Text('Waza')),
+                          PopupMenuItem(value: 'attack', child: Text('Attack')),
+                          PopupMenuItem(value: 'technique', child: Text('Technique')),
+                        ],
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            RatingEmoticon(
-                              rating: (technique['progression'].isNotEmpty
-                                ? (technique['progression'].last['rating'] as num?)?.toInt() ?? 0
-                                : 0),
-                              showValue: false,
+                            Text(
+                              _sortField[0].toUpperCase() + _sortField.substring(1),
+                            ),
+                            const SizedBox(width: 4),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _ascending = !_ascending;
+                                });
+                              },
+                              child: Icon(
+                                _ascending
+                                    ? Icons.arrow_upward
+                                    : Icons.arrow_downward,
+                              ),
                             ),
                           ],
                         ),
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                            '/learn/technique-detail',
-                            arguments: technique,
-                          );
-                        },
                       ),
-                    )),
-                  ],
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
+              const Text(
+                'Techniques:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+
+              const SizedBox(height: 10),
+
+              ...learnList.map(
+                (technique) => Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: ListTile(
+                    title: Text(
+                      '${technique['waza']} - ${technique['attack']} - ${technique['technique']}',
+                    ),
+                    subtitle: Text(
+                      '${(technique['form'] ?? '').toString().isNotEmpty ? 'Form: ${technique['form']} | ' : ''}'
+                      'Grade: ${technique['techniqueGrade']}',
+                    ),
+                    trailing: RatingEmoticon(
+                      rating: (technique['progression'].isNotEmpty
+                          ? (technique['progression'].last['rating'] as num?)
+                                  ?.toInt() ??
+                              0
+                          : 0),
+                      showValue: false,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        '/learn/technique-detail',
+                        arguments: technique,
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

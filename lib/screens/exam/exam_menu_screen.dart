@@ -3,6 +3,7 @@ import '../../constants/colors.dart';
 import '../../routes.dart';
 import '../../widgets/drop_down_selection.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
+import '../../widgets/page_layout.dart';
 import '../../widgets/text_input.dart';
 import '../../functions/exam_json.dart';
 import '../../functions/config_service.dart';
@@ -39,8 +40,7 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithWideBottomPanel(
-      body: Padding(
-        padding: const EdgeInsets.all(32.0),
+      body: PageLayout(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
+import '../../widgets/page_layout.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../functions/technique_class.dart';
 import '../../widgets/rating_emoticon.dart';
@@ -29,21 +30,32 @@ class TechniqueDetailScreen extends StatelessWidget {
     }
 
     return ScaffoldWithWideBottomPanel(
-      isScrollable: true,
-      body: Padding(
-        padding: const EdgeInsets.all(32.0),
+      body: PageLayout(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Waza: ${technique.waza}', style: Theme.of(context).textTheme.titleMedium),
-            Text('Attack: ${technique.attack}', style: Theme.of(context).textTheme.titleMedium),
-            Text('Technique2: ${technique.technique}', style: Theme.of(context).textTheme.titleMedium),
-            Text('Form: ${technique.form}', style: Theme.of(context).textTheme.titleMedium),
-            Text('Expected at Grade: ${technique.grade}', style: Theme.of(context).textTheme.titleMedium),
+            Center(
+              child: Text(
+                '${technique.waza} - ${technique.attack}',
+                style: Theme.of(context).textTheme.titleLarge
+              ),
+            ),
+            Center(
+              child: Text(
+                '${technique.technique}${technique.form.isNotEmpty ? ' - ${technique.form}' : ''}',
+                style: Theme.of(context).textTheme.titleLarge
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Expected at Grade: ${technique.grade}',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontStyle: FontStyle.italic,
+              ),
+            ),
             const SizedBox(height: 16),
             if (technique.markdown.isNotEmpty) ...[
-              Text('Notes:', style: Theme.of(context).textTheme.titleMedium),
-              Text(technique.markdown, style: Theme.of(context).textTheme.titleMedium),
+              Center(child: Text('Notes:', style: Theme.of(context).textTheme.titleMedium)),
               MarkdownViewer(
                 assetPath: technique.markdown,
                 imageWidth: 300,
@@ -53,10 +65,11 @@ class TechniqueDetailScreen extends StatelessWidget {
             ],
             const SizedBox(height: 16),
             if (technique.links.isNotEmpty) ...[
-              Text('Videos:', style: Theme.of(context).textTheme.titleMedium),
+              Center(child: Text('Videos:', style: Theme.of(context).textTheme.titleMedium)),
               ...technique.links.map((link) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     YoutubeVideoPlayer(url: link),
                     const SizedBox(height: 16),
@@ -120,7 +133,12 @@ class TechniqueDetailScreen extends StatelessWidget {
               ),
             ],
             if (progression.isEmpty) ...[
-              Text('No progression available.', style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                'No progression available.',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
             ],
           ],
         ),

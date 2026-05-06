@@ -38,6 +38,10 @@ void main() {
       const fakeGrade = '4 Kyu';
       const fakeExamName = 'My Exam';
       const fakeVersion = '1.0.0';
+      await ConfigService.loadConfig();
+      ConfigService.setConfig('prioritizeBy', 'attack');
+      ConfigService.setConfig('timePerTechnique', 60);
+      ConfigService.saveConfig();
       
       final technique1 = Technique(
         waza: 'Position1',

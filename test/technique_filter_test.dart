@@ -66,7 +66,7 @@ void main() {
 
   group('load files', () {
     test('loadAllTechniques returns techniques up to given grade', () async {
-      final techniques = await loadAllTechniques('assets/technique/techniques.csv', '4 Kyu');
+      final techniques = await loadAllTechniques('assets/csv/techniques.csv', '4 Kyu');
 
       logger.d(techniques);
       expect(techniques, isNotEmpty);
@@ -75,7 +75,7 @@ void main() {
     });
 
     test('loadGradeTimes returns time per grade', () async {
-      final timegrade = await loadGradeTimes('assets/technique/grade_time.csv');
+      final timegrade = await loadGradeTimes('assets/csv/grade_time.csv');
 
       expect(timegrade, isA<Map<String, Map<String, int>>>());
       expect(timegrade.containsKey('5 Kyu'), isTrue);
@@ -84,7 +84,7 @@ void main() {
     });
 
     test('loads and parses ordering correctly from CSV', () async {
-      final result = await loadOrderTechnique('assets/technique/techniques_ordering.csv');
+      final result = await loadOrderTechnique('assets/csv/techniques_ordering.csv');
 
       expect(result, isA<Map<String, Map<String, int>>>());
       // Example assertions, change based on your CSV content
@@ -108,14 +108,14 @@ void main() {
     expect(orderCompare('b', 'a', orderMap), greaterThan(0));
     expect(orderCompare('c', 'c', orderMap), equals(0));
 
-    final orders = await loadOrderTechnique('assets/technique/techniques_ordering.csv');
+    final orders = await loadOrderTechnique('assets/csv/techniques_ordering.csv');
     final positionOrder = orders['Waza']!;
     final orderPosition = orderCompare("Tachi waza", "Suwari waza", positionOrder);
     expect(orderPosition, 1, reason: 'Tachi waza should come after Suwari waza');
   });
 
   test('orderTechniques', () async {
-    final techniques = await loadAllTechniques('assets/technique/techniques.csv', '4 Kyu');
+    final techniques = await loadAllTechniques('assets/csv/techniques.csv', '4 Kyu');
     final orderedTechniques = await orderTechniques(lstTechniques: techniques);
     
     expect(orderedTechniques, isNotEmpty);
@@ -178,9 +178,9 @@ void main() {
       ConfigService.saveConfig();
 
       final subset = await subsetTechniques(
-        path: 'assets/technique/techniques.csv',
+        path: 'assets/csv/techniques.csv',
         grade: '4 Kyu',
-        gradeTimeCsvPath: 'assets/technique/grade_time.csv',
+        gradeTimeCsvPath: 'assets/csv/grade_time.csv',
       );
 
       expect(subset, isNotEmpty);

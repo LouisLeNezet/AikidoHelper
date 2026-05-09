@@ -76,7 +76,7 @@ class MainMenuScreen extends StatelessWidget {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
-                                child: Image.asset('assets/images/train.png', height: 200, fit: BoxFit.cover),
+                                child: Image.asset('assets/images/learn.png', height: 200, fit: BoxFit.cover),
                               ),
                               const SizedBox(height: 8),
                               Container(
@@ -87,7 +87,7 @@ class MainMenuScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: const Text(
-                                  'Train',
+                                  'Learn',
                                   style: TextStyle(fontSize: 18),
                                 ),
                               ),

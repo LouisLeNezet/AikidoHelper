@@ -38,12 +38,7 @@ flutter:
             style: italic
   uses-material-design: true
   assets:
-      - assets/images/logo_circle.png
-      - assets/images/logo_simple.png
-      - assets/images/logo_minimalist_black.png
-      - assets/images/exam.png
-      - assets/images/train.png
-      - assets/images/icon_github.png
+      - assets/images/
       - assets/csv/
       - assets/markdowns/
       - assets/markdowns/techniques/

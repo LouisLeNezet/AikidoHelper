@@ -41288,7 +41288,7 @@ case 5:case 3:return A.E(null,r)}})
 return A.F($async$$0,r)},
 $S:26}
 A.JY.prototype={
-H(a){return A.jH(new A.xT(A.dB(A.b([B.Xe,B.kK,new A.yj(5,new A.a1Q(this,a),null)],t.p),B.a0,B.S,B.aZ),null,null),!1)}}
+H(a){return A.jH(new A.xT(A.dB(A.b([B.Xf,B.kK,new A.yj(5,new A.a1Q(this,a),null)],t.p),B.a0,B.S,B.aZ),null,null),!1)}}
 A.a1Q.prototype={
 $0(){var s=A.aa(["fileName",this.a.c,"index",0],t.N,t.K)
 A.d1(this.b,!1).j6("/exam/evaluation",s,t.X)},
@@ -41364,7 +41364,7 @@ r.e.u8(o)
 s=t.p
 g=A.dB(A.b([A.bk(n,e,e,e,A.T(a).p1.e,B.aD,e),B.hP,A.bk(m,e,e,e,A.T(a).p1.e,B.aD,e),B.hP,A.bk(l,e,e,e,A.T(a).p1.e,B.aD,e),B.hP,A.bk(k,e,e,e,A.T(a).p1.e,B.aD,e),B.Ro,A.bk(j,e,e,e,A.T(a).p1.e,B.aD,e),B.hP,A.bk("Technique: "+(r.a.d+1)+" / "+q,e,e,e,A.T(a).p1.y,B.aD,e),B.cx,new A.NF(r.d,new A.amA(r),e)],s),B.a0,B.S,B.aZ)
 f=A.b([],s)
-if(i!=null)B.b.M(f,A.b([A.awF("waza",B.nz,B.X0,new A.amB(r,i)),B.kJ],s))
+if(i!=null)B.b.M(f,A.b([A.awF("waza",B.nz,B.X1,new A.amB(r,i)),B.kJ],s))
 if(h!=null)B.b.M(f,A.b([A.awF("attack",B.nz,B.Xi,new A.amC(r,h)),B.kJ],s))
 s=A.bk(p?"Finish Exam":"Next",e,e,e,e,e,e)
 f.push(A.awF("finish",A.ti(p?B.GR:B.GZ,e,e,e),s,new A.amD(r,p)))
@@ -41401,7 +41401,7 @@ case 2:q.al(new A.a4s(q))
 return A.E(null,r)}})
 return A.F($async$xb,r)},
 H(a){var s=this,r=null
-return A.jH(A.N8(A.dB(A.b([B.WZ,B.za,new A.Db(new A.a4u(s),"Enter Exam Name","Exam Name",s.f,r),B.cx,A.ajb("Select Grade",new A.a4v(s),s.d,"Grade",s.r,t.N),B.za,A.awz(B.Xf,new A.a4w(s),A.a3Z(r,r,B.ee,r,r,r,r,r,r,B.aW,r,B.kI,B.je,r,r,r,r,r,r))],t.p),B.a0,B.du,B.aj),!0),!0)},
+return A.jH(A.N8(A.dB(A.b([B.WZ,B.za,new A.Db(new A.a4u(s),"Enter Exam Name","Exam Name",s.f,r),B.cx,A.ajb("Select Grade",new A.a4v(s),s.d,"Grade",s.r,t.N),B.za,A.awz(B.Xg,new A.a4w(s),A.a3Z(r,r,B.ee,r,r,r,r,r,r,B.aW,r,B.kI,B.je,r,r,r,r,r,r))],t.p),B.a0,B.du,B.aj),!0),!0)},
 wY(){var s=0,r=A.G(t.H),q,p=this,o,n,m
 var $async$wY=A.H(function(a,b){if(a===1)return A.D(b,r)
 while(true)switch(s){case 0:o=p.d
@@ -41468,7 +41468,7 @@ q=A.oL(A.aDJ(n,B.HC,new A.aoz(s),n),7)
 p=s.f
 p=A.bk(p[0].toUpperCase()+B.d.ci(p,1),n,n,n,n,n,n)
 o=t.p
-return new A.tG(A.dB(A.b([A.iL(A.b([q,B.kJ,A.oL(new A.u8(new A.aoA(),s.gaf5(),A.iL(A.b([p,B.Rk,A.h3(n,A.ti(s.r?B.GQ:B.GO,n,n,n),B.a3,!1,n,n,n,n,n,n,n,n,n,n,n,n,n,new A.aoB(s),n,n,n,n,n,n)],o),B.a0,B.S,B.aZ,n),n,t.iX),3)],o),B.a0,B.S,B.aj,n),B.X8],o),B.a0,B.S,B.aj),A.ax7(A.Y(new A.Z(r,new A.aoC(a),A.W(r).i("Z<1,e>")),!0,t.l7),n,n,!1),n)},
+return new A.tG(A.dB(A.b([A.iL(A.b([q,B.kJ,A.oL(new A.u8(new A.aoA(),s.gaf5(),A.iL(A.b([p,B.Rk,A.h3(n,A.ti(s.r?B.GQ:B.GO,n,n,n),B.a3,!1,n,n,n,n,n,n,n,n,n,n,n,n,n,new A.aoB(s),n,n,n,n,n,n)],o),B.a0,B.S,B.aZ,n),n,t.iX),3)],o),B.a0,B.S,B.aj,n),B.X9],o),B.a0,B.S,B.aj),A.ax7(A.Y(new A.Z(r,new A.aoC(a),A.W(r).i("Z<1,e>")),!0,t.l7),n,n,!1),n)},
 $S:115}
 A.aox.prototype={
 $1(a){return a.length!==0},
@@ -41563,7 +41563,7 @@ A.tN.prototype={
 H(a){var s,r=null
 A.wV("assets/csv/techniques.csv")
 s=t.p
-return A.jH(A.N8(A.jP(B.bT,A.b([new A.bd(B.mZ,A.dB(A.b([A.cX(B.X2,r,r),B.kK,A.iL(A.b([A.oL(A.h3(r,A.dB(A.b([A.awd(A.hB(16),A.LN("assets/images/exam.png",r,B.lM,200,r),B.bY),B.f2,A.fq(B.E,B.X7,B.r,r,new A.cE(B.ee,r,r,A.hB(12),r,r,B.ah),r,r,r,B.cG,r)],s),B.cE,B.S,B.aj),B.a3,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.a8q(a),r,r,r,r,r,r),1),B.Rj,A.oL(A.h3(r,A.dB(A.b([A.awd(A.hB(16),A.LN("assets/images/train.png",r,B.lM,200,r),B.bY),B.f2,A.fq(B.E,B.Xg,B.r,r,new A.cE(B.ee,r,r,A.hB(12),r,r,B.ah),r,r,r,B.cG,r)],s),B.cE,B.S,B.aj),B.a3,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.a8r(a),r,r,r,r,r,r),1)],s),B.a0,B.hg,B.aj,r)],s),B.b5,B.S,B.aj),r),A.Bf(r,A.p5(r,r,r,B.Hc,r,r,new A.a8s(a),r,r,r,"More Info"),r,r,r,16,16,r)],s),B.Q,B.bB,r),!0),!0)}}
+return A.jH(A.N8(A.jP(B.bT,A.b([new A.bd(B.mZ,A.dB(A.b([A.cX(B.X3,r,r),B.kK,A.iL(A.b([A.oL(A.h3(r,A.dB(A.b([A.awd(A.hB(16),A.LN("assets/images/exam.png",r,B.lM,200,r),B.bY),B.f2,A.fq(B.E,B.X8,B.r,r,new A.cE(B.ee,r,r,A.hB(12),r,r,B.ah),r,r,r,B.cG,r)],s),B.cE,B.S,B.aj),B.a3,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.a8q(a),r,r,r,r,r,r),1),B.Rj,A.oL(A.h3(r,A.dB(A.b([A.awd(A.hB(16),A.LN("assets/images/learn.png",r,B.lM,200,r),B.bY),B.f2,A.fq(B.E,B.X_,B.r,r,new A.cE(B.ee,r,r,A.hB(12),r,r,B.ah),r,r,r,B.cG,r)],s),B.cE,B.S,B.aj),B.a3,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.a8r(a),r,r,r,r,r,r),1)],s),B.a0,B.hg,B.aj,r)],s),B.b5,B.S,B.aj),r),A.Bf(r,A.p5(r,r,r,B.Hc,r,r,new A.a8s(a),r,r,r,"More Info"),r,r,r,16,16,r)],s),B.Q,B.bB,r),!0),!0)}}
 A.a8q.prototype={
 $0(){return A.d1(this.a,!1).j6("/exam/menu",null,t.X)},
 $S:0}
@@ -41667,7 +41667,7 @@ $0(){this.a.d=A.I8()},
 $S:0}
 A.uY.prototype={
 H(a){var s=null
-return A.h3(s,A.aDa(s,A.fq(s,A.dB(A.b([A.de(A.LN("assets/images/logo_circle.png",s,B.iu,250,s),s,1/0),B.kK,B.X1,B.c5,B.WW],t.p),B.a0,B.du,B.aj),B.r,B.k,s,s,s,s,B.mZ,1/0)),B.a3,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,new A.ahC(a),s,s,s,s,s,s)}}
+return A.h3(s,A.aDa(s,A.fq(s,A.dB(A.b([A.de(A.LN("assets/images/logo_circle.png",s,B.iu,250,s),s,1/0),B.kK,B.X2,B.c5,B.WW],t.p),B.a0,B.du,B.aj),B.r,B.k,s,s,s,s,B.mZ,1/0)),B.a3,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,new A.ahC(a),s,s,s,s,s,s)}}
 A.ahC.prototype={
 $0(){var s=t.X
 return A.axk(this.a,"/main-menu",null,s,s)},
@@ -41758,7 +41758,7 @@ bQ(){this.da()
 this.cS()
 this.iH()}}
 A.K6.prototype={
-H(a){var s=null,r=A.d1(a,!1).Fs()?A.p5(s,s,s,B.H9,s,s,new A.a1Z(a),s,s,s,s):s,q=A.iL(A.b([A.LN("assets/images/logo_minimalist_black.png",s,s,45,s),B.Ri,B.X3],t.p),B.a0,B.du,B.aj,s)
+H(a){var s=null,r=A.d1(a,!1).Fs()?A.p5(s,s,s,B.H9,s,s,new A.a1Z(a),s,s,s,s):s,q=A.iL(A.b([A.LN("assets/images/logo_minimalist_black.png",s,s,45,s),B.Ri,B.X4],t.p),B.a0,B.du,B.aj,s)
 return new A.xt(r,!1,new A.ol(q,s),B.mf,new A.VA(60,s,1/0,60),60,s)}}
 A.a1Z.prototype={
 $0(){return A.d1(this.a,!1).eY()},
@@ -91992,14 +91992,14 @@ B.fl=new A.Xu()
 B.CS=new A.YN()
 B.iB=new A.a0J(0,"pixel")
 B.CW=new A.rs(null,null,null,null,null,null,null)
-B.X_=new A.c6("No data found.",null,null,null,null,null,null,null,null,null)
-B.m5=new A.eK(B.E,null,null,B.X_,null)
+B.X0=new A.c6("No data found.",null,null,null,null,null,null,null,null,null)
+B.m5=new A.eK(B.E,null,null,B.X0,null)
 B.Xh=new A.c6("No exam yet available.",null,null,null,null,null,null,null,null,null)
 B.CX=new A.eK(B.E,null,null,B.Xh,null)
-B.Xd=new A.c6("Failed to load markdown.",null,null,null,null,null,null,null,null,null)
-B.CY=new A.eK(B.E,null,null,B.Xd,null)
-B.X6=new A.c6("Error: No arguments passed!",null,null,null,null,null,null,null,null,null)
-B.CZ=new A.eK(B.E,null,null,B.X6,null)
+B.Xe=new A.c6("Failed to load markdown.",null,null,null,null,null,null,null,null,null)
+B.CY=new A.eK(B.E,null,null,B.Xe,null)
+B.X7=new A.c6("Error: No arguments passed!",null,null,null,null,null,null,null,null,null)
+B.CZ=new A.eK(B.E,null,null,B.X7,null)
 B.a_O=new A.ak1(0,"material")
 B.D3=new A.m5(null,null,null,null,null,null,null,null)
 B.de=new A.eK(B.E,null,null,B.D3,null)
@@ -92018,8 +92018,8 @@ B.dv=new A.iB(B.Mi,1,0.9568627450980393,0.2627450980392157,0.21176470588235294,B
 B.VT=new A.n(!0,B.dv,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.Xl=new A.c6("No data found",null,B.VT,null,null,null,null,null,null,null)
 B.D_=new A.eK(B.E,null,null,B.Xl,null)
-B.X4=new A.c6("Error: Invalid exam file!",null,null,null,null,null,null,null,null,null)
-B.D0=new A.eK(B.E,null,null,B.X4,null)
+B.X5=new A.c6("Error: Invalid exam file!",null,null,null,null,null,null,null,null,null)
+B.D0=new A.eK(B.E,null,null,B.X5,null)
 B.D1=new A.xU(null,null,null,null,null,null,null,null,null)
 B.D2=new A.xV(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.m6=new A.dS(0,B.p)
@@ -92648,14 +92648,14 @@ B.OC=new A.fG(2,4,"paused")
 B.OD=new A.fG(3,5,"buffering")
 B.OE=new A.fG(5,6,"cued")
 B.Jh=A.b(s([B.kb,B.OF,B.OB,B.xY,B.OC,B.OD,B.OE]),A.af("z<fG>"))
-B.Xc=new A.c6("Rating",null,null,null,null,null,null,null,null,null)
-B.OP=new A.lb("rating",B.Xc,null,t.wI)
-B.Xb=new A.c6("Grade",null,null,null,null,null,null,null,null,null)
-B.OO=new A.lb("grade",B.Xb,null,t.wI)
-B.X5=new A.c6("Waza",null,null,null,null,null,null,null,null,null)
-B.OM=new A.lb("waza",B.X5,null,t.wI)
-B.X9=new A.c6("Attack",null,null,null,null,null,null,null,null,null)
-B.OL=new A.lb("attack",B.X9,null,t.wI)
+B.Xd=new A.c6("Rating",null,null,null,null,null,null,null,null,null)
+B.OP=new A.lb("rating",B.Xd,null,t.wI)
+B.Xc=new A.c6("Grade",null,null,null,null,null,null,null,null,null)
+B.OO=new A.lb("grade",B.Xc,null,t.wI)
+B.X6=new A.c6("Waza",null,null,null,null,null,null,null,null,null)
+B.OM=new A.lb("waza",B.X6,null,t.wI)
+B.Xa=new A.c6("Attack",null,null,null,null,null,null,null,null,null)
+B.OL=new A.lb("attack",B.Xa,null,t.wI)
 B.WX=new A.c6("Technique",null,null,null,null,null,null,null,null,null)
 B.ON=new A.lb("technique",B.WX,null,t.wI)
 B.Jj=A.b(s([B.OP,B.OO,B.OM,B.OL,B.ON]),A.af("z<n_<k>>"))
@@ -94229,9 +94229,9 @@ B.Rw=new A.jO(3,"hide")
 B.a_K=new A.jO(4,"remove")
 B.ze=new A.jO(5,"timeout")
 B.Rx=new A.uW(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Xa=new A.c6("Configuration saved successfully!",null,null,null,null,null,null,null,null,null)
+B.Xb=new A.c6("Configuration saved successfully!",null,null,null,null,null,null,null,null,null)
 B.FJ=new A.aQ(4e6)
-B.Ry=new A.qo(B.Xa,null,null,null,null,null,null,null,null,null,null,null,null,B.FJ,null,null,null,B.Q,null)
+B.Ry=new A.qo(B.Xb,null,null,null,null,null,null,null,null,null,null,null,null,B.FJ,null,null,null,B.Q,null)
 B.zf=new A.CI(0,"permissive")
 B.Rz=new A.CI(1,"normal")
 B.RA=new A.CI(2,"forced")
@@ -94607,22 +94607,22 @@ B.WW=new A.c6("Tap anywhere to start",null,B.Tf,null,null,null,null,null,null,nu
 B.WY=new A.c6("Save Configuration",null,null,null,null,null,null,null,null,null)
 B.Vj=new A.n(!0,B.aW,null,null,null,null,24,B.aL,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.WZ=new A.c6("Let's Start Your Exam",null,B.Vj,null,null,null,null,null,null,null)
-B.X0=new A.c6("Next Waza",null,null,null,null,null,null,null,null,null)
-B.Ux=new A.n(!0,null,null,"Katana",null,null,32,B.aL,null,1.2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.X1=new A.c6("A\xefkiGrade",null,B.Ux,B.aD,null,null,null,null,null,null)
-B.SQ=new A.n(!0,null,null,null,null,null,32,B.aL,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.X2=new A.c6("Home",null,B.SQ,null,null,null,null,null,null,null)
-B.Vb=new A.n(!0,B.mx,null,"Katana",null,null,30,B.aL,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.X3=new A.c6("A\xefkiGrade",null,B.Vb,null,null,null,null,null,null,null)
 B.zA=new A.n(!0,null,null,null,null,null,18,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.X7=new A.c6("Exam",null,B.zA,null,null,null,null,null,null,null)
+B.X_=new A.c6("Learn",null,B.zA,null,null,null,null,null,null,null)
+B.X1=new A.c6("Next Waza",null,null,null,null,null,null,null,null,null)
+B.Ux=new A.n(!0,null,null,"Katana",null,null,32,B.aL,null,1.2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.X2=new A.c6("A\xefkiGrade",null,B.Ux,B.aD,null,null,null,null,null,null)
+B.SQ=new A.n(!0,null,null,null,null,null,32,B.aL,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.X3=new A.c6("Home",null,B.SQ,null,null,null,null,null,null,null)
+B.Vb=new A.n(!0,B.mx,null,"Katana",null,null,30,B.aL,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.X4=new A.c6("A\xefkiGrade",null,B.Vb,null,null,null,null,null,null,null)
+B.X8=new A.c6("Exam",null,B.zA,null,null,null,null,null,null,null)
 B.VE=new A.n(!0,null,null,null,null,null,18,B.aL,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.X8=new A.c6("Techniques:",null,B.VE,null,null,null,null,null,null,null)
+B.X9=new A.c6("Techniques:",null,B.VE,null,null,null,null,null,null,null)
 B.Vs=new A.n(!0,null,null,null,null,null,24,B.aL,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Xe=new A.c6("The exam will start in:",null,B.Vs,null,null,null,null,null,null,null)
+B.Xf=new A.c6("The exam will start in:",null,B.Vs,null,null,null,null,null,null,null)
 B.UO=new A.n(!0,B.k,null,null,null,null,18,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Xf=new A.c6("Start Exam",null,B.UO,null,null,null,null,null,null,null)
-B.Xg=new A.c6("Train",null,B.zA,null,null,null,null,null,null,null)
+B.Xg=new A.c6("Start Exam",null,B.UO,null,null,null,null,null,null,null)
 B.Xi=new A.c6("Next Attack",null,null,null,null,null,null,null,null,null)
 B.Xk=new A.c6("Reset local data",null,null,null,null,null,null,null,null,null)
 B.a_M=new A.aiK(0,"system")

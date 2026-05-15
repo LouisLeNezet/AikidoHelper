@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../../functions/config_service.dart';
 import '../../functions/technique_class.dart';
 import '../../functions/technique_load_files.dart';
+import '../../functions/learn_json.dart';
 
 int orderCompare(String a, String b, Map<String, int> orderMap) {
   if (a == b) return 0;
@@ -18,6 +19,26 @@ int orderCompare(String a, String b, Map<String, int> orderMap) {
   }
   return (orderMap[a] ?? 999)
       .compareTo(orderMap[b] ?? 999);
+}
+
+int compareNullableDate(DateTime? a, DateTime? b) {
+  // null = never trained = highest priority
+  if (a == null && b == null) return 0;
+  if (a == null) return -1;
+  if (b == null) return 1;
+
+  // oldest first
+  return a.compareTo(b);
+}
+
+int compareNullableRating(int? a, int? b) {
+  // null = never rated = highest priority
+  if (a == null && b == null) return 0;
+  if (a == null) return -1;
+  if (b == null) return 1;
+
+  // lower rating first
+  return a.compareTo(b);
 }
 
 Future<List<Technique>> orderTechniques({
@@ -46,36 +67,108 @@ Future<List<Technique>> orderTechniques({
   return lstTechniques;
 }
 
-/// Picks up to [count] items from [bucket], prioritizing items whose
-/// [priorityKey] value does *not* appear in [alreadySeen].
-List<T> pick<T>(
-  List<T> bucket,
+Future<List<Technique>> filterTechniquesGrades(List<Technique> techniques, String grade) async {
+  const grades = ['5 Kyu','4 Kyu','3 Kyu','2 Kyu','1 Kyu'];
+  final maxIdx = grades.indexOf(grade);
+  if (maxIdx<0) throw 'Unknown grade $grade';
+
+  return techniques.where((t) => grades.indexOf(t.grade) <= maxIdx).toList();
+}
+
+List<Technique> pickByLastProgressionDate(
+  List<Technique> bucket,
   int count,
-  String Function(T) priorityKey,
-  Set<String> alreadySeen,
 ) {
-  // split new vs old
-  final newOnes = bucket.where((t)=>!alreadySeen.contains(priorityKey(t))).toList();
-  final oldOnes = bucket.where((t)=> alreadySeen.contains(priorityKey(t))).toList();
-  final out = <T>[];
-  out.addAll(newOnes.take(count));
-  if (out.length < count) {
-    out.addAll(oldOnes.take(count - out.length));
+  final sorted = [...bucket];
+
+  sorted.sort(
+    (a, b) => compareNullableDate(
+      a.lastProgressionDate,
+      b.lastProgressionDate,
+    ),
+  );
+
+  return sorted.take(count).toList();
+}
+
+List<Technique> pickByLastProgressionRating(
+  List<Technique> bucket,
+  int count,
+) {
+  final sorted = [...bucket];
+
+  sorted.sort(
+    (a, b) => compareNullableRating(
+      a.lastProgressionRating,
+      b.lastProgressionRating,
+    ),
+  );
+
+  return sorted.take(count).toList();
+}
+
+List<Technique> pickNewItems(
+  List<Technique> bucket,
+  int count,
+  String byKey,
+  Set<Object> alreadySeen,
+) {
+  final newOnes = bucket
+      .where((t) => !alreadySeen.contains(t.getValue(byKey)))
+      .toList();
+
+  final oldOnes = bucket
+      .where((t) => alreadySeen.contains(t.getValue(byKey)))
+      .toList();
+
+  return [
+    ...newOnes.take(count),
+    ...oldOnes.take(
+      (count - newOnes.length).clamp(0, count),
+    ),
+  ].take(count).toList();
+}
+
+List<Technique> pick(
+  List<Technique> bucket,
+  int count,
+  String byKey,
+  Set<Object> alreadySeen,
+) {
+  switch (byKey) {
+    case 'lastProgressionDate':
+      return pickByLastProgressionDate(
+        bucket,
+        count,
+      );
+
+    case 'lastProgressionRating':
+      return pickByLastProgressionRating(
+        bucket,
+        count,
+      );
+
+    default:
+      return pickNewItems(
+        bucket,
+        count,
+        byKey,
+        alreadySeen,
+      );
   }
-  return out;
 }
 
 /// [path] to techniques CSV, [grade] current,
 /// returns a subset to fit time-constraints, split 60/30/10 over grades,
 /// and per-waza time quotas.
 Future<List<Technique>> subsetTechniques({
-  required String path,
   required String grade,
   required String gradeTimeCsvPath,
   List<double> ratios = const [0.6, 0.3, 0.1],
 }) async {
   // 1) load everything
-  final allTech = await loadAllTechniques(path, grade);
+  final allTech = await getLearnTechniques(learnFile:'learningJson');
+  final allTechGrade = await filterTechniquesGrades(allTech, grade);
   final gradeTimes = await loadGradeTimes(gradeTimeCsvPath);
 
   // 2) get current and two previous grades
@@ -90,7 +183,7 @@ Future<List<Technique>> subsetTechniques({
   final gradeBuckets = <String,List<Technique>>{};
   for (var i=0;i<poolGrades.length;i++) {
     gradeBuckets[poolGrades[i]]=
-      allTech.where((t)=>t.grade==poolGrades[i]).toList();
+      allTechGrade.where((t)=>t.grade==poolGrades[i]).toList();
   }
 
   // 4) per-waza time, then #techniques by timePerTechnique
@@ -110,11 +203,11 @@ Future<List<Technique>> subsetTechniques({
   debugPrint('Per waza slots: $perPosSlots');
 
   // 5) prioritize by key
-  final byKey = (ConfigService.getConfig('prioritizeBy') ?? 'attack').toLowerCase();
+  final byKey = (ConfigService.getConfig('prioritizeBy') ?? 'attack');
   debugPrint('Prioritize by: $byKey');
 
   // 6) already seen for each key
-  final seenKeys = <String>{};
+  final seenKeys = <Object>{};
 
   // 7) assemble subset
   final subset = <Technique>[];
@@ -123,23 +216,27 @@ Future<List<Technique>> subsetTechniques({
     if (slots<=0) continue;
 
     // gather all by waza, then split by grade-ratio
-    final posTech = allTech.where((t)=>t.waza==waza).toList();
+    final posTech = allTechGrade.where((t)=>t.waza==waza).toList();
 
     for (var i=0; i < ratios.length; i++) {
       if (i>=poolGrades.length) break;
       final g=poolGrades[i];
       final bucket = posTech.where((t)=>t.grade==g).toList();
       final takeCount = (slots * ratios[i]).round();
-      final picked = pick(bucket, takeCount, (t) => t[byKey], seenKeys);
+      final picked = pick(bucket, takeCount, byKey, seenKeys);
       subset.addAll(picked);
-      seenKeys.addAll(picked.map((t) => t[byKey]));
+      seenKeys.addAll(
+        picked
+            .map((t) => t.getValue(byKey))
+            .whereType<Object>(),
+      );
     }
 
     // if rounding gap, fill from current grade
     if (subset.where((t)=>t.waza==waza).length < slots) {
       final remaining = slots - subset.where((t)=>t.waza==waza).length;
       final currBucket = posTech.where((t)=>t.grade==grade).toList();
-      subset.addAll(pick(currBucket, remaining, (t) => t[byKey], seenKeys));
+      subset.addAll(pick(currBucket, remaining, byKey, seenKeys));
     }
   }
 

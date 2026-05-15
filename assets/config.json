@@ -3,6 +3,6 @@
     "appVersion": "0.0.1+1",
     "examDefaultName": "My Exam",
     "timePerTechnique": 60,
-    "prioritizeBy": "Attack",
+    "prioritizeBy": "attack",
     "numberOfTechniquePerAttack": 2
 }

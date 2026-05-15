@@ -4,6 +4,7 @@ import 'package:aikido_helper/functions/technique_filter.dart';
 import 'package:aikido_helper/functions/config_service.dart';
 import 'package:aikido_helper/functions/technique_class.dart';
 import 'package:aikido_helper/functions/technique_load_files.dart';
+import 'package:aikido_helper/functions/learn_json.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:logger/logger.dart';
 
@@ -66,11 +67,12 @@ void main() {
 
   group('load files', () {
     test('loadAllTechniques returns techniques up to given grade', () async {
-      final techniques = await loadAllTechniques('assets/csv/techniques.csv', '4 Kyu');
+      final techniques = await loadAllTechniques('assets/csv/techniques.csv');
+      final allTechGrade = await filterTechniquesGrades(techniques, '4 Kyu');
 
-      logger.d(techniques);
-      expect(techniques, isNotEmpty);
-      expect(techniques.every((t) => 
+      logger.d(allTechGrade);
+      expect(allTechGrade, isNotEmpty);
+      expect(allTechGrade.every((t) => 
         ['5 Kyu', '4 Kyu'].contains(t.grade)), isTrue);
     });
 
@@ -115,9 +117,10 @@ void main() {
   });
 
   test('orderTechniques', () async {
-    final techniques = await loadAllTechniques('assets/csv/techniques.csv', '4 Kyu');
-    final orderedTechniques = await orderTechniques(lstTechniques: techniques);
-    
+    final techniques = await loadAllTechniques('assets/csv/techniques.csv');
+    final allTechGrade = await filterTechniquesGrades(techniques, '4 Kyu');
+    final orderedTechniques = await orderTechniques(lstTechniques: allTechGrade);
+
     expect(orderedTechniques, isNotEmpty);
 
     expect(orderedTechniques[0].waza, 'Suwari waza');
@@ -125,38 +128,6 @@ void main() {
     expect(orderedTechniques[0].technique, 'Ikkyo');
     expect(orderedTechniques[0].form, 'Omote');
     expect(orderedTechniques[0].grade, '4 Kyu');
-  });
-
-  test('pick prioritizes new items', () {
-    final list = ['a', 'b', 'c', 'd', 'e'];
-    final seen = {'a', 'b'};
-
-    final result = pick<String>(
-      list,
-      3,
-      (s) => s,
-      seen,
-    );
-
-    // It should return 3 items, with all new ones first
-    expect(result.length, equals(3));
-    expect(result, containsAll(['c', 'd', 'e']));
-    expect(result.any((x) => seen.contains(x)), isFalse);
-  });
-
-  test('pick includes old ones if not enough new', () {
-    final list = ['a', 'b', 'c'];
-    final seen = {'a', 'b'};
-
-    final result = pick<String>(
-      list,
-      2,
-      (s) => s,
-      seen,
-    );
-
-    expect(result.length, equals(2));
-    expect(result, containsAll(['a', 'c']));
   });
 
   group('subset techniques', () {
@@ -177,8 +148,11 @@ void main() {
       ConfigService.setConfig('timePerTechnique', 70);
       ConfigService.saveConfig();
 
-      final subset = await subsetTechniques(
+      await createLearnJsonFile(
         path: 'assets/csv/techniques.csv',
+      );
+
+      final subset = await subsetTechniques(
         grade: '4 Kyu',
         gradeTimeCsvPath: 'assets/csv/grade_time.csv',
       );

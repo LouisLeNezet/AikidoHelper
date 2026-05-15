@@ -14,7 +14,7 @@ Future<String> createExamJsonFile({
   required String grade,
   required String examName,
   Future<String> Function()? getAppVersionFn,
-  Future<List<Technique>> Function({required String path, required String grade, required String gradeTimeCsvPath})? subsetTechniquesFn,
+  Future<List<Technique>> Function({required String grade, required String gradeTimeCsvPath})? subsetTechniquesFn,
 }) async {
   try {
     final appVersion = await (getAppVersionFn?.call() ?? getAppVersion());
@@ -25,8 +25,8 @@ Future<String> createExamJsonFile({
 
     // Use your getOrderedTechniques function
     final techniques = await (
-      subsetTechniquesFn?.call(path: 'assets/csv/techniques.csv', grade: grade, gradeTimeCsvPath: 'assets/csv/grade_time.csv') ?? 
-      subsetTechniques(path: 'assets/csv/techniques.csv', grade: grade, gradeTimeCsvPath: 'assets/csv/grade_time.csv')
+      subsetTechniquesFn?.call(grade: grade, gradeTimeCsvPath: 'assets/csv/grade_time.csv') ?? 
+      subsetTechniques(grade: grade, gradeTimeCsvPath: 'assets/csv/grade_time.csv')
     );
 
     final wazas = techniques.map((t) => t.waza).toList();

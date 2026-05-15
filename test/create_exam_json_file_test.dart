@@ -5,6 +5,7 @@ import 'package:aikido_helper/functions/technique_filter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:aikido_helper/functions/exam_json.dart';
+import 'package:aikido_helper/functions/learn_json.dart';
 import 'package:aikido_helper/functions/utils.dart';
 import 'package:logger/logger.dart';
 
@@ -77,7 +78,7 @@ void main() {
         grade: fakeGrade,
         examName: fakeExamName,
         getAppVersionFn: () async => fakeVersion,
-        subsetTechniquesFn: ({required path, required grade, required gradeTimeCsvPath}) async => [
+        subsetTechniquesFn: ({required grade, required gradeTimeCsvPath}) async => [
           technique1,
           technique2,
           technique3,
@@ -118,8 +119,11 @@ void main() {
       ConfigService.setConfig('timePerTechnique', 70);
       ConfigService.saveConfig();
 
-      final subset = await subsetTechniques(
+      await createLearnJsonFile(
         path: 'assets/csv/techniques.csv',
+      );
+
+      final subset = await subsetTechniques(
         grade: '4 Kyu',
         gradeTimeCsvPath: 'assets/csv/grade_time.csv',
       );
@@ -131,7 +135,7 @@ void main() {
         grade: fakeGrade,
         examName: fakeExamName,
         getAppVersionFn: () async => fakeVersion,
-        subsetTechniquesFn: ({required path, required grade, required gradeTimeCsvPath}) async => subset,
+        subsetTechniquesFn: ({required grade, required gradeTimeCsvPath}) async => subset,
       );
 
       // Assert

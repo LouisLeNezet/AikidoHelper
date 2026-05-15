@@ -4,16 +4,12 @@ import 'package:flutter/services.dart';
 
 /// Loads all techniques up to and including [grade].
 /// Grades ordered simplest → hardest.
-Future<List<Technique>> loadAllTechniques(String path, String grade) async {
+Future<List<Technique>> loadAllTechniques(String path) async {
   final csv = await rootBundle.loadString(path);
   final lines = LineSplitter.split(csv).skip(1);
-  const grades = ['5 Kyu','4 Kyu','3 Kyu','2 Kyu','1 Kyu'];
-  final maxIdx = grades.indexOf(grade);
-  if (maxIdx<0) throw 'Unknown grade $grade';
 
   return lines
     .map((l)=>l.split('\t'))
-    .where((r) => grades.indexOf(r[4]) <= maxIdx)
     .map((r)=>Technique(
       waza: r[0],
       attack: r[1],

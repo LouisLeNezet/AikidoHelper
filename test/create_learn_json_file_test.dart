@@ -53,7 +53,6 @@ void main() {
       expect(decoded['Suwari waza|Ai hanmi katate dori|Ikkyo|Omote']['progression'], []);
 
       final subset = await subsetTechniques(
-        path: 'assets/csv/techniques.csv',
         grade: '4 Kyu',
         gradeTimeCsvPath: 'assets/csv/grade_time.csv',
       );
@@ -65,7 +64,7 @@ void main() {
         grade: fakeGrade,
         examName: fakeExamName,
         getAppVersionFn: () async => fakeVersion,
-        subsetTechniquesFn: ({required path, required grade, required gradeTimeCsvPath}) async => subset,
+        subsetTechniquesFn: ({required grade, required gradeTimeCsvPath}) async => subset,
       );
 
       await saveTechniqueRating(fileName: fileNameExam, index: 0, rating: 5);

@@ -2,6 +2,7 @@ import 'package:aikido_helper/functions/technique_load_files.dart';
 import 'package:logger/logger.dart';
 import 'package:aikido_helper/functions/exam_json.dart';
 import 'package:aikido_helper/functions/utils.dart';
+import 'package:aikido_helper/functions/technique_class.dart';
 
 final Logger logger = Logger();
 
@@ -9,7 +10,7 @@ Future<String> createLearnJsonFile({
   required String path,
 }) async {
   try {
-    final allTech = await loadAllTechniques(path, '1 Kyu');
+    final allTech = await loadAllTechniques(path);
     final allExams = await loadExamFiles();
 
     // Prepare a map for quick lookup: (waza, attack, technique, form) -> index in allTech
@@ -57,6 +58,26 @@ Future<String> createLearnJsonFile({
     return safeFileName;
   } catch (e, stack) {
     throw Exception("Failed to create learn JSON: $e\n$stack");
+  }
+}
+
+Future<List<Technique>> getLearnTechniques({
+  required String learnFile,
+}) async {
+  try {
+    final learnList = await getJsonData(fileName: learnFile);
+    return learnList.values.map((data) => Technique(
+      waza: data['waza'],
+      attack: data['attack'],
+      technique: data['technique'],
+      form: data['form'],
+      grade: data['techniqueGrade'],
+      links: List<String>.from(data['links'] ?? []),
+      markdown: data['markdown'] ?? '',
+      progression: List<Map<String, dynamic>>.from(data['progression'] ?? []),
+    )).toList();
+  } catch (e, stack) {
+    throw Exception("Failed to get learn techniques: $e\n$stack");
   }
 }
 

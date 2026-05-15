@@ -117,7 +117,7 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
                               confirmColor: Colors.red,
                             );
                             if (confirm == true) {
-                              await deleteExamFile(fileName);
+                              await deleteJsonData(fileName);
                               setState(() {
                                 _examFilesFuture = loadExamFiles();
                               });

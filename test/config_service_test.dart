@@ -28,12 +28,16 @@ void main() {
 
   group('ConfigService', () {
     test('ConfigService load get and set', () async {
+      await ConfigService.resetConfig();
       await ConfigService.loadConfig();
       final appVersion = ConfigService.getConfig('appVersion');
 
       expect(appVersion, isNotNull);
       expect(appVersion, isA<String>());
       expect(appVersion, '0.0.1+1');
+
+      final examDefaultName = ConfigService.getConfig('examDefaultName');
+      expect(examDefaultName, "My Exam");
 
       ConfigService.setConfig('examDefaultName', 'NewDefaultName');
       ConfigService.saveConfig();

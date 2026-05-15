@@ -71,7 +71,7 @@ Future saveJsonData({
   }
 }
 
-Future<void> deleteExamFile(String fileName) async {
+Future<void> deleteJsonData(String fileName) async {
   if (kIsWeb) {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(fileName);
@@ -102,5 +102,16 @@ Future resetData() async {
     }
   } catch (e, stack) {
     throw Exception('Failed to erase local data: $e\n$stack');
+  }
+}
+
+Future<bool> hasJsonData(String fileName) async {
+  if (kIsWeb) {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(fileName);
+  } else {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/$fileName.json');
+    return await file.exists();
   }
 }

@@ -15,15 +15,34 @@ class ConfigScreen extends StatefulWidget {
   ConfigScreenState createState() => ConfigScreenState();
 }
 
+class ConfigFormState {
+  String examDefaultName;
+  int timePerTechnique;
+  String prioritizeBy;
+  int numberOfTechniquePerAttack;
+
+  ConfigFormState({
+    required this.examDefaultName,
+    required this.timePerTechnique,
+    required this.prioritizeBy,
+    required this.numberOfTechniquePerAttack,
+  });
+
+  factory ConfigFormState.fromConfig(Map<String, dynamic> config) {
+    return ConfigFormState(
+      examDefaultName: config['examDefaultName'] ?? 'My Exam',
+      timePerTechnique: config['timePerTechnique'] ?? 60,
+      prioritizeBy: config['prioritizeBy'] ?? 'attack',
+      numberOfTechniquePerAttack:
+          config['numberOfTechniquePerAttack'] ?? 2,
+    );
+  }
+}
+
 class ConfigScreenState extends State<ConfigScreen> {
-  String examDefaultName = 'Loading...';
-  String examDefaultNameNew = '';
-  int timePerTechnique = 60;
-  int timePerTechniqueNew = 60;
-  String prioritizeBy = 'attack';
-  String prioritizeByNew = 'attack';
-  int numberOfTechniquePerAttack = 2;
-  int numberOfTechniquePerAttackNew = 2;
+  bool _loaded = false;
+
+  late ConfigFormState form;
 
   @override
   void initState() {
@@ -31,153 +50,164 @@ class ConfigScreenState extends State<ConfigScreen> {
     _loadConfig();
   }
 
-  // Load configuration when the screen is initialized
   Future<void> _loadConfig() async {
     await ConfigService.loadConfig();
-    setState(() {
-      examDefaultName = ConfigService.getConfig('examDefaultName') ?? 'My Exam';
-      timePerTechnique = ConfigService.getConfig('timePerTechnique') ?? 60;
-      prioritizeBy = ConfigService.getConfig('prioritizeBy') ?? 'attack';
-      numberOfTechniquePerAttack = ConfigService.getConfig('numberOfTechniquePerAttack') ?? 2;
 
-      timePerTechniqueNew = timePerTechnique;
-      prioritizeByNew = prioritizeBy;
-      numberOfTechniquePerAttackNew = numberOfTechniquePerAttack;
+    final config = {
+      'examDefaultName': ConfigService.getConfig('examDefaultName'),
+      'timePerTechnique': ConfigService.getConfig('timePerTechnique'),
+      'prioritizeBy': ConfigService.getConfig('prioritizeBy'),
+      'numberOfTechniquePerAttack':
+          ConfigService.getConfig('numberOfTechniquePerAttack'),
+    };
+
+    setState(() {
+      form = ConfigFormState.fromConfig(config);
+      _loaded = true;
     });
   }
 
-  // Save updated configurations
   void _saveConfig() {
-    ConfigService.setConfig('examDefaultName', examDefaultNameNew);
-    ConfigService.setConfig('timePerTechnique', timePerTechniqueNew);
-    ConfigService.setConfig('prioritizeBy', prioritizeByNew);
-    ConfigService.setConfig('numberOfTechniquePerAttack', numberOfTechniquePerAttackNew);
+    final finalExamName =
+        form.examDefaultName.trim().isEmpty
+            ? 'My Exam'
+            : form.examDefaultName.trim();
+
+    ConfigService.setConfig('examDefaultName', finalExamName);
+    ConfigService.setConfig('timePerTechnique', form.timePerTechnique);
+    ConfigService.setConfig('prioritizeBy', form.prioritizeBy);
+    ConfigService.setConfig(
+      'numberOfTechniquePerAttack',
+      form.numberOfTechniquePerAttack,
+    );
+
     ConfigService.saveConfig();
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Configuration saved successfully!')),
     );
+
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_loaded) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return ScaffoldWithWideBottomPanel(
       body: PageLayout(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height - 140, // minus bottom panel height
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextInput(
-                onChanged: (value) {
-                  examDefaultNameNew = value;
-                },
-                hintText: "Enter Exam Name",
-                title: "Exam Name",
-                initialValue: examDefaultName,
-              ),
-          
-              const SizedBox(height: 20),
-          
-              Center(
-                child: ValueSelectionWidget<int>(
-                  selectedValue: timePerTechniqueNew,
-                  onValueChanged: (int newValue) {
-                    setState(() {
-                      timePerTechniqueNew = newValue;
-                    });
-                  },
-                  valuesMap: {
-                    "10": 10, "15": 15, "20": 20,
-                    "25": 25, "30": 30, "40": 40,
-                    "60": 60, "90": 90, "120": 120,
-                    "180": 180,
-                  },
-                  hintText: "Select Time in seconds per technique",
-                  titleText: "Time per Technique",
-                ),
-              ),
-          
-              const SizedBox(height: 20),
-          
-              Center(
-                child: ValueSelectionWidget<String>(
-                  selectedValue: prioritizeByNew,
-                  onValueChanged: (String newValue) {
-                    setState(() {
-                      prioritizeByNew = newValue;
-                    });
-                  },
-                  valuesMap: {
-                    "Attack": "attack",
-                    "Technique": "technique",
-                    "Last Progression Date": "lastProgressionDate",
-                    "Last Progression Rating": "lastProgressionRating",
-                  },
-                  hintText: "Select if technique should be prioritized by",
-                  titleText: "Prioritize By",
-                ),
-              ),
-          
-              const SizedBox(height: 20),
-          
-              Center(
-                child: ValueSelectionWidget<int>(
-                  selectedValue: numberOfTechniquePerAttackNew,
-                  onValueChanged: (int newValue) {
-                    setState(() {
-                      numberOfTechniquePerAttackNew = newValue;
-                    });
-                  },
-                  valuesMap: {
-                    "1": 1, "2": 2, "3": 3,
-                    "4": 4, "5": 5,
-                  },
-                  hintText: "Select the maximum number of techniques per attack",
-                  titleText: "Max Number of Technique per Attack",
-                ),
-              ),
-          
-              const SizedBox(height: 20),
-          
-              ElevatedButton(
-                onPressed: _saveConfig,
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  foregroundColor: AppColors.textColor,
-                  backgroundColor: AppColors.buttonColor,
-                ),
-                child: const Text('Save Configuration'),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.red,
-                ),
-                onPressed: () async {
-                  final confirm = await showConfirmDialog(
-                    context: context,
-                    title: 'Reset data',
-                    content:
-                        'This will permanently delete all your local data. This action cannot be undone.',
-                    confirmText: 'Delete',
-                    confirmColor: Colors.red,
-                  );
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextInput(
+              initialValue: form.examDefaultName,
+              hintText: "Enter Exam Name",
+              title: "Exam Name",
+              onChanged: (value) {
+                form.examDefaultName = value;
+              },
+            ),
 
-                  if (confirm == true) {
-                    await resetData();
-                  }
+            const SizedBox(height: 20),
+
+            Center(
+              child: ValueSelectionWidget<int>(
+                selectedValue: form.timePerTechnique,
+                onValueChanged: (v) {
+                  setState(() {
+                    form.timePerTechnique = v;
+                  });
                 },
-                child: const Text('Reset local data'),
-              )
-            ],
-          ),
+                valuesMap: {
+                  "10": 10, "15": 15, "20": 20,
+                  "25": 25, "30": 30, "40": 40,
+                  "60": 60, "90": 90, "120": 120,
+                  "180": 180,
+                },
+                hintText: "Select Time per technique",
+                titleText: "Time per Technique",
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            Center(
+              child: ValueSelectionWidget<String>(
+                selectedValue: form.prioritizeBy,
+                onValueChanged: (v) {
+                  setState(() {
+                    form.prioritizeBy = v;
+                  });
+                },
+                valuesMap: {
+                  "Attack": "attack",
+                  "Technique": "technique",
+                  "Last Progression Date": "lastProgressionDate",
+                  "Last Progression Rating": "lastProgressionRating",
+                },
+                hintText: "Prioritize by",
+                titleText: "Prioritize By",
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            Center(
+              child: ValueSelectionWidget<int>(
+                selectedValue: form.numberOfTechniquePerAttack,
+                onValueChanged: (v) {
+                  setState(() {
+                    form.numberOfTechniquePerAttack = v;
+                  });
+                },
+                valuesMap: {
+                  "1": 1, "2": 2, "3": 3,
+                  "4": 4, "5": 5,
+                },
+                hintText: "Max techniques per attack",
+                titleText: "Max Number of Technique per Attack",
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: _saveConfig,
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+                backgroundColor: AppColors.buttonColor,
+                foregroundColor: AppColors.textColor,
+              ),
+              child: const Text('Save Configuration'),
+            ),
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () async {
+                final confirm = await showConfirmDialog(
+                  context: context,
+                  title: 'Reset data',
+                  content:
+                      'This will permanently delete all your local data.',
+                  confirmText: 'Delete',
+                  confirmColor: Colors.red,
+                );
+
+                if (confirm == true) {
+                  await resetData();
+                }
+              },
+              child: const Text('Reset local data'),
+            ),
+          ],
         ),
       ),
     );

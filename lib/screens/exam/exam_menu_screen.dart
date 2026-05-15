@@ -21,7 +21,13 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
   String examName = '';
   String examNameDefault = 'Loading...';
 
-  final List<String> gradesList = ['5 Kyu', '4 Kyu', '3 Kyu', '2 Kyu', '1 Kyu'];
+  final Map<String, String> gradesList = {
+    '5 Kyu': '5 Kyu',
+    '4 Kyu': '4 Kyu',
+    '3 Kyu': '3 Kyu',
+    '2 Kyu': '2 Kyu',
+    '1 Kyu': '1 Kyu',
+  };
 
   @override
   void initState() {
@@ -74,7 +80,7 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
                   selectedGrade = newGrade;
                 });
               },
-              valuesList: gradesList,
+              valuesMap: gradesList,
               hintText: "Select Grade",
               titleText: "Grade",
             ),

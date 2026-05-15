@@ -20,8 +20,8 @@ class ConfigScreenState extends State<ConfigScreen> {
   String examDefaultNameNew = '';
   int timePerTechnique = 60;
   int timePerTechniqueNew = 60;
-  String prioritizeBy = 'Attack';
-  String prioritizeByNew = 'Attack';
+  String prioritizeBy = 'attack';
+  String prioritizeByNew = 'attack';
   int numberOfTechniquePerAttack = 2;
   int numberOfTechniquePerAttackNew = 2;
 
@@ -37,7 +37,7 @@ class ConfigScreenState extends State<ConfigScreen> {
     setState(() {
       examDefaultName = ConfigService.getConfig('examDefaultName') ?? 'My Exam';
       timePerTechnique = ConfigService.getConfig('timePerTechnique') ?? 60;
-      prioritizeBy = toTitleCase(ConfigService.getConfig('prioritizeBy') ?? 'Attack');
+      prioritizeBy = ConfigService.getConfig('prioritizeBy') ?? 'attack';
       numberOfTechniquePerAttack = ConfigService.getConfig('numberOfTechniquePerAttack') ?? 2;
 
       timePerTechniqueNew = timePerTechnique;
@@ -50,7 +50,7 @@ class ConfigScreenState extends State<ConfigScreen> {
   void _saveConfig() {
     ConfigService.setConfig('examDefaultName', examDefaultNameNew);
     ConfigService.setConfig('timePerTechnique', timePerTechniqueNew);
-    ConfigService.setConfig('prioritizeBy', prioritizeByNew.toLowerCase());
+    ConfigService.setConfig('prioritizeBy', prioritizeByNew);
     ConfigService.setConfig('numberOfTechniquePerAttack', numberOfTechniquePerAttackNew);
     ConfigService.saveConfig();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -89,7 +89,12 @@ class ConfigScreenState extends State<ConfigScreen> {
                       timePerTechniqueNew = newValue;
                     });
                   },
-                  valuesList: [10, 15, 20, 25, 30, 40, 60, 90, 120, 180],
+                  valuesMap: {
+                    "10": 10, "15": 15, "20": 20,
+                    "25": 25, "30": 30, "40": 40,
+                    "60": 60, "90": 90, "120": 120,
+                    "180": 180,
+                  },
                   hintText: "Select Time in seconds per technique",
                   titleText: "Time per Technique",
                 ),
@@ -105,7 +110,12 @@ class ConfigScreenState extends State<ConfigScreen> {
                       prioritizeByNew = newValue;
                     });
                   },
-                  valuesList: ["Attack", "Technique"],
+                  valuesMap: {
+                    "Attack": "attack",
+                    "Technique": "technique",
+                    "Last Progression Date": "lastProgressionDate",
+                    "Last Progression Rating": "lastProgressionRating",
+                  },
                   hintText: "Select if technique should be prioritized by",
                   titleText: "Prioritize By",
                 ),
@@ -121,7 +131,10 @@ class ConfigScreenState extends State<ConfigScreen> {
                       numberOfTechniquePerAttackNew = newValue;
                     });
                   },
-                  valuesList: [1, 2, 3, 4, 5],
+                  valuesMap: {
+                    "1": 1, "2": 2, "3": 3,
+                    "4": 4, "5": 5,
+                  },
                   hintText: "Select the maximum number of techniques per attack",
                   titleText: "Max Number of Technique per Attack",
                 ),

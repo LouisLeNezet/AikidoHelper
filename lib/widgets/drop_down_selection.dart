@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ValueSelectionWidget<T> extends StatelessWidget {
   final T selectedValue;
   final ValueChanged<T> onValueChanged;
-  final List<T> valuesList;
+  final Map<String, T> valuesMap;
   final String hintText;
   final String titleText;
   final double width;
@@ -12,41 +12,45 @@ class ValueSelectionWidget<T> extends StatelessWidget {
     super.key,
     required this.selectedValue,
     required this.onValueChanged,
-    required this.valuesList,
+    required this.valuesMap,
     required this.hintText,
     required this.titleText,
-    this.width = 300.0, // Default width for the dropdown menu
+    this.width = 300.0,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Title
         Text(
           titleText,
           style: Theme.of(context).textTheme.headlineSmall,
           textAlign: TextAlign.center,
         ),
-        // Value Selection Dropdown
+
         SizedBox(
-        width: width,
-        child: DropdownButton<T>(
+          width: width,
+          child: DropdownButton<T>(
             value: selectedValue,
+            isExpanded: true,
+            alignment: Alignment.center,
+
             onChanged: (T? newValue) {
               if (newValue != null) {
                 onValueChanged(newValue);
               }
             },
-            items: valuesList.map<DropdownMenuItem<T>>((T value) {
+
+            hint: Text(hintText),
+
+            items: valuesMap.entries.map((entry) {
               return DropdownMenuItem<T>(
-                value: value,
-                child: Center(child: Text(value.toString())),
+                value: entry.value,
+                child: Center(
+                  child: Text(entry.key),
+                ),
               );
             }).toList(),
-            hint: Text(hintText),
-            alignment: Alignment.center,
-            isExpanded: true,
           ),
         ),
       ],

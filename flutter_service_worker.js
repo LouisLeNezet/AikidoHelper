@@ -3,7 +3,7 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"assets/assets/config.json": "280a7bf31c7a572189408eb50c523a2c",
+const RESOURCES = {"assets/assets/config.json": "72f1a2d90ff9df38310bfc2162b0ca8b",
 "assets/assets/fonts/Katanf.ttf": "bea8da4424f41bacc61c01d5104a20fc",
 "assets/assets/fonts/Katanfi.ttf": "615f69600ab53c115953a7c76c962890",
 "assets/assets/images/exam.png": "684ba7666d433bc6730ada106ac48d0f",
@@ -46,8 +46,8 @@ const RESOURCES = {"assets/assets/config.json": "280a7bf31c7a572189408eb50c523a2
 "canvaskit/skwasm.js": "f2ad9363618c5f62e813740099a80e63",
 "canvaskit/skwasm_st.js": "d1326ceef381ad382ab492ba5d96f04d",
 "flutter.js": "76f08d47ff9f5715220992f993002504",
-"flutter_bootstrap.js": "6f3b76ca7b06af55e81f6da6af36c588",
-"main.dart.js": "9ee8eb402d33d912bf6b118d2f91143b",
+"flutter_bootstrap.js": "c45f51500d9977150edf8a66ac49b4a2",
+"main.dart.js": "fdc1402b3d7749cb6fcddcf28477ea97",
 "version.json": "c83ba0d53303978d5b54a6f14369f2b4",
 "icons/logo_minimaliste_200.png": "b478361f3c74934c33aaa2c2997f88c8"};
 // The application shell files that are downloaded before a service worker can
